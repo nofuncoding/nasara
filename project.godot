@@ -1,0 +1,45 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Nasara Godot Manager"
+config/version="0.1.0-dev0"
+run/main_scene="res://app.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="NasaraGodot"
+config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
+run/low_processor_mode=true
+boot_splash/show_image=false
+config/icon="res://icon.svg"
+
+[autoload]
+
+AppConfig="res://script/AppConfig.cs"
+
+[display]
+
+window/size/transparent=true
+window/stretch/aspect="ignore"
+window/per_pixel_transparency/allowed=true
+
+[dotnet]
+
+project/assembly_name="GodotManager"
+
+[gui]
+
+theme/custom_font="res://asset/font/GlowSansSC-Normal-Regular.otf"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+viewport/transparent_background=true
