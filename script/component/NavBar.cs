@@ -18,7 +18,7 @@ public partial class NavBar : Control
 	Label versionLabel;
 
 	[Signal]
-	public delegate void NavChangedEventHandler(string nav);
+	public delegate void NavChangedEventHandler(StringName nav);
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

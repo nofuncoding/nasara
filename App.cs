@@ -13,6 +13,6 @@ public partial class App : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		navBar.NavChanged += (string nav) => viewSwitch.SwitchView(nav);
+		navBar.NavChanged += (StringName nav) => viewSwitch.SwitchView(nav);
 	}
 }
