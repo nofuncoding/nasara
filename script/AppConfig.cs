@@ -1,22 +1,38 @@
 using Godot;
 using System;
 
-public partial class AppConfig : Node
+public partial class AppConfig : RefCounted
 {
-    public ConfigFile config;
 
-    string config_path = "user://nasara.cfg";
+    // TODO: More sections
 
-    public override void _Ready()
-    {
-        config = new ConfigFile();
+    static string configPath = "user://nasara.cfg";
+    ConfigFile configFile;
 
-        if (config.Load(config_path) == Error.FileNotFound)
-            config.Save(config_path);
+    public bool TestVar { get { return (bool)GetValue("test", false); }  set { SetValue("test", value); } }
+
+    public AppConfig() {
+        configFile = new ConfigFile();
+        
+        if (Load() != Error.Ok)
+            Save();
     }
 
-    public AppConfig Get()
-    {
-        return GetTree().Root.GetNode<AppConfig>("AppConfig");
+    Variant GetValue(string key, Variant @default = default) {
+        return configFile.GetValue("app", key, @default);
+    }
+
+    void SetValue(string key, Variant value) {
+        configFile.SetValue("app", key, value);
+        if (Save() != Error.Ok)
+            GD.PrintErr("Cannot save config: ", key);
+    }
+
+    Error Save() {
+        return configFile.Save(configPath);
+    }
+
+    Error Load() {
+        return configFile.Load(configPath);
     }
 }
