@@ -32,7 +32,8 @@ public partial class ViewSwitch : Control
 		}
     }
 
-	public void SwitchView(StringName viewName) {
+	public void SwitchView(StringName viewName)
+	{
 		if (!availableViews.ContainsKey(viewName))
 		{
 			GD.PushError("View `", viewName ,"` Not Exist");
