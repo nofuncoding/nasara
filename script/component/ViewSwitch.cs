@@ -10,6 +10,9 @@ public partial class ViewSwitch : Control
 	[Export]
 	StringName defaultView;
 
+	[Signal]
+	public delegate void ViewSwitchedEventHandler(StringName viewName);
+
 	Godot.Collections.Dictionary<StringName, NodePath> availableViews = new Godot.Collections.Dictionary<StringName, NodePath>();
 
     public override void _Ready()
@@ -43,5 +46,7 @@ public partial class ViewSwitch : Control
 			else
 				node.Visible = true;
 		}
+
+		EmitSignal(SignalName.ViewSwitched, viewName);
 	}
 }
