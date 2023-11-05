@@ -20,10 +20,6 @@ run/low_processor_mode=true
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
-[autoload]
-
-AppConfig="res://script/AppConfig.cs"
-
 [display]
 
 window/size/transparent=true
@@ -33,6 +29,15 @@ window/per_pixel_transparency/allowed=true
 [dotnet]
 
 project/assembly_name="GodotManager"
+
+[file_customization]
+
+folder_colors={
+"res://asset/": "teal",
+"res://component/": "green",
+"res://script/": "orange",
+"res://view/": "green"
+}
 
 [gui]
 

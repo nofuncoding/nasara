@@ -47,7 +47,7 @@ public partial class NavBar : Control
 	{
 		if (currentNav != "editor")
 		{
-			EmitSignal(SignalName.NavChanged, "editor");
+			EmitSignal(SignalName.NavChanged, "EditorView");
 			currentNav = "editor";
 		}
 	}
@@ -56,7 +56,7 @@ public partial class NavBar : Control
 	{
 		if (currentNav != "project")
 		{
-			EmitSignal(SignalName.NavChanged, "project");
+			EmitSignal(SignalName.NavChanged, "ProjectView");
 			currentNav = "project";
 		}
 	}

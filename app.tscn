@@ -1,12 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://bhmo5fqi55jgx"]
+[gd_scene load_steps=5 format=3 uid="uid://bhmo5fqi55jgx"]
 
 [ext_resource type="PackedScene" uid="uid://b43ldqeyl51lx" path="res://component/nav_bar.tscn" id="1_cq3bb"]
 [ext_resource type="Script" path="res://App.cs" id="1_cvbrt"]
+[ext_resource type="Script" path="res://script/component/ViewSwitch.cs" id="3_dmw11"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7cis"]
-bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.980392)
+bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.901961)
 
-[node name="App" type="Control" node_paths=PackedStringArray("navBar")]
+[node name="App" type="Control" node_paths=PackedStringArray("navBar", "viewSwitch")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,6 +16,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cvbrt")
 navBar = NodePath("HBoxContainer/NavBar")
+viewSwitch = NodePath("HBoxContainer/MarginContainer/ViewSwitch")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -36,6 +38,19 @@ grow_vertical = 2
 [node name="NavBar" parent="HBoxContainer" instance=ExtResource("1_cq3bb")]
 layout_mode = 2
 
-[node name="ViewSwitch" type="Control" parent="HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 30
+
+[node name="ViewSwitch" type="Control" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("3_dmw11")
+viewPaths = {
+"EditorView": "res://view/editor_view.tscn",
+"ProjectView": "res://view/project_view.tscn"
+}
+defaultView = &"EditorView"
