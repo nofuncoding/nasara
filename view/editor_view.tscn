@@ -32,10 +32,19 @@ text = "Editor"
 label_settings = SubResource("LabelSettings_6m3yg")
 vertical_alignment = 1
 
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
 [node name="ItemList" type="ItemList" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_poke5")
+allow_search = false
 item_count = 2
 item_0/text = "Godot"
 item_1/text = "Godot"
+
+[node name="Tree" type="Tree" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3

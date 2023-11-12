@@ -3,6 +3,9 @@ using System;
 
 public partial class EditorView : Control
 {
+
+	// TODO: Use `Tree` instead of `ItemList`
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
