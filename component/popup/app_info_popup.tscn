@@ -14,6 +14,7 @@ font = ExtResource("2_eiiw5")
 [node name="AppInfoPopup" type="Window" node_paths=PackedStringArray("versionLabel", "richTextLabel")]
 transparent_bg = true
 title = "About Sarasa"
+position = Vector2i(0, 36)
 size = Vector2i(500, 300)
 transient = true
 exclusive = true
@@ -46,7 +47,7 @@ theme_override_constants/separation = 30
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Narasa"
+text = "Nasara"
 label_settings = SubResource("LabelSettings_6ow54")
 horizontal_alignment = 2
 vertical_alignment = 1

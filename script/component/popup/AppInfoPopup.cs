@@ -17,7 +17,7 @@ public partial class AppInfoPopup : Window
 
 		richTextLabel.MetaClicked += OpenLink;
 
-		versionLabel.Text = (string)ProjectSettings.GetSetting("application/config/version");
+		versionLabel.Text = "v" + (string)ProjectSettings.GetSetting("application/config/version");
 	}
 
     private void OpenLink(Variant meta)

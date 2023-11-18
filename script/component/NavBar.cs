@@ -35,7 +35,14 @@ public partial class NavBar : Control
 			AppInfo.PopupCentered();
 		};
 
-		versionLabel.Text = (string)ProjectSettings.GetSetting("application/config/version");
+		if (OS.IsDebugBuild())
+		{
+			versionLabel.Visible = true;
+			versionLabel.Text = "v" + (string)ProjectSettings.GetSetting("application/config/version");
+		} else {
+			versionLabel.Visible = false;
+		}
+
 	}
 
 	public int RegisterView(PackedScene packedScene, string displayName, int viewIndex = -1)
