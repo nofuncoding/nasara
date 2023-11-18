@@ -49,8 +49,3 @@ theme_override_constants/margin_bottom = 30
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("3_dmw11")
-viewPaths = {
-"EditorView": "res://view/editor_view.tscn",
-"ProjectView": "res://view/project_view.tscn"
-}
-defaultView = &"EditorView"

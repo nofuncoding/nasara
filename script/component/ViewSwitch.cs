@@ -4,50 +4,49 @@ using System.Collections.Generic;
 
 public partial class ViewSwitch : Control
 {
-	[Export]
-	Godot.Collections.Dictionary<StringName, string> viewPaths = new Godot.Collections.Dictionary<StringName, string>();
-
-	[Export]
-	StringName defaultView;
+	// Need to Add Scene Manually
+	public Godot.Collections.Dictionary<int, PackedScene> packedView = new();
 
 	[Signal]
-	public delegate void ViewSwitchedEventHandler(StringName viewName);
+	public delegate void ViewSwitchedEventHandler(int viewIndex);
 
-	Godot.Collections.Dictionary<StringName, NodePath> availableViews = new Godot.Collections.Dictionary<StringName, NodePath>();
+	Godot.Collections.Dictionary<int, Control> availableViews = new();
 
-    public override void _Ready()
+
+    public void Init()
     {
-        foreach (KeyValuePair<StringName, string> view in viewPaths) {
-			Node node = GD.Load<PackedScene>(view.Value).Instantiate();
+        foreach (KeyValuePair<int, PackedScene> view in packedView) {
+			Control node = (Control)view.Value.Instantiate();
 			AddChild(node);
-			availableViews.Add(view.Key, node.GetPath());
+			//availableViews.Add(view.Key, node.GetPath());
+			availableViews.Add(view.Key, node);
 		}
-
-		foreach (KeyValuePair<StringName, NodePath> view in availableViews) {
-			Control node = GetNode<Control>(view.Value);
-			if (view.Key != defaultView)
-				node.Visible = false;
+		
+		foreach (KeyValuePair<int, Control> view in availableViews) {
+			// Control node = GetNode<Control>(view.Value);
+			if (view.Key == 0) // 0 is default view index
+				view.Value.Visible = true;
 			else
-				node.Visible = true;
+				view.Value.Visible = false;
 		}
     }
 
-	public void SwitchView(StringName viewName)
+	public void SwitchView(int viewIndex)
 	{
-		if (!availableViews.ContainsKey(viewName))
+		if (!availableViews.ContainsKey(viewIndex))
 		{
-			GD.PushError("View `", viewName ,"` Not Exist");
+			GD.PushError("View Index `", viewIndex ,"` Not Exist");
 			return;
 		}
 
-		foreach (KeyValuePair<StringName, NodePath> view in availableViews) {
-			Control node = GetNode<Control>(view.Value);
-			if (view.Key != viewName)
-				node.Visible = false;
+		foreach (KeyValuePair<int, Control> view in availableViews) {
+			//Control node = GetNode<Control>(view.Value);
+			if (view.Key != viewIndex)
+				view.Value.Visible = false;
 			else
-				node.Visible = true;
+				view.Value.Visible = true;
 		}
 
-		EmitSignal(SignalName.ViewSwitched, viewName);
+		EmitSignal(SignalName.ViewSwitched, viewIndex);
 	}
 }
