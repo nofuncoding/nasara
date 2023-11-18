@@ -33,6 +33,7 @@ label_settings = SubResource("LabelSettings_6m3yg")
 vertical_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ItemList" type="ItemList" parent="VBoxContainer"]

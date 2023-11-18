@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b43ldqeyl51lx"]
+[gd_scene load_steps=8 format=3 uid="uid://b43ldqeyl51lx"]
 
 [ext_resource type="Script" path="res://script/component/NavBar.cs" id="1_13ngx"]
 [ext_resource type="Theme" uid="uid://hml6xsa67vu2" path="res://asset/style/nav_button_theme.tres" id="1_m3v71"]
 [ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="2_wobo2"]
+[ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://asset/font/MaterialSymbolsSharp.ttf" id="4_mqm5p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7kc6"]
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.941176)
@@ -14,7 +15,7 @@ font = ExtResource("2_wobo2")
 font_size = 12
 font_color = Color(1, 1, 1, 0.607843)
 
-[node name="NavBar" type="Control" node_paths=PackedStringArray("versionLabel")]
+[node name="NavBar" type="Control" node_paths=PackedStringArray("versionLabel", "infoButton")]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 3
 anchors_preset = 9
@@ -22,6 +23,7 @@ anchor_bottom = 1.0
 grow_vertical = 2
 script = ExtResource("1_13ngx")
 versionLabel = NodePath("VersionHint")
+infoButton = NodePath("HBoxContainer/InfoButton")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -63,3 +65,20 @@ grow_vertical = 0
 text = "Version"
 label_settings = SubResource("LabelSettings_c2jxg")
 vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
+
+[node name="InfoButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_mqm5p")
+theme_override_font_sizes/font_size = 18
+text = "info"
+flat = true
