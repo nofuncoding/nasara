@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public partial class NavBar : Control
 {
-
 	ButtonGroup buttonGroup;
 
 	int currentNav = 0;
@@ -14,6 +13,9 @@ public partial class NavBar : Control
 
 	[Export]
 	Label versionLabel;
+
+	[Export]
+	BaseButton infoButton;
 
 	[Signal]
 	public delegate void NavigatedEventHandler(int nav);
@@ -27,6 +29,11 @@ public partial class NavBar : Control
 		
 		buttonGroup = GD.Load<ButtonGroup>("res://component/nav_button_group.tres");
 		buttonGroup.Pressed += NavChanged;
+		infoButton.Pressed += () => {
+			Window AppInfo = GD.Load<PackedScene>("res://component/popup/app_info_popup.tscn").Instantiate<Window>();
+			AddChild(AppInfo);
+			AppInfo.PopupCentered();
+		};
 
 		versionLabel.Text = (string)ProjectSettings.GetSetting("application/config/version");
 	}
