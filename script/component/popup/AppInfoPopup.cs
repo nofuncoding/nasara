@@ -8,6 +8,9 @@ public partial class AppInfoPopup : Window
 	Label versionLabel;
 
 	[Export]
+	Label versionDetail;
+
+	[Export]
 	RichTextLabel richTextLabel;
 
 	// Called when the node enters the scene tree for the first time.
@@ -17,7 +20,19 @@ public partial class AppInfoPopup : Window
 
 		richTextLabel.MetaClicked += OpenLink;
 
-		versionLabel.Text = "v" + (string)ProjectSettings.GetSetting("application/config/version");
+		versionLabel.Text = "Nasara v" + (string)ProjectSettings.GetSetting("application/config/version");
+
+		versionDetail.Text =
+		"Nasara v" + (string)ProjectSettings.GetSetting("application/config/version") + " (" +
+		Engine.GetArchitectureName() + ")" + "\n" +
+		"Data dir: " + OS.GetUserDataDir() + "\n" +
+		"Lang: " + OS.GetLocaleLanguage();
+
+		Godot.Collections.Dictionary engineInfo = Engine.GetVersionInfo();
+		versionDetail.Text += $"\nBuild on Godot {engineInfo["string"]}";
+
+		if (OS.IsDebugBuild())
+			versionDetail.Text += "\nDebug Build";
 	}
 
     private void OpenLink(Variant meta)
