@@ -9,7 +9,10 @@ public partial class AppConfig : RefCounted
     static string configPath = "user://nasara.cfg";
     ConfigFile configFile;
 
-    public bool TestVar { get { return (bool)GetValue("test", false); }  set { SetValue("test", value); } }
+    // public bool TestVar { get { return (bool)GetValue("test", false); }  set { SetValue("test", value); } }
+
+    // TODO: add option to enable TLS
+    public bool EnableTLS { get { return (bool)GetValue("enable_tls", false); }  set { SetValue("enable_tls", value); } }
 
     public AppConfig()
     {
@@ -19,14 +22,14 @@ public partial class AppConfig : RefCounted
             Save();
     }
 
-    Variant GetValue(string key, Variant @default = default)
+    Variant GetValue(string key, Variant @default = default, string section="app")
     {
-        return configFile.GetValue("app", key, @default);
+        return configFile.GetValue(section, key, @default);
     }
 
-    void SetValue(string key, Variant value)
+    void SetValue(string key, Variant value, string section="app")
     {
-        configFile.SetValue("app", key, value);
+        configFile.SetValue(section, key, value);
         if (Save() != Error.Ok)
             GD.PrintErr("Cannot save config: ", key);
     }
