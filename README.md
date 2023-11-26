@@ -1,6 +1,8 @@
 # Nasara Godot Manager
 
+<div align="center">
 A Simple Godot Versions Manager, and it's also made with Godot!
+</div>
 
 ## Features
 
