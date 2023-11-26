@@ -1,5 +1,13 @@
 # Nasara Godot Manager
 
-A Simple Godot Versions Manager.
+A Simple Godot Versions Manager, and it's also made with Godot!
 
-Made With Godot 4.2 & C#!
+## Features
+
+- Manage Godot Installations
+  - Install Latest Release
+  - Add Exists Godot (WIP)
+  - Remove / Update Godot Version (WIP)
+- Manage Your Projects between different Godot versions (WIP)
+
+And More!
