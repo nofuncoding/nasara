@@ -1,11 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://ch6d0syqmlexs"]
+[gd_scene load_steps=6 format=3 uid="uid://ch6d0syqmlexs"]
 
 [ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="1_787ng"]
 [ext_resource type="Theme" uid="uid://drq4e83qvv0u" path="res://asset/style/component_list_theme.tres" id="2_urait"]
+[ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://asset/font/MaterialSymbolsSharp.ttf" id="3_i4whp"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_j2hxm"]
 font = ExtResource("1_787ng")
 font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_v1y5c"]
+font = ExtResource("3_i4whp")
+font_size = 18
 
 [node name="ProjectView" type="Control"]
 layout_mode = 3
@@ -31,9 +36,18 @@ label_settings = SubResource("LabelSettings_j2hxm")
 vertical_alignment = 1
 
 [node name="ItemList" type="ItemList" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_urait")
 item_count = 2
 item_0/text = "Project"
 item_1/text = "Project"
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "not available"
+label_settings = SubResource("LabelSettings_v1y5c")
+horizontal_alignment = 1
+vertical_alignment = 1

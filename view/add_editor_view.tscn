@@ -1,0 +1,207 @@
+[gd_scene load_steps=6 format=3 uid="uid://cdwoeqoyldhs"]
+
+[ext_resource type="Script" path="res://script/view/AddEditorView.cs" id="1_pub8h"]
+[ext_resource type="LabelSettings" uid="uid://b7kgxmbojg6m7" path="res://asset/style/action_label_settings.tres" id="1_sbmq0"]
+[ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://asset/style/normal_control_theme.tres" id="2_nhi8r"]
+[ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="4_a7e4s"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2bjn2"]
+font = ExtResource("4_a7e4s")
+font_color = Color(1, 0, 0, 1)
+
+[node name="AddEditorView" type="Control" node_paths=PackedStringArray("pageInstallType", "pageInstallSetting", "pageInstallDownloading", "installButton", "addExistsButton", "monoCheckButton", "channelOption", "versionOption", "continueButton", "alreadyInstalled", "progressLabel", "progressBar", "finishButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pub8h")
+pageInstallType = NodePath("InstallType")
+pageInstallSetting = NodePath("InstallSetting")
+pageInstallDownloading = NodePath("InstallDownloading")
+installButton = NodePath("InstallType/CenterContainer/VBoxContainer/InstallButton")
+addExistsButton = NodePath("InstallType/CenterContainer/VBoxContainer/AddButton")
+monoCheckButton = NodePath("InstallSetting/CenterContainer/VBoxContainer/MonoCheckButton")
+channelOption = NodePath("InstallSetting/CenterContainer/VBoxContainer/ChannelOption")
+versionOption = NodePath("InstallSetting/CenterContainer/VBoxContainer/VersionOption")
+continueButton = NodePath("InstallSetting/ContinueButton")
+alreadyInstalled = NodePath("InstallSetting/AlreadyInstalled")
+progressLabel = NodePath("InstallDownloading/CenterContainer/VBoxContainer/Label")
+progressBar = NodePath("InstallDownloading/CenterContainer/VBoxContainer/ProgressBar")
+finishButton = NodePath("InstallDownloading/FinishButton")
+
+[node name="InstallType" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="InstallType"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InstallType/CenterContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InstallType/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "What would you do?"
+label_settings = ExtResource("1_sbmq0")
+
+[node name="InstallButton" type="Button" parent="InstallType/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_nhi8r")
+text = "Install New Godot"
+
+[node name="AddButton" type="Button" parent="InstallType/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_nhi8r")
+disabled = true
+text = "Add Exists Godot"
+
+[node name="InstallSetting" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="InstallSetting"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InstallSetting/CenterContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="ChannelLabel" type="Label" parent="InstallSetting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Channel"
+label_settings = ExtResource("1_sbmq0")
+
+[node name="ChannelOption" type="OptionButton" parent="InstallSetting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_nhi8r")
+item_count = 2
+selected = 0
+popup/item_0/text = "Stable"
+popup/item_0/id = 0
+popup/item_1/text = "Unstable"
+popup/item_1/id = 1
+
+[node name="VersionLabel" type="Label" parent="InstallSetting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Version"
+label_settings = ExtResource("1_sbmq0")
+
+[node name="VersionOption" type="OptionButton" parent="InstallSetting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_nhi8r")
+item_count = 1
+selected = 0
+popup/item_0/text = "-"
+popup/item_0/id = 0
+
+[node name="PathLabel" type="Label" parent="InstallSetting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Install Path"
+label_settings = ExtResource("1_sbmq0")
+
+[node name="LineEdit" type="LineEdit" parent="InstallSetting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_nhi8r")
+text = "Not Available in this version"
+editable = false
+
+[node name="MonoCheckButton" type="CheckButton" parent="InstallSetting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mono"
+
+[node name="AlreadyInstalled" type="Label" parent="InstallSetting"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Version Already Installed"
+label_settings = SubResource("LabelSettings_2bjn2")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="InstallSetting"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_nhi8r")
+text = "Install"
+
+[node name="InstallDownloading" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="InstallDownloading"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InstallDownloading/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InstallDownloading/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Downloading Godot {Version}"
+
+[node name="ProgressBar" type="ProgressBar" parent="InstallDownloading/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme = ExtResource("2_nhi8r")
+max_value = 1.0
+
+[node name="FinishButton" type="Button" parent="InstallDownloading"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_nhi8r")
+text = "Finish"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bsl38ksfykhqj"]
+[gd_scene load_steps=8 format=3 uid="uid://bsl38ksfykhqj"]
 
 [ext_resource type="Script" path="res://script/component/popup/AppInfoPopup.cs" id="1_w2uqg"]
 [ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="1_yl0x8"]
@@ -11,9 +11,15 @@ bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.941176)
 [sub_resource type="LabelSettings" id="LabelSettings_6ow54"]
 font = ExtResource("2_eiiw5")
 
-[node name="AppInfoPopup" type="Window" node_paths=PackedStringArray("versionLabel", "richTextLabel")]
+[sub_resource type="LabelSettings" id="LabelSettings_1tfqy"]
+line_spacing = -5.0
+font = ExtResource("2_nymnf")
+font_size = 12
+font_color = Color(1, 1, 1, 0.392157)
+
+[node name="AppInfoPopup" type="Window" node_paths=PackedStringArray("versionLabel", "versionDetail", "richTextLabel")]
 transparent_bg = true
-title = "About Sarasa"
+title = "About Nasara"
 position = Vector2i(0, 36)
 size = Vector2i(500, 300)
 transient = true
@@ -21,8 +27,9 @@ exclusive = true
 transparent = true
 min_size = Vector2i(500, 300)
 script = ExtResource("1_w2uqg")
-versionLabel = NodePath("VBoxContainer/HBoxContainer/VBoxContainer/ProductVersion")
-richTextLabel = NodePath("VBoxContainer/MarginContainer/RichTextLabel")
+versionLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ProductVersion")
+versionDetail = NodePath("MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/VersionDetail")
+richTextLabel = NodePath("MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/RichTextLabel")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15
@@ -32,18 +39,26 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ga6n0")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 30
 
-[node name="ProductName" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="ProductName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -52,39 +67,54 @@ label_settings = SubResource("LabelSettings_6ow54")
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="ProductVersion" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="ProductVersion" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "[Version]"
+text = "{Version}"
 vertical_alignment = 1
 
-[node name="ProductCopyright" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="ProductCopyright" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "© 2023 NoFun"
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_right = 15
+horizontal_scroll_mode = 0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/normal_font = ExtResource("2_nymnf")
 theme_override_fonts/bold_font = ExtResource("1_yl0x8")
 bbcode_enabled = true
-text = "[b]Narasa Godot Manager[/b] is Licensed under the [url=https://github.com/nofuncoding/nasara/blob/main/LICENSE]MIT License[/url],
-And it is [url=https://github.com/nofuncoding/nasara]Open Source[/url] and Free.
+text = "[b]Narasa[/b] is licensed under the [url=https://github.com/nofuncoding/nasara/blob/LICENSE]MIT License[/url], and it is [url=https://github.com/nofuncoding/nasara]open-source[/url] and free.
 
-[b]Third-party License[/b]
-Glow Sans - [i]OFL-1.1[/i]
-Material Symbols - [i]Apache License 2.0[/i]
+[b]Third-Party Licenses[/b]
+[url=https://github.com/welai/glow-sans/blob/master/OFL.txt]Glow Sans[/url] - [i]OFL-1.1[/i]
+[url=https://github.com/google/material-design-icons/blob/master/LICENSE]Material Symbols[/url] - [i]Apache License 2.0[/i]
+[url=godotengine.org/license]Godot[/url] - [i]MIT License[/i]
+[indent][url=https://freetype.org/license.html]FreeType[/url] - [i]FreeType License[/i]
+[url=http://enet.bespin.org/License.html]ENet[/url] - [i]MIT License[/i]
+[url=https://github.com/Mbed-TLS/mbedtls/blob/development/LICENSE]mbed TLS[/url] - [i]Apache License 2.0[/i][/indent]
 
-Made with Godot and [font=res://asset/font/MaterialSymbolsSharp.ttf]favorite[/font]"
+[center]Made with [url=https://godotengine.org]Godot[/url] and [font=res://asset/font/MaterialSymbolsSharp.ttf]favorite[/font][/center]"
+fit_content = true
+scroll_active = false
+
+[node name="VersionDetail" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_1tfqy")
+horizontal_alignment = 1
