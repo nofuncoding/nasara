@@ -5,8 +5,9 @@ using Humanizer;
 
 public partial class AddEditorView : Control
 {
+	App app;
+
 	GodotManager godotManager;
-	GodotRequester godotRequester;
 
 	Godot.Collections.Array<DownloadableVersion> stableVersions = new();
 	Godot.Collections.Array<DownloadableVersion> unstableVersions = new();
@@ -20,7 +21,7 @@ public partial class AddEditorView : Control
 	[Export]
 	Control pageInstallDownloading;
 
-	[ExportGroup("Install Type Page")]
+	[ExportSubgroup("Install Type Page")]
 	[Export]
 	BaseButton installButton;
 	[Export]
@@ -28,7 +29,7 @@ public partial class AddEditorView : Control
 	[Export]
 	CheckButton monoCheckButton;
 
-	[ExportGroup("Install Setting Page")]
+	[ExportSubgroup("Install Setting Page")]
 	[Export]
 	OptionButton channelOption;
 	[Export]
@@ -38,7 +39,7 @@ public partial class AddEditorView : Control
 	[Export]
 	Label alreadyInstalled;
 
-	[ExportGroup("Install Downloading Page")]
+	[ExportSubgroup("Install Downloading Page")]
 	[Export]
 	Label progressLabel;
 	[Export]
@@ -56,6 +57,8 @@ public partial class AddEditorView : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		app = GetNode<App>("/root/App");
+
 		SwitchView(0);
 		installButton.Pressed += () => SwitchView(1);
 		continueButton.Pressed += DownloadTargetVersion;
@@ -83,23 +86,18 @@ public partial class AddEditorView : Control
 
 		godotManager = GetNode<GodotManager>("/root/GodotManager");
 		installedVersions = godotManager.GetVersions();
-		godotRequester = godotManager.GetRequester();
 
-		godotRequester.RequestCompleted += (Godot.Collections.Array<DownloadableVersion> downloadableVersions, int channel) =>
-		{
-			switch (channel)
-			{
-				case (int)GodotVersion.VersionChannel.Stable:
-					stableVersions = downloadableVersions; break;
-				case (int)GodotVersion.VersionChannel.Unstable:
-					unstableVersions = downloadableVersions; break;
-			}
-			if (channelOption.Selected == channel)
-			{
-				versionOption.Clear();
-				foreach (DownloadableVersion version in downloadableVersions)
-					versionOption.AddItem(version.Version.ToString());
-			}
+		GetGodotList();	
+	}
+
+	void GetGodotList()
+	{
+		stableVersions = app.stableVersions;
+		unstableVersions = app.unstableVersions;
+
+		versionOption.Clear();
+		foreach (DownloadableVersion version in stableVersions) 
+			versionOption.AddItem(version.Version.ToString());
 
 			/* FIXME: Out Of Range
 			E 0:00:13:0100   Array.cs:1007 @ void Godot.Collections.Array.GetVariantBorrowElementAt(int, Godot.NativeInterop.godot_variant&): System.ArgumentOutOfRangeException: Specified argument was out of the range of valid values. (Parameter 'index')
@@ -113,10 +111,6 @@ public partial class AddEditorView : Control
 							ScriptManagerBridge.cs:383 @ void Godot.Bridge.ScriptManagerBridge.RaiseEventSignal(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_bool*)
 			*/
 			InstallVersionSelected(0);
-		};
-
-		godotRequester.RequestEditorList();
-		godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
 	}
 
 	void InstallVersionSelected(long index)
