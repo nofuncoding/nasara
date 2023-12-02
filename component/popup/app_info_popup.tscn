@@ -21,11 +21,11 @@ font_color = Color(1, 1, 1, 0.392157)
 transparent_bg = true
 title = "About Nasara"
 position = Vector2i(0, 36)
-size = Vector2i(500, 300)
+size = Vector2i(550, 300)
 transient = true
 exclusive = true
 transparent = true
-min_size = Vector2i(500, 300)
+min_size = Vector2i(550, 300)
 script = ExtResource("1_w2uqg")
 versionLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/ProductVersion")
 versionDetail = NodePath("MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer/VersionDetail")
@@ -80,7 +80,7 @@ vertical_alignment = 1
 
 [node name="ProductCopyright" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-text = "© 2023 NoFun"
+text = "© 2023 NoFun & Contributors"
 vertical_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
