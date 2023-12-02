@@ -267,9 +267,9 @@ public partial class AddEditorView : Control
         };
         AddChild(http);
 
-		string version_str = version.Version.ToString();
+		string versionString = version.Version.ToString();
 		if (monoCheckButton.ButtonPressed)
-			version_str = "Mono " + version_str;
+			versionString = "Mono " + versionString;
 
         Timer timer = new()
         {
@@ -282,7 +282,7 @@ public partial class AddEditorView : Control
 			int downloaded = http.GetDownloadedBytes();
 			if (bodySize != -1)
 			{
-				progressLabel.Text = "Downloading Godot " + version_str 
+				progressLabel.Text = "Downloading Godot " + versionString 
 									+ $" ({downloaded.Bytes().Humanize()}/{bodySize.Bytes().Humanize()})";
 				if (progressBar.MaxValue != bodySize) // do i actually need this
 					progressBar.MaxValue = bodySize;
@@ -291,7 +291,7 @@ public partial class AddEditorView : Control
 
 		};
 
-		progressLabel.Text = "Requesting Godot " + version_str;
+		progressLabel.Text = "Requesting Godot " + versionString;
 
 		// Get Url
 		string url = version.GetDownloadUrl(GetTargetPlatform());

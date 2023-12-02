@@ -13,6 +13,7 @@ public partial class AppConfig : RefCounted
 
     // TODO: add option to enable TLS
     public bool EnableTLS { get { return (bool)GetValue("enable_tls", false); }  set { SetValue("enable_tls", value); } }
+    public bool OpenEditorConsole { get { return (bool)GetValue("open_console", false, "editor"); }  set { SetValue("open_console", value, "editor"); } }
 
     public AppConfig()
     {

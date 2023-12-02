@@ -152,7 +152,7 @@ public partial class GodotManager : Node
         // file.Dispose();
     }
 
-    public bool VersionStrExists(string version)
+    public bool VersionExists(string version)
     {
         Godot.Collections.Array<GodotVersion> versions = GetVersions();
         foreach (GodotVersion ver in versions)
@@ -161,14 +161,15 @@ public partial class GodotManager : Node
         return false;
     }
 
-    public bool VersionSemverExists(Semver.SemVersion version)
+    /*
+    public bool VersionExists(SemVersion version)
     {
         Godot.Collections.Array<GodotVersion> versions = GetVersions();
         foreach (GodotVersion ver in versions)
             if (ver.Version.Equals(version))
                 return true;
         return false;
-    }
+    }*/
 
     public bool VersionExists(GodotVersion version)
     {
@@ -177,5 +178,27 @@ public partial class GodotManager : Node
             if (ver.Version == version.Version && ver.Mono == version.Mono) // Wtf
                 return true;
         return false;
+    }
+
+    public Error LaunchVersion(GodotVersion version)
+    {
+        DirAccess dirAccess = DirAccess.Open(version.Path);
+        if (dirAccess is null) // Error
+            return DirAccess.GetOpenError();
+
+        foreach (string filename in dirAccess.GetFiles())
+        {
+            if (filename.GetExtension() == "exe" && filename.Contains("Godot"))
+            {
+
+                string executablePath = version.Path.PathJoin(filename);
+                GD.Print($"Running Godot {version.Version}; Mono={version.Mono}\nPath: {ProjectSettings.GlobalizePath(executablePath)}");
+                string[] argument = {"--project-manager"}; // Run in Project Manager
+                int pid = OS.CreateProcess(ProjectSettings.GlobalizePath(executablePath), argument, new AppConfig().OpenEditorConsole); // Open a native OS path
+                return Error.Ok;
+            }
+        }
+        
+        return Error.FileNotFound;
     }
 }

@@ -1,49 +1,101 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class EditorList : VBoxContainer
 {
 	[Export]
-	public BaseButton addButton;
-
-	[Export]
 	ItemList editorItemList;
+
+	[ExportCategory("Button")]
+	[Export]
+	public BaseButton addButton;
+	[Export]
+	public BaseButton launchButton;
 
 	// [{ "index": .., "version": .., "path": .., "channel": .. }, ..]
 	Godot.Collections.Array<Godot.Collections.Dictionary> editorItems = new();
+	GodotManager godotManager;
 
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		godotManager = GetNode<GodotManager>("/root/GodotManager");
+		
+		launchButton.Disabled = true;
+		launchButton.Pressed += LaunchEditor;
+
+		editorItemList.ItemActivated += LaunchEditor;
+    	editorItemList.EmptyClicked += (Vector2 pos, long mouseButton) =>
+        {
+			editorItemList.DeselectAll();
+			launchButton.Disabled = true;
+        };
+		editorItemList.ItemSelected += (long index) =>
+		{
+			launchButton.Disabled = false;
+		};
 		RefreshEditors();
 	}
 
 	public void RefreshEditors()
 	{
 		// TODO: Find out the Editors
-		GodotManager godotManager = GetNode<GodotManager>("/root/GodotManager");
 		Godot.Collections.Array<GodotVersion> godotVersions = godotManager.GetVersions();
 
 		editorItemList.Clear();
 
 		foreach (GodotVersion godot in godotVersions)
 		{
+			string version_name = $"Godot {godot.Version}";
+			if (godot.Mono)
+				version_name = $"Godot Mono {godot.Version}";
+
+
 			Godot.Collections.Dictionary item = new()
             {
-                { "version", godot.Version.ToString() },
-                { "path", godot.Path },
-                { "channel", godot.Channel.ToString() }
+				{ "name", version_name },
+                { "version", godot },
             };
-
-			if (godot.Mono) // Add to item list
-				item.Add("index", editorItemList.AddItem($"Godot Mono {godot.Version}"));
-			else
-				item.Add("index", editorItemList.AddItem($"Godot {godot.Version}"));
+			editorItemList.AddItem(version_name);
 
 			editorItems.Add(item);
 		}
 
 		editorItemList.SortItemsByText();
+	}
+
+	void LaunchEditor()
+	{
+		int[] items = editorItemList.GetSelectedItems();
+		if (items.Length>1)
+			return; // Do not accept multiselect
+		
+		int index = items[0];
+		
+
+		string selectedName = editorItemList.GetItemText(index);
+		foreach (Godot.Collections.Dictionary editor in editorItems)
+		{
+			if ((string)editor["name"] == selectedName)
+			{
+				godotManager.LaunchVersion((GodotVersion)editor["version"]);
+				return;
+			}
+		}
+	}
+
+	void LaunchEditor(long index)
+	{
+		string selectedName = editorItemList.GetItemText((int)index);
+		foreach (Godot.Collections.Dictionary editor in editorItems)
+		{
+			if ((string)editor["name"] == selectedName)
+			{
+				godotManager.LaunchVersion((GodotVersion)editor["version"]);
+				return;
+			}
+		}
 	}
 }
