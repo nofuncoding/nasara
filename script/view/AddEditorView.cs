@@ -117,6 +117,7 @@ public partial class AddEditorView : Control
 	{
 		continueButton.Disabled = false;
 		monoCheckButton.Disabled = false;
+		monoCheckButton.ButtonPressed = false;
 		alreadyInstalled.Visible = false;
 
 		DownloadableVersion selectedVersion;
@@ -144,6 +145,7 @@ public partial class AddEditorView : Control
 		{
 			continueButton.Disabled = true;
 			monoCheckButton.Disabled = true;
+			monoCheckButton.ButtonPressed = false;
 			alreadyInstalled.Visible = true;
 		} else if (hasMono)
 		{
