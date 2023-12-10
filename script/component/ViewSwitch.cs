@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 
 public partial class ViewSwitch : Control
 {
@@ -15,19 +14,19 @@ public partial class ViewSwitch : Control
 
     public void Init()
     {
-        foreach (KeyValuePair<int, PackedScene> view in packedView) {
-			Control node = (Control)view.Value.Instantiate();
+        foreach (var (index, packed) in packedView) {
+			Control node = (Control)packed.Instantiate();
 			AddChild(node);
 			//availableViews.Add(view.Key, node.GetPath());
-			availableViews.Add(view.Key, node);
+			availableViews.Add(index, node);
 		}
 		
-		foreach (KeyValuePair<int, Control> view in availableViews) {
+		foreach (var (index, node) in availableViews) {
 			// Control node = GetNode<Control>(view.Value);
-			if (view.Key == 0) // 0 is default view index
-				view.Value.Visible = true;
+			if (index == 0) // 0 is default view index
+				node.Visible = true;
 			else
-				view.Value.Visible = false;
+				node.Visible = false;
 		}
     }
 
@@ -39,12 +38,12 @@ public partial class ViewSwitch : Control
 			return;
 		}
 
-		foreach (KeyValuePair<int, Control> view in availableViews) {
+		foreach (var (index, node) in availableViews) {
 			//Control node = GetNode<Control>(view.Value);
-			if (view.Key != viewIndex)
-				view.Value.Visible = false;
+			if (index != viewIndex)
+				node.Visible = false;
 			else
-				view.Value.Visible = true;
+				node.Visible = true;
 		}
 
 		EmitSignal(SignalName.ViewSwitched, viewIndex);

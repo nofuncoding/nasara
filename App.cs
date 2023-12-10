@@ -1,9 +1,12 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class App : Control
 {
-	// GodotManager godotManager;
+//	[Export]
+	/// [{"name": string, "path": string}, ...]
+//	Godot.Collections.Array<Godot.Collections.Dictionary<string, string>> views;
 
 	[ExportGroup("Pages")]
 	[Export]
@@ -28,8 +31,7 @@ public partial class App : Control
 	public Godot.Collections.Array<DownloadableVersion> stableVersions;
 	public Godot.Collections.Array<DownloadableVersion> unstableVersions;
 
-	/*[Export]
-	Godot.Collections.Dictionary<string, string> viewsPath;*/
+	public static readonly string GODOT_LIST_CACHE_PATH = "user://cache/remote_godot.json";
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -37,7 +39,7 @@ public partial class App : Control
 		godotManager = GetNode<GodotManager>("/root/GodotManager");
 		godotRequester = godotManager.GetRequester();
 
-		godotRequester.RequestCompleted += (Godot.Collections.Array<DownloadableVersion> downloadableVersions, int channel) =>
+		godotRequester.VersionsRequested += (Godot.Collections.Array<DownloadableVersion> downloadableVersions, int channel) =>
 		{
 			switch (channel)
 			{
@@ -46,53 +48,154 @@ public partial class App : Control
 				case (int)GodotVersion.VersionChannel.Unstable:
 					unstableVersions = downloadableVersions; break;
 			}
-
-			loadingBar.Value++;
 		};
 
+		GD.Print("Initializing App");
 		Init();
 	}
 
 	void Init()
 	{
-		// TODO: Refactor to get flexible
 		mainPage.Visible = false;
 		loadingPage.Visible = true;
 
-		loadingBar.MaxValue = 6;
+		loadingBar.MaxValue = 1;
+		loadingBar.MaxValue += 2;
+//		loadingBar.MaxValue += views.Count() * 2 + 1; // InitViews
 
-		InitViews(); // Value added inside
-		godotRequester.RequestEditorList(); // Value added inside
-		godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
+		CreateDirs(); // important, do not delete it
 
+		InitViews();
+		if (GetGodotList() != Error.Ok)
+			GD.PushError("Failed to load Godot List!");
+		
+		loadingBar.Value++;
+
+		loadingPage.Visible = false; 
 		mainPage.Visible = true;
-		loadingPage.Visible = false;
 	}
 
 	void InitViews()
 	{
 		navBar.Navigated += (int nav) => viewSwitch.SwitchView(nav);
 		navBar.ViewRegistered += (int index, PackedScene packedScene) => viewSwitch.packedView.Add(index, packedScene);
-		loadingBar.Value++;
 
-		/*
-		foreach (string path in viewsPath)
+//		Godot.Collections.Dictionary<string, PackedScene> loadedView = new();
+
+/*		BUG: Can't use dictionary to init views.
+		foreach (Godot.Collections.Dictionary v in views)
 		{
-			Node node = GD.Load<PackedScene>(path);
-			navBar.RegisterView
-		}*/
+			PackedScene packedScene = GD.Load<PackedScene>((string)v["path"]);
+
+			loadedView.Add((string)v["name"], packedScene);
+			loadingBar.Value++;
+		}
+
+		foreach (var (name, packed) in loadedView)
+			navBar.RegisterView(packed, name); Stopped running here
+*/
 
 		navBar.RegisterView(GD.Load<PackedScene>("res://view/editor_view.tscn"), "Editor", 0);
-		loadingBar.Value++;
 		navBar.RegisterView(GD.Load<PackedScene>("res://view/project_view.tscn"), "Project");
-		loadingBar.Value++;
 
 		viewSwitch.Init();
 		loadingBar.Value++;
 	}
 
-	void RequestGodotList(GodotVersion.VersionChannel channel)
+	void CreateDirs()
 	{
+		string[] dirs = new string[] {"user://cache"};
 
+		foreach (string d in dirs)
+		{
+			if (!DirAccess.DirExistsAbsolute(d))
+			{
+				DirAccess.MakeDirRecursiveAbsolute(d);
+			}
+		}
+	}
+
+	Error GetGodotList()
+	{
+		// Get Latest Release ID
+		string latestStable = null;
+		string latestUnstable = null;
+		godotRequester.RequestLatestNodeId();
+		godotRequester.RequestLatestNodeId(GodotVersion.VersionChannel.Unstable);
+
+		godotRequester.NodeIdRequested += (string nodeId ,int channel) => {
+			switch (channel)
+			{
+				case (int)GodotVersion.VersionChannel.Stable:
+					latestStable = nodeId;
+					break;
+				case (int)GodotVersion.VersionChannel.Unstable:
+					latestUnstable = nodeId;
+					break;
+			}
+		};
+
+		// Check cache exists
+		if (FileAccess.FileExists(GODOT_LIST_CACHE_PATH))
+		{
+			// Processing cache
+			using var file = FileAccess.Open(GODOT_LIST_CACHE_PATH, FileAccess.ModeFlags.ReadWrite);
+			if (file is null)
+				return FileAccess.GetOpenError();
+			
+			// Get storaged json data
+			Json fileJson = new();
+			if (fileJson.Parse(file.GetAsText()) != Error.Ok)
+				return Error.ParseError;
+
+			GD.Print($"Reading from cache {GODOT_LIST_CACHE_PATH}");
+
+			Godot.Collections.Dictionary version_dict = (Godot.Collections.Dictionary)fileJson.Data;
+
+			if (version_dict.ContainsKey("stable"))
+			{
+				Godot.Collections.Dictionary latest = 
+				(Godot.Collections.Dictionary)((Godot.Collections.Array)version_dict["stable"])[0];
+
+				string currentNodeId = (string)latest["node_id"];
+
+				if (currentNodeId == latestStable || latestStable is null) // when cache is up-to-date (or failed get releases)
+				{
+					GD.Print("Version cache is up-to-date");
+					string data = Json.Stringify(version_dict["stable"]);
+					stableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Stable);
+				} else {
+					godotRequester.RequestEditorList();
+				}
+			} else {
+				// GodotRequester will auto save cache
+				godotRequester.RequestEditorList();
+			}
+
+			if (version_dict.ContainsKey("unstable"))
+			{
+				Godot.Collections.Dictionary latest = 
+				(Godot.Collections.Dictionary)((Godot.Collections.Array)version_dict["unstable"])[0];
+
+				string currentNodeId = (string)latest["node_id"];
+
+				if (currentNodeId == latestUnstable || latestUnstable is null)
+				{
+					GD.Print("Version cache is up-to-date");
+					string data = Json.Stringify(version_dict["unstable"]);
+					unstableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Unstable);
+				} else {
+					godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
+				}
+			} else {
+				// GodotRequester will auto save cache
+				godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
+			}
+		} else {
+			godotRequester.RequestEditorList();
+			godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
+		}
+
+		return Error.Ok;
 	}
 }
