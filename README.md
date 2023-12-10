@@ -4,6 +4,10 @@
 A Simple Godot Versions Manager, and it's also made with Godot!
 </div>
 
+> [!CAUTION]
+> Nasara is still in the early stages of development. Important features are missing.
+> On your own head be it!
+
 ## Features
 
 - Manage Godot Installations
