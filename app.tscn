@@ -16,13 +16,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cvbrt")
-views = Array[Dictionary]([{
-"name": "Editor",
-"path": "res://view/editor_view.tscn"
-}, {
-"name": "Project",
-"path": "res://view/project_view.tscn"
-}])
 mainPage = NodePath("Main")
 loadingPage = NodePath("Loading")
 navBar = NodePath("Main/HBoxContainer/NavBar")

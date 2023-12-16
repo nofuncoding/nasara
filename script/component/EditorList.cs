@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public partial class EditorList : VBoxContainer
@@ -58,7 +59,21 @@ public partial class EditorList : VBoxContainer
 				{ "name", version_name },
                 { "version", godot },
             };
-			editorItemList.AddItem(version_name);
+			if (godot.Status != GodotVersion.VersionStatus.OK)
+			{
+				switch (godot.Status)
+				{
+					case GodotVersion.VersionStatus.NotFound:
+						var i = editorItemList.AddItem(version_name);
+						editorItemList.SetItemDisabled(i, true);
+						editorItemList.SetItemTooltip(i, "Executable Not Found");
+						break;
+				}
+			}
+			else
+			{
+				editorItemList.AddItem(version_name);
+			}
 
 			editorItems.Add(item);
 		}

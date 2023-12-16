@@ -229,6 +229,7 @@ public partial class GodotRequester : Node
 			if (json.Parse(body.GetStringFromUtf8()) != Error.Ok)
 			{
 				GD.PushError("Failed to Parse GitHub Api Data");
+				GD.Print(body.GetStringFromUtf8());
 			}
 
 			string nodeId = "";
