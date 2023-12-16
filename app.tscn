@@ -6,7 +6,7 @@
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://asset/style/normal_control_theme.tres" id="4_pxc2e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7cis"]
-bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.901961)
+bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.980392)
 
 [node name="App" type="Control" node_paths=PackedStringArray("mainPage", "loadingPage", "navBar", "viewSwitch", "loadingBar")]
 layout_mode = 3
