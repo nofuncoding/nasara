@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://ceg101qum37wn"]
+
+[ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://asset/font/MaterialSymbolsSharp.ttf" id="1_rvn8b"]
+
+[resource]
+font = ExtResource("1_rvn8b")
+font_size = 24

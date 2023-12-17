@@ -32,7 +32,7 @@ public partial class GodotVersion : RefCounted
 
         if (!DirAccess.DirExistsAbsolute(path))
         {
-            GD.PushError("Godot Installation Not Found: `", path, "` is Unreachable");
+            // GD.PushError("Godot Installation Not Found: `", path, "` is Unreachable");
             Status = VersionStatus.NotFound;
         }
 

@@ -8,7 +8,7 @@ public partial class GodotRequester : Node
 {
     // GitHub API URLs
     const string GODOT_STABLE = "https://api.github.com/repos/godotengine/godot/releases";
-    const string GODOT_STABLE_LATEST = "https://api.github.com/repos/godotengine/godot/releases/latest";
+    // const string GODOT_STABLE_LATEST = "https://api.github.com/repos/godotengine/godot/releases/latest";
 	// No latest for unstable
 	const string GODOT_UNSTABLE = "https://api.github.com/repos/godotengine/godot-builds/releases";
 
@@ -228,24 +228,13 @@ public partial class GodotRequester : Node
 			Json json = new();
 			if (json.Parse(body.GetStringFromUtf8()) != Error.Ok)
 			{
-				GD.PushError("Failed to Parse GitHub Api Data");
-				GD.Print(body.GetStringFromUtf8());
+				GD.PushError("Failed to Parse GitHub Api Data: ", json.GetErrorMessage());
+				// GD.Print(body.GetStringFromUtf8());
+				return;
 			}
 
-			string nodeId = "";
-			Dictionary latest = new();
-
-			switch (channel)
-			{
-				case GodotVersion.VersionChannel.Stable:
-					latest = (Dictionary)json.Data;
-					nodeId = (string)latest["node_id"];
-					break;
-				case GodotVersion.VersionChannel.Unstable:
-					latest = (Dictionary)((Godot.Collections.Array)json.Data)[0];
-					nodeId = (string)latest["node_id"];
-					break;
-			}
+			Dictionary latest = (Dictionary)((Godot.Collections.Array)json.Data)[0];
+			string nodeId = (string)latest["node_id"];
 			
 			EmitSignal(SignalName.NodeIdRequested, nodeId, (int)channel);
 
@@ -255,7 +244,7 @@ public partial class GodotRequester : Node
 		switch (channel)
 		{
 			case GodotVersion.VersionChannel.Stable:
-				http.Request(GODOT_STABLE_LATEST); GD.Print("GET ", GODOT_STABLE_LATEST); break;
+				http.Request(GODOT_STABLE); GD.Print("GET ", GODOT_STABLE); break;
 			case GodotVersion.VersionChannel.Unstable:
 				http.Request(GODOT_UNSTABLE); GD.Print("GET ", GODOT_UNSTABLE); break;
 		}

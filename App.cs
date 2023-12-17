@@ -5,8 +5,11 @@ using System.Linq;
 public partial class App : Control
 {
 //	[Export]
-	/// [{"name": string, "path": string}, ...]
+//  [{"name": string, "path": string}, ...]
 //	Godot.Collections.Array<Godot.Collections.Dictionary<string, string>> views;
+
+	[Export]
+	NotifySystem notifySystem;
 
 	[ExportGroup("Pages")]
 	[Export]
@@ -33,6 +36,9 @@ public partial class App : Control
 
 	public static readonly string GODOT_LIST_CACHE_PATH = "user://cache/remote_godot.json";
 
+	string GodotCurrentNodeId = null;
+	string GodotUnstableCurrentNodeId = null;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -56,6 +62,11 @@ public partial class App : Control
 
 	void Init()
 	{
+		/*
+		notifySystem.Notify(description: "AS");
+		notifySystem.Notify(NotifyBallon.NotifyType.Warn, description: "AS1");
+		notifySystem.Notify(NotifyBallon.NotifyType.Error, description: "AS2");
+		*/
 		mainPage.Visible = false;
 		loadingPage.Visible = true;
 
@@ -115,86 +126,85 @@ public partial class App : Control
 		}
 	}
 
+	// FIXME: Buggy Cache Updating
 	Error GetGodotList()
 	{
-		// Get Latest Release ID
-		string latestStable = null;
-		string latestUnstable = null;
+		if (!FileAccess.FileExists(GODOT_LIST_CACHE_PATH)) {
+			godotRequester.RequestEditorList();
+			godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
+
+			return Error.Ok;
+		}
+
 		godotRequester.RequestLatestNodeId();
 		godotRequester.RequestLatestNodeId(GodotVersion.VersionChannel.Unstable);
 
-		godotRequester.NodeIdRequested += (string nodeId ,int channel) => {
+		godotRequester.NodeIdRequested += (string nodeId, int channel) => { // Updating Cache
 			switch (channel)
 			{
 				case (int)GodotVersion.VersionChannel.Stable:
-					latestStable = nodeId;
+					if (GodotCurrentNodeId != nodeId && nodeId is not null)
+					{
+						GD.Print("Updating Cache for Godot Stable");
+						godotRequester.RequestEditorList();
+					}
 					break;
 				case (int)GodotVersion.VersionChannel.Unstable:
-					latestUnstable = nodeId;
+					if (GodotUnstableCurrentNodeId != nodeId && nodeId is not null)
+					{
+						GD.Print("Updating Cache for Godot Unstable");
+						godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
+					}
 					break;
 			}
 		};
 
-		// Check cache exists
-		if (FileAccess.FileExists(GODOT_LIST_CACHE_PATH))
+		return ProcessGodotListCache();
+	}
+
+	Error ProcessGodotListCache()
+	{
+		using var file = FileAccess.Open(GODOT_LIST_CACHE_PATH, FileAccess.ModeFlags.ReadWrite);
+		if (file is null)
+			return FileAccess.GetOpenError();
+		
+		// Get storaged json data
+		Json fileJson = new();
+		if (fileJson.Parse(file.GetAsText()) != Error.Ok)
+			return Error.ParseError;
+
+		GD.Print($"Reading from cache {GODOT_LIST_CACHE_PATH}");
+
+		Godot.Collections.Dictionary version_dict = (Godot.Collections.Dictionary)fileJson.Data;
+
+		if (version_dict.ContainsKey("stable"))
 		{
-			// Processing cache
-			using var file = FileAccess.Open(GODOT_LIST_CACHE_PATH, FileAccess.ModeFlags.ReadWrite);
-			if (file is null)
-				return FileAccess.GetOpenError();
-			
-			// Get storaged json data
-			Json fileJson = new();
-			if (fileJson.Parse(file.GetAsText()) != Error.Ok)
-				return Error.ParseError;
+			Godot.Collections.Dictionary latest = 
+			(Godot.Collections.Dictionary)((Godot.Collections.Array)version_dict["stable"])[0];
 
-			GD.Print($"Reading from cache {GODOT_LIST_CACHE_PATH}");
+			GodotCurrentNodeId = (string)latest["node_id"];
 
-			Godot.Collections.Dictionary version_dict = (Godot.Collections.Dictionary)fileJson.Data;
-
-			if (version_dict.ContainsKey("stable"))
-			{
-				Godot.Collections.Dictionary latest = 
-				(Godot.Collections.Dictionary)((Godot.Collections.Array)version_dict["stable"])[0];
-
-				string currentNodeId = (string)latest["node_id"];
-
-				if (currentNodeId == latestStable || latestStable is null) // when cache is up-to-date (or failed get releases)
-				{
-					GD.Print("Version cache is up-to-date");
-					string data = Json.Stringify(version_dict["stable"]);
-					stableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Stable);
-				} else {
-					godotRequester.RequestEditorList();
-				}
-			} else {
-				// GodotRequester will auto save cache
-				godotRequester.RequestEditorList();
-			}
-
-			if (version_dict.ContainsKey("unstable"))
-			{
-				Godot.Collections.Dictionary latest = 
-				(Godot.Collections.Dictionary)((Godot.Collections.Array)version_dict["unstable"])[0];
-
-				string currentNodeId = (string)latest["node_id"];
-
-				if (currentNodeId == latestUnstable || latestUnstable is null)
-				{
-					GD.Print("Version cache is up-to-date");
-					string data = Json.Stringify(version_dict["unstable"]);
-					unstableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Unstable);
-				} else {
-					godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
-				}
-			} else {
-				// GodotRequester will auto save cache
-				godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
-			}
+			string data = Json.Stringify(version_dict["stable"]);
+			stableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Stable);
 		} else {
+			// GodotRequester will auto save cache
 			godotRequester.RequestEditorList();
+		}
+
+		if (version_dict.ContainsKey("unstable"))
+		{
+			Godot.Collections.Dictionary latest = 
+			(Godot.Collections.Dictionary)((Godot.Collections.Array)version_dict["unstable"])[0];
+
+			GodotUnstableCurrentNodeId = (string)latest["node_id"];
+
+			string data = Json.Stringify(version_dict["unstable"]);
+			unstableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Unstable);
+		} else {
+			// GodotRequester will auto save cache
 			godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
 		}
+		
 
 		return Error.Ok;
 	}
