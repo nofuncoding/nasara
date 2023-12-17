@@ -1,14 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://bhmo5fqi55jgx"]
+[gd_scene load_steps=7 format=3 uid="uid://bhmo5fqi55jgx"]
 
 [ext_resource type="PackedScene" uid="uid://b43ldqeyl51lx" path="res://component/nav_bar.tscn" id="1_cq3bb"]
 [ext_resource type="Script" path="res://App.cs" id="1_cvbrt"]
 [ext_resource type="Script" path="res://script/component/ViewSwitch.cs" id="3_dmw11"]
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://asset/style/normal_control_theme.tres" id="4_pxc2e"]
+[ext_resource type="Script" path="res://script/NotifySystem.cs" id="5_kqfxe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7cis"]
 bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.980392)
 
-[node name="App" type="Control" node_paths=PackedStringArray("mainPage", "loadingPage", "navBar", "viewSwitch", "loadingBar")]
+[node name="App" type="Control" node_paths=PackedStringArray("notifySystem", "mainPage", "loadingPage", "navBar", "viewSwitch", "loadingBar")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,6 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cvbrt")
+notifySystem = NodePath("NotifySystem")
 mainPage = NodePath("Main")
 loadingPage = NodePath("Loading")
 navBar = NodePath("Main/HBoxContainer/NavBar")
@@ -91,3 +93,36 @@ custom_minimum_size = Vector2(250, 10)
 layout_mode = 2
 theme = ExtResource("4_pxc2e")
 show_percentage = false
+
+[node name="NotifySystem" type="Control" parent="." node_paths=PackedStringArray("notifyContainer")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_kqfxe")
+notifyContainer = NodePath("MarginContainer/ScrollContainer/VBoxContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="NotifySystem"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="NotifySystem/MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NotifySystem/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 2
