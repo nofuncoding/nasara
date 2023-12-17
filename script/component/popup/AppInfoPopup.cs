@@ -17,16 +17,16 @@ public partial class AppInfoPopup : Window
 	public override void _Ready()
 	{
 		CloseRequested += Hide;
-
 		richTextLabel.MetaClicked += OpenLink;
 
-		versionLabel.Text = "Nasara v" + (string)ProjectSettings.GetSetting("application/config/version");
 
+		versionLabel.Text = "Nasara v" + (string)ProjectSettings.GetSetting("application/config/version");
+		
 		versionDetail.Text =
 		"Nasara v" + (string)ProjectSettings.GetSetting("application/config/version") + " (" +
 		Engine.GetArchitectureName() + ")" + "\n" +
-		"Data dir: " + OS.GetUserDataDir() + "\n" +
-		"Lang: " + OS.GetLocaleLanguage();
+		"Data directory: " + OS.GetUserDataDir() + "\n" +
+		"System Language: " + OS.GetLocaleLanguage();
 
 		Godot.Collections.Dictionary engineInfo = Engine.GetVersionInfo();
 		versionDetail.Text += $"\nBuild on Godot {engineInfo["string"]}";
@@ -35,7 +35,7 @@ public partial class AppInfoPopup : Window
 			versionDetail.Text += "\nDebug Build";
 	}
 
-    private void OpenLink(Variant meta)
+    void OpenLink(Variant meta)
     {
         string link = (string)meta;
 		OS.ShellOpen(link);
