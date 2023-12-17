@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://brgkey7vx46ub"]
+
+[ext_resource type="StyleBox" uid="uid://xorlfmchwylo" path="res://asset/style/notify/ballon_bar_white.tres" id="1_pqats"]
+
+[resource]
+ProgressBar/styles/fill = ExtResource("1_pqats")
