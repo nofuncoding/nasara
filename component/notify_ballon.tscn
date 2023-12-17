@@ -34,6 +34,7 @@ TimerBar = NodePath("Panel/ProgressBar")
 HideButton = NodePath("Panel/MarginContainer/HBoxContainer/HideButton")
 
 [node name="Panel" type="PanelContainer" parent="."]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

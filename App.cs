@@ -205,7 +205,11 @@ public partial class App : Control
 			godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
 		}
 		
-
 		return Error.Ok;
+	}
+
+	public NotifySystem GetNotifySystem()
+	{
+		return notifySystem;
 	}
 }
