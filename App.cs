@@ -108,6 +108,7 @@ public partial class App : Control
 
 		navBar.RegisterView(GD.Load<PackedScene>("res://view/editor_view.tscn"), "Editor", 0);
 		navBar.RegisterView(GD.Load<PackedScene>("res://view/project_view.tscn"), "Project");
+		navBar.RegisterView(GD.Load<PackedScene>("res://view/setting_view.tscn"), "Settings");
 
 		viewSwitch.Init();
 		loadingBar.Value++;

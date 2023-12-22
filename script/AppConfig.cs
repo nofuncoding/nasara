@@ -12,7 +12,8 @@ public partial class AppConfig : RefCounted
     // public bool TestVar { get { return (bool)GetValue("test", false); }  set { SetValue("test", value); } }
 
     // TODO: add option to enable TLS
-    public bool EnableTLS { get { return (bool)GetValue("enable_tls", false); }  set { SetValue("enable_tls", value); } }
+    public bool EnableTLS { get { return (bool)GetValue("enable_tls", false, "network"); }  set { SetValue("enable_tls", value, "network"); } }
+    public bool UsingGithubProxy { get { return (bool)GetValue("github_proxy", false, "network"); }  set { SetValue("github_proxy", value, "network"); } }
     public bool OpenEditorConsole { get { return (bool)GetValue("open_console", false, "editor"); }  set { SetValue("open_console", value, "editor"); } }
 
     public AppConfig()
@@ -31,7 +32,7 @@ public partial class AppConfig : RefCounted
     void SetValue(string key, Variant value, string section="app")
     {
         configFile.SetValue(section, key, value);
-        if (Save() != Error.Ok)
+        if (Save() != Error.Ok) // Save config
             GD.PrintErr("Cannot save config: ", key);
     }
 

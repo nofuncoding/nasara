@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://83s66p11m7ov"]
+
+[ext_resource type="Script" path="res://script/view/SettingView.cs" id="1_egxo0"]
+[ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="1_hlw2e"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vpr62"]
+font = ExtResource("1_hlw2e")
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_fxs1r"]
+font_size = 19
+
+[node name="SettingView" type="Control" node_paths=PackedStringArray("enableTLS", "githubProxy")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_egxo0")
+enableTLS = NodePath("VBoxContainer/ScrollContainer/VBoxContainer/Network/EnableTLS")
+githubProxy = NodePath("VBoxContainer/ScrollContainer/VBoxContainer/Network/GithubProxy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ViewTitle" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+text = "Settings"
+label_settings = SubResource("LabelSettings_vpr62")
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="Network" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/ScrollContainer/VBoxContainer/Network"]
+layout_mode = 2
+text = "Network"
+label_settings = SubResource("LabelSettings_fxs1r")
+
+[node name="EnableTLS" type="CheckButton" parent="VBoxContainer/ScrollContainer/VBoxContainer/Network"]
+layout_mode = 2
+text = "Enable TLS"
+
+[node name="GithubProxy" type="CheckButton" parent="VBoxContainer/ScrollContainer/VBoxContainer/Network"]
+layout_mode = 2
+text = "Using Github Proxy"
