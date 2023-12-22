@@ -6,7 +6,10 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_di4q1"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7khwf"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ubi7"]
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cbvur"]
 bg_color = Color(0.054902, 0.454902, 0.564706, 1)
@@ -18,5 +21,5 @@ Button/colors/icon_focus_color = Color(1, 1, 1, 1)
 Button/styles/disabled = SubResource("StyleBoxEmpty_i6pby")
 Button/styles/focus = SubResource("StyleBoxEmpty_p1y7c")
 Button/styles/hover = SubResource("StyleBoxEmpty_di4q1")
-Button/styles/normal = SubResource("StyleBoxEmpty_7khwf")
+Button/styles/normal = SubResource("StyleBoxFlat_0ubi7")
 Button/styles/pressed = SubResource("StyleBoxFlat_cbvur")
