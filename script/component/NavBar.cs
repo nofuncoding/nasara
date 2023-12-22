@@ -47,6 +47,21 @@ public partial class NavBar : Control
 
 	public int RegisterView(PackedScene packedScene, string displayName, int viewIndex = -1)
 	{
+		int index = viewIndex;
+		if (index <= -1)
+		{
+			int i = 0;
+			for(;;)
+			{
+				if (buttonDictionary.ContainsKey(i)) // Find out available index
+					i++;
+				else
+					break;
+			}
+			
+			index = i;
+		}
+
         Button viewButton = new()
         {
             Text = displayName,
@@ -55,20 +70,12 @@ public partial class NavBar : Control
         };
         GetNode("VBoxContainer").AddChild(viewButton);
 
-		int index = viewIndex;
-		if (index <= -1)
-		{
-			for (int i = 0; !buttonDictionary.ContainsKey(i); i++) // Find out available index
-			{
-				index = i;
-			}
-		}
-
 		if (index == 0) // Default View
 			viewButton.ButtonPressed = true;
 		
 		buttonDictionary.Add(index, viewButton);
 		EmitSignal(SignalName.ViewRegistered, index, packedScene);
+
 
 		availableViewsCount++;
 		return index;
