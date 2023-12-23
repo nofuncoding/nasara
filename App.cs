@@ -62,11 +62,11 @@ public partial class App : Control
 
 	void Init()
 	{
-		/*
-		notifySystem.Notify(description: "AS");
-		notifySystem.Notify(NotifyBallon.NotifyType.Warn, description: "AS1");
-		notifySystem.Notify(NotifyBallon.NotifyType.Error, description: "AS2");
-		*/
+		string lang = new AppConfig().Language;
+		GD.Print(lang);
+		if (lang != "")
+			TranslationServer.SetLocale(lang);
+
 		mainPage.Visible = false;
 		loadingPage.Visible = true;
 

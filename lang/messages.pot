@@ -85,7 +85,15 @@ msgid "Using Github Proxy"
 msgstr ""
 
 #: view/setting_view.tscn
-msgid "Languages"
+msgid "Language"
+msgstr ""
+
+#: view/setting_view.tscn
+msgid "Restart to have effect!"
+msgstr ""
+
+#: view/setting_view.tscn
+msgid "Restart"
 msgstr ""
 
 #: app.tscn

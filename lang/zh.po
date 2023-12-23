@@ -98,8 +98,16 @@ msgid "Using Github Proxy"
 msgstr "使用 GitHub 代理"
 
 #: view/setting_view.tscn
-msgid "Languages"
+msgid "Language"
 msgstr "语言"
+
+#: view/setting_view.tscn
+msgid "Restart to have effect!"
+msgstr "重启应用以生效！"
+
+#: view/setting_view.tscn
+msgid "Restart"
+msgstr "重启"
 
 #: app.tscn
 msgid "Loading"

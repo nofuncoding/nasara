@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2023-12-23 13:03+0800\n"
+"PO-Revision-Date: 2023-12-23 14:31+0800\n"
 "Last-Translator: NoFun <nofuncoding@qq.com>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -89,8 +89,16 @@ msgid "Using Github Proxy"
 msgstr "Using Github Proxy"
 
 #: view/setting_view.tscn
-msgid "Languages"
-msgstr "Languages"
+msgid "Language"
+msgstr "Language"
+
+#: view/setting_view.tscn
+msgid "Restart to have effect!"
+msgstr "Restart to have effect!"
+
+#: view/setting_view.tscn
+msgid "Restart"
+msgstr "Restart"
 
 #: app.tscn
 msgid "Loading"

@@ -3,18 +3,19 @@ using System;
 
 public partial class AppConfig : RefCounted
 {
-
-    // TODO: More sections
-
     static string configPath = "user://nasara.cfg";
     ConfigFile configFile;
 
     // public bool TestVar { get { return (bool)GetValue("test", false); }  set { SetValue("test", value); } }
 
     // TODO: add option to enable TLS
+    public string Language { get { return (string)GetValue("language", ""); } set { SetValue("language", value, needRestart: true);} }
     public bool EnableTLS { get { return (bool)GetValue("enable_tls", false, "network"); }  set { SetValue("enable_tls", value, "network"); } }
     public bool UsingGithubProxy { get { return (bool)GetValue("github_proxy", false, "network"); }  set { SetValue("github_proxy", value, "network"); } }
     public bool OpenEditorConsole { get { return (bool)GetValue("open_console", false, "editor"); }  set { SetValue("open_console", value, "editor"); } }
+
+    [Signal]
+    public delegate void NeedRestartEventHandler();
 
     public AppConfig()
     {
@@ -29,11 +30,14 @@ public partial class AppConfig : RefCounted
         return configFile.GetValue(section, key, @default);
     }
 
-    void SetValue(string key, Variant value, string section="app")
+    void SetValue(string key, Variant value, string section="app", bool needRestart = false)
     {
         configFile.SetValue(section, key, value);
         if (Save() != Error.Ok) // Save config
             GD.PrintErr("Cannot save config: ", key);
+        
+        if (needRestart)
+            EmitSignal(SignalName.NeedRestart);
     }
 
     Error Save()
