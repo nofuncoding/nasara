@@ -1,0 +1,127 @@
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Nasara Godot Manager\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: view/add_editor_view.tscn
+msgid "What would you do?"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Install New"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Import Existing"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Channel"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Version"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Install Path"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Mono"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Version Already Installed"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Install"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Finish"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Where is your Godot?"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Import"
+msgstr ""
+
+#: view/editor_view.tscn
+msgid "Editor"
+msgstr ""
+
+#: view/project_view.tscn
+msgid "Project"
+msgstr ""
+
+#: view/project_view.tscn
+msgid "Work in Progress"
+msgstr ""
+
+#: view/setting_view.tscn
+msgid "Setting"
+msgstr ""
+
+#: view/setting_view.tscn
+msgid "Network"
+msgstr ""
+
+#: view/setting_view.tscn
+msgid "Enable TLS"
+msgstr ""
+
+#: view/setting_view.tscn
+msgid "Using Github Proxy"
+msgstr ""
+
+#: view/setting_view.tscn
+msgid "Languages"
+msgstr ""
+
+#: app.tscn
+msgid "Loading"
+msgstr ""
+
+
+msgid "Editor Launched"
+msgstr ""
+
+msgid "Launched Godot {0}"
+msgstr ""
+
+msgid "Downloading Godot {0} {1}"
+msgstr ""
+
+msgid "Requesting Godot {0}"
+msgstr ""
+
+msgid "Download Completed"
+msgstr ""
+
+msgid "Unzipping Files"
+msgstr ""
+
+msgid "Completed"
+msgstr ""
+
+msgid "Checking"
+msgstr ""
+
+msgid "Version Existed!"
+msgstr ""
+
+msgid "Invalid Path. Did you modify the name of the Godot executable?"
+msgstr ""
+
+msgid "A Great Path!"
+msgstr ""

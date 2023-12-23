@@ -192,6 +192,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="InstallDownloading/CenterContainer/VBoxContainer"]
 layout_mode = 2
+auto_translate = false
 text = "Downloading Godot {Version}"
 
 [node name="ProgressBar" type="ProgressBar" parent="InstallDownloading/CenterContainer/VBoxContainer"]
@@ -250,6 +251,7 @@ context_menu_enabled = false
 
 [node name="Button" type="Button" parent="ImportExisting/CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+auto_translate = false
 theme_override_colors/font_hover_color = Color(0.0235294, 0.713726, 0.831373, 1)
 theme_override_fonts/font = ExtResource("5_4kiqk")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_88h2p")

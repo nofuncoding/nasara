@@ -1,0 +1,139 @@
+# LANGUAGE translation for Nasara Godot Manager for the following files:
+# res://view/add_editor_view.tscn
+# res://view/editor_view.tscn
+# res://view/project_view.tscn
+# res://view/setting_view.tscn
+# res://app.tscn
+# res://component/popup/app_info_popup.tscn
+#
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Nasara Godot Manager\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: NoFun <nofuncoding@qq.com>\n"
+"Language-Team: \n"
+"Language: zh\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.1\n"
+
+#: view/add_editor_view.tscn
+msgid "What would you do?"
+msgstr "您想做什么？"
+
+#: view/add_editor_view.tscn
+msgid "Install New"
+msgstr "安装新版本"
+
+#: view/add_editor_view.tscn
+msgid "Import Existing"
+msgstr "导入已存在的版本"
+
+#: view/add_editor_view.tscn
+msgid "Channel"
+msgstr "通道"
+
+#: view/add_editor_view.tscn
+msgid "Version"
+msgstr "版本"
+
+#: view/add_editor_view.tscn
+msgid "Install Path"
+msgstr "安装路径"
+
+#: view/add_editor_view.tscn
+msgid "Mono"
+msgstr "Mono"
+
+#: view/add_editor_view.tscn
+msgid "Version Already Installed"
+msgstr "版本已安装"
+
+#: view/add_editor_view.tscn
+msgid "Install"
+msgstr "安装"
+
+#: view/add_editor_view.tscn
+msgid "Finish"
+msgstr "完成"
+
+#: view/add_editor_view.tscn
+msgid "Where is your Godot?"
+msgstr "你的 Godot 安装在？"
+
+#: view/add_editor_view.tscn
+msgid "Import"
+msgstr "导入"
+
+#: view/editor_view.tscn
+msgid "Editor"
+msgstr "编辑器"
+
+#: view/project_view.tscn
+msgid "Project"
+msgstr "项目"
+
+#: view/project_view.tscn
+msgid "Work in Progress"
+msgstr "即将推出"
+
+#: view/setting_view.tscn
+msgid "Setting"
+msgstr "设置"
+
+#: view/setting_view.tscn
+msgid "Network"
+msgstr "网络"
+
+#: view/setting_view.tscn
+msgid "Enable TLS"
+msgstr "启用 TLS"
+
+#: view/setting_view.tscn
+msgid "Using Github Proxy"
+msgstr "使用 GitHub 代理"
+
+#: view/setting_view.tscn
+msgid "Languages"
+msgstr "语言"
+
+#: app.tscn
+msgid "Loading"
+msgstr "加载中"
+
+msgid "Editor Launched"
+msgstr "编辑器已启动"
+
+msgid "Launched Godot {0}"
+msgstr "已启动 Godot {0}"
+
+msgid "Downloading Godot {0} {1}"
+msgstr "正在下载 Godot {0} {1}"
+
+msgid "Requesting Godot {0}"
+msgstr "正在请求 Godot {0}"
+
+msgid "Download Completed"
+msgstr "下载完成"
+
+msgid "Unzipping Files"
+msgstr "正在解压文件"
+
+msgid "Completed"
+msgstr "完成"
+
+msgid "Checking"
+msgstr "检查中"
+
+msgid "Version Existed!"
+msgstr "版本已存在！"
+
+msgid "Invalid Path. Did you modify the name of the Godot executable?"
+msgstr "无效路径。可能您更改了 Godot 可执行文件的文件名？"
+
+msgid "A Great Path!"
+msgstr "路径可用！"
