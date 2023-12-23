@@ -1,27 +1,32 @@
-[gd_scene load_steps=6 format=3 uid="uid://cdwoeqoyldhs"]
+[gd_scene load_steps=8 format=3 uid="uid://cdwoeqoyldhs"]
 
 [ext_resource type="Script" path="res://script/view/AddEditorView.cs" id="1_pub8h"]
 [ext_resource type="LabelSettings" uid="uid://b7kgxmbojg6m7" path="res://asset/style/action_label_settings.tres" id="1_sbmq0"]
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://asset/style/normal_control_theme.tres" id="2_nhi8r"]
 [ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="4_a7e4s"]
+[ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://asset/font/MaterialSymbolsSharp.ttf" id="5_4kiqk"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2bjn2"]
 font = ExtResource("4_a7e4s")
 font_color = Color(1, 0, 0, 1)
 
-[node name="AddEditorView" type="Control" node_paths=PackedStringArray("pageInstallType", "pageInstallSetting", "pageInstallDownloading", "installButton", "addExistsButton", "monoCheckButton", "channelOption", "versionOption", "continueButton", "alreadyInstalled", "progressLabel", "progressBar", "finishButton")]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_88h2p"]
+
+[node name="AddEditorView" type="Control" node_paths=PackedStringArray("pageInstallType", "pageInstallSetting", "pageInstallDownloading", "pageImportExisting", "installButton", "importExistingButton", "monoCheckButton", "channelOption", "versionOption", "continueButton", "alreadyInstalled", "progressLabel", "progressBar", "finishButton", "pathEdit", "explodeButton", "resultTextLabel", "importButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_nhi8r")
 script = ExtResource("1_pub8h")
-pageInstallType = NodePath("InstallType")
+pageInstallType = NodePath("TypeSelect")
 pageInstallSetting = NodePath("InstallSetting")
 pageInstallDownloading = NodePath("InstallDownloading")
-installButton = NodePath("InstallType/CenterContainer/VBoxContainer/InstallButton")
-addExistsButton = NodePath("InstallType/CenterContainer/VBoxContainer/AddButton")
+pageImportExisting = NodePath("ImportExisting")
+installButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/InstallButton")
+importExistingButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/ImportButton")
 monoCheckButton = NodePath("InstallSetting/CenterContainer/VBoxContainer/MonoCheckButton")
 channelOption = NodePath("InstallSetting/CenterContainer/VBoxContainer/ChannelOption")
 versionOption = NodePath("InstallSetting/CenterContainer/VBoxContainer/VersionOption")
@@ -30,8 +35,13 @@ alreadyInstalled = NodePath("InstallSetting/AlreadyInstalled")
 progressLabel = NodePath("InstallDownloading/CenterContainer/VBoxContainer/Label")
 progressBar = NodePath("InstallDownloading/CenterContainer/VBoxContainer/ProgressBar")
 finishButton = NodePath("InstallDownloading/FinishButton")
+pathEdit = NodePath("ImportExisting/CenterContainer/VBoxContainer/HBoxContainer/LineEdit")
+explodeButton = NodePath("ImportExisting/CenterContainer/VBoxContainer/HBoxContainer/Button")
+resultTextLabel = NodePath("ImportExisting/CenterContainer/VBoxContainer/RichTextLabel")
+importButton = NodePath("ImportExisting/ImportButton")
 
-[node name="InstallType" type="Control" parent="."]
+[node name="TypeSelect" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,7 +49,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="InstallType"]
+[node name="CenterContainer" type="CenterContainer" parent="TypeSelect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,26 +57,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="InstallType/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TypeSelect/CenterContainer"]
 custom_minimum_size = Vector2(300, 100)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="InstallType/CenterContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="TypeSelect/CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "What would you do?"
 label_settings = ExtResource("1_sbmq0")
 
-[node name="InstallButton" type="Button" parent="InstallType/CenterContainer/VBoxContainer"]
+[node name="InstallButton" type="Button" parent="TypeSelect/CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_nhi8r")
-text = "Install New Godot"
+text = "Install New"
 
-[node name="AddButton" type="Button" parent="InstallType/CenterContainer/VBoxContainer"]
+[node name="ImportButton" type="Button" parent="TypeSelect/CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_nhi8r")
-disabled = true
-text = "Add Exists Godot"
+text = "Import Existing"
 
 [node name="InstallSetting" type="Control" parent="."]
 visible = false
@@ -205,3 +214,65 @@ grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("2_nhi8r")
 text = "Finish"
+
+[node name="ImportExisting" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_nhi8r")
+
+[node name="CenterContainer" type="CenterContainer" parent="ImportExisting"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ImportExisting/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ImportExisting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Where is your Godot?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ImportExisting/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ImportExisting/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+context_menu_enabled = false
+
+[node name="Button" type="Button" parent="ImportExisting/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.0235294, 0.713726, 0.831373, 1)
+theme_override_fonts/font = ExtResource("5_4kiqk")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_88h2p")
+text = "folder_open"
+flat = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ImportExisting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="ImportButton" type="Button" parent="ImportExisting"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_nhi8r")
+text = "Import"

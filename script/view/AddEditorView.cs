@@ -13,19 +13,21 @@ public partial class AddEditorView : Control
 	Godot.Collections.Array<DownloadableVersion> unstableVersions = new();
 	Godot.Collections.Array<GodotVersion> installedVersions = new();
 
-	[ExportGroup("Pages")] // TODO: Refactor these to make code clean
+	[ExportGroup("Pages", "page")] // TODO: Refactor these to make code clean
 	[Export]
 	Control pageInstallType;
 	[Export]
 	Control pageInstallSetting;
 	[Export]
 	Control pageInstallDownloading;
+	[Export]
+	Control pageImportExisting;
 
-	[ExportSubgroup("Install Type Page")]
+	[ExportSubgroup("Type Select Page")]
 	[Export]
 	BaseButton installButton;
 	[Export]
-	BaseButton addExistsButton;
+	BaseButton importExistingButton;
 	[Export]
 	CheckButton monoCheckButton;
 
@@ -46,6 +48,15 @@ public partial class AddEditorView : Control
 	ProgressBar progressBar;
 	[Export]
 	BaseButton finishButton;
+	[ExportSubgroup("Import Page")]
+	[Export]
+	LineEdit pathEdit;
+	[Export]
+	BaseButton explodeButton;
+	[Export]
+	RichTextLabel resultTextLabel;
+	[Export]
+	BaseButton importButton;
 
 
 	[Signal]
@@ -58,11 +69,43 @@ public partial class AddEditorView : Control
 	public override void _Ready()
 	{
 		app = GetNode<App>("/root/App");
-
+		godotManager = GetNode<GodotManager>("/root/GodotManager");
+		installedVersions = godotManager.GetVersions();
 		SwitchView(0);
+		GetGodotList();
+
+		// Setup Signals
+		// Buttons
 		installButton.Pressed += () => SwitchView(1);
+		importExistingButton.Pressed += () => SwitchView(3);
+
 		continueButton.Pressed += DownloadTargetVersion;
 		finishButton.Pressed += () => EmitSignal(SignalName.AddedEditor);
+
+		explodeButton.Pressed += () => {
+			FileDialog dialog = new() {
+				Access = FileDialog.AccessEnum.Filesystem,
+				FileMode = FileDialog.FileModeEnum.OpenDir,
+				// Title = "Open a Godot Directory",
+				// Theme = Theme,
+				UseNativeDialog = true, // TODO: Use custom dialog is possible
+			};
+			dialog.DirSelected += (string dir) => {
+				pathEdit.Text = dir;
+				CheckPath(dir);
+				dialog.QueueFree();
+			};
+			AddChild(dialog);
+			dialog.PopupCentered();
+		};
+		importButton.Pressed += () => {
+			pageImportExisting.Visible = false;
+			godotManager.AddVersion(godotManager.PathAvailable(pathEdit.Text));
+
+			EmitSignal(SignalName.AddedEditor);
+		};
+
+		// Options
 		channelOption.ItemSelected += (long index) => {
 			switch (index)
 			{
@@ -80,14 +123,14 @@ public partial class AddEditorView : Control
 		};
 		versionOption.ItemSelected += InstallVersionSelected;
 		
+		pathEdit.TextChanged += CheckPath;
+
+		// Setup styles
 		monoCheckButton.ButtonPressed = false;
 		finishButton.Visible = false;
 		alreadyInstalled.Visible = false;
-
-		godotManager = GetNode<GodotManager>("/root/GodotManager");
-		installedVersions = godotManager.GetVersions();
-
-		GetGodotList();	
+		importButton.Disabled = true;
+		resultTextLabel.Clear();
 	}
 
 	void GetGodotList()
@@ -98,18 +141,6 @@ public partial class AddEditorView : Control
 		versionOption.Clear();
 		foreach (DownloadableVersion version in stableVersions) 
 			versionOption.AddItem(version.Version.ToString());
-
-			/* FIXME: Out Of Range
-			E 0:00:13:0100   Array.cs:1007 @ void Godot.Collections.Array.GetVariantBorrowElementAt(int, Godot.NativeInterop.godot_variant&): System.ArgumentOutOfRangeException: Specified argument was out of the range of valid values. (Parameter 'index')
-			<C# 错误>        System.ArgumentOutOfRangeException
-			<C# 源文件>      /root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Array.cs:1007 @ void Godot.Collections.Array.GetVariantBorrowElementAt(int, Godot.NativeInterop.godot_variant&)
-			<栈追踪>         Array.cs:1007 @ void Godot.Collections.Array.GetVariantBorrowElementAt(int, Godot.NativeInterop.godot_variant&)
-							Array.cs:1408 @ T Godot.Collections.Array`1.get_Item(int)
-							AddEditorView.cs:109 @ void AddEditorView.InstallVersionSelected(long)
-							AddEditorView.cs:94 @ void AddEditorView.<_Ready>b__17_2(Godot.Collections.Array`1[DownloadableVersion], int)
-							GodotRequester_ScriptSignals.generated.cs:40 @ void GodotRequester.RaiseGodotClassSignalCallbacks(Godot.NativeInterop.godot_string_name&, Godot.NativeInterop.NativeVariantPtrArgs)
-							ScriptManagerBridge.cs:383 @ void Godot.Bridge.ScriptManagerBridge.RaiseEventSignal(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_bool*)
-			*/
 			InstallVersionSelected(0);
 	}
 
@@ -166,16 +197,25 @@ public partial class AddEditorView : Control
 				pageInstallType.Visible = true;
 				pageInstallSetting.Visible = false;
 				pageInstallDownloading.Visible = false;
+				pageImportExisting.Visible = false;
 				break;
 			case 1:
 				pageInstallType.Visible = false;
 				pageInstallSetting.Visible = true;
 				pageInstallDownloading.Visible = false;
+				pageImportExisting.Visible = false;
 				break;
 			case 2:
 				pageInstallType.Visible = false;
 				pageInstallSetting.Visible = false;
 				pageInstallDownloading.Visible = true;
+				pageImportExisting.Visible = false;
+				break;
+			case 3:
+				pageInstallType.Visible = false;
+				pageInstallSetting.Visible = false;
+				pageInstallDownloading.Visible = false;
+				pageImportExisting.Visible = true;
 				break;
 		}
 	}
@@ -188,6 +228,7 @@ public partial class AddEditorView : Control
 				{
 					if (version.Version.Equals(SemVersion.Parse(versionOption.Text, SemVersionStyles.Any)))
 					{
+						/*
 						// Using Unstable to fix
 						// TODO: Remove it
 						if (version.GetDownloadUrl(GetTargetPlatform()) is not null)
@@ -212,7 +253,13 @@ public partial class AddEditorView : Control
 							
 							GD.PushError("Failed to Get Download Link from godotengine/godot-builds again");
 						}
-						
+						*/
+
+						if (version.GetDownloadUrl(GetTargetPlatform()) is not null)
+						{
+							StartDownload(version);
+							return;
+						}
 					}
 				}
 			}
@@ -297,9 +344,10 @@ public partial class AddEditorView : Control
 
 		// Get Url
 		string url = version.GetDownloadUrl(GetTargetPlatform());
-
-		// http.Request(url);
-		http.Request("https://mirror.ghproxy.com/"+url); // TODO: Replace it
+		if (new AppConfig().UsingGithubProxy)
+			url = "https://mirror.ghproxy.com/" + url; // TODO: Replace it using a better way
+		
+		http.Request(url);
 		GD.Print("GET ", url);
 
 		http.RequestCompleted += (long result, long responseCode, string[] headers, byte[] body) => {
@@ -412,5 +460,31 @@ public partial class AddEditorView : Control
 			GD.Print("Added Godot ", version.Version.ToString(), "; Prerelease=", version.Version.IsPrerelease);
 		
 		finishButton.Visible = true;
+	}
+
+	void CheckPath(string text) {
+		resultTextLabel.Clear();
+		resultTextLabel.Text = "Checking...";
+		importButton.Disabled = true;
+
+		GodotVersion ver = godotManager.PathAvailable(text);
+		if (ver is null)
+		{
+			resultTextLabel.Text = "[color=red][font=res://asset/font/MaterialSymbolsSharp.ttf]error[/font] Invaild Path. Are you modified the name of the Godot executable?[/color]";
+		} else {
+			if (!godotManager.VersionExists(ver))
+			{
+				resultTextLabel.Text = "[color=green][font=res://asset/font/MaterialSymbolsSharp.ttf]done[/font] A Great Path![/color]\n";
+				
+				// Display the version detected:
+				resultTextLabel.AppendText($"Version: [b]{ver.Version}[/b]\n");
+				resultTextLabel.AppendText($"Mono: [b]{ver.Mono}[/b]\n");
+				resultTextLabel.AppendText($"Channel: [b]{ver.Channel}[/b]\n");
+
+				importButton.Disabled = false;
+			}
+			else
+				resultTextLabel.Text = "[color=yellow][font=res://asset/font/MaterialSymbolsSharp.ttf]warning[/font] Version Existed![/color]";
+		}
 	}
 }

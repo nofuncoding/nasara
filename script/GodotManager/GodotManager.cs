@@ -180,7 +180,6 @@ public partial class GodotManager : Node
         {
             if (filename.GetExtension() == "exe" && filename.Contains("Godot"))
             {
-
                 string executablePath = version.Path.PathJoin(filename);
                 GD.Print($"Running Godot {version.Version}; Mono={version.Mono}\nPath: {ProjectSettings.GlobalizePath(executablePath)}");
                 string[] argument = {"--project-manager"}; // Run in Project Manager
@@ -192,5 +191,56 @@ public partial class GodotManager : Node
         }
         
         return Error.FileNotFound;
+    }
+
+    /// <summary>
+    /// Test path has Godot installation
+    /// </summary>
+    /// <param name="path">The absolute path</param>
+    /// <returns>null if not available</returns>
+    public GodotVersion PathAvailable(string path)
+    {
+        if (!DirAccess.DirExistsAbsolute(path))
+            return null;
+
+        bool available = false;
+        bool mono = false;
+        GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable;
+        SemVersion version = null;
+
+        DirAccess dirAccess = DirAccess.Open(path);
+        if (dirAccess is null)
+        {
+            // GD.PushError($"{DirAccess.GetOpenError()}:{path}");
+            return null;
+        }
+
+        foreach (string filename in dirAccess.GetFiles())
+        {
+            string[] fn = filename.Split("_");
+            if (filename.GetExtension() == "exe" && fn[0] == "Godot")
+            {
+                available = true;
+                if (fn[2] == "mono")
+                    mono = true;
+                
+                string v = fn[1].TrimSuffix("-stable");
+                version = SemVersion.Parse(v, SemVersionStyles.Any);
+
+                if (version.ComparePrecedenceTo(new SemVersion(3)) == -1) // Ignoring Versions Before 3
+				    return null;
+
+                if (version.IsPrerelease)
+                    channel = GodotVersion.VersionChannel.Unstable;
+
+                break;
+            }
+        }
+
+        if (!available)
+            return null;
+        
+        GodotVersion result = new(version, path, channel, mono);
+        return result;
     }
 }

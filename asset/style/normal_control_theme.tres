@@ -1,4 +1,7 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://8qt5bb5oi3ck"]
+[gd_resource type="Theme" load_steps=19 format=3 uid="uid://8qt5bb5oi3ck"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tyf6c"]
+bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.941176)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_58iex"]
 content_margin_left = 4.0
@@ -107,6 +110,7 @@ content_margin_right = 2.0
 bg_color = Color(0.054902, 0.454902, 0.564706, 1)
 
 [resource]
+AcceptDialog/styles/panel = SubResource("StyleBoxFlat_tyf6c")
 Button/colors/font_disabled_color = Color(0.87451, 0.87451, 0.87451, 0.392157)
 Button/styles/disabled = SubResource("StyleBoxFlat_58iex")
 Button/styles/focus = SubResource("StyleBoxEmpty_1fff2")

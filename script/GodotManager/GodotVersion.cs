@@ -5,6 +5,8 @@ using Semver;
 [GlobalClass] // Removable?
 public partial class GodotVersion : RefCounted
 {
+    // TODO: Add Platform
+
     public VersionChannel Channel { get; }
     public SemVersion Version { get; }
     public bool Mono { get; }
