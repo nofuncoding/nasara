@@ -100,7 +100,7 @@ size_flags_vertical = 3
 theme_override_fonts/normal_font = ExtResource("2_nymnf")
 theme_override_fonts/bold_font = ExtResource("1_yl0x8")
 bbcode_enabled = true
-text = "[b]Narasa[/b] is licensed under the [url=https://github.com/nofuncoding/nasara/blob/LICENSE]MIT License[/url], and it is [url=https://github.com/nofuncoding/nasara]open-source[/url] and free.
+text = "[b]Narasa[/b] is licensed under the [url=https://github.com/nofuncoding/nasara/blob/main/LICENSE]MIT License[/url], and it is [url=https://github.com/nofuncoding/nasara]open-source[/url] and free.
 
 [b]Third-Party Licenses[/b]
 [url=https://github.com/welai/glow-sans/blob/master/OFL.txt]Glow Sans[/url] - [i]OFL-1.1[/i]
