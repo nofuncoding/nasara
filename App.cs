@@ -106,9 +106,9 @@ public partial class App : Control
 			navBar.RegisterView(packed, name); Stopped running here
 */
 
-		navBar.RegisterView(GD.Load<PackedScene>("res://view/editor_view.tscn"), "Editor", 0);
-		navBar.RegisterView(GD.Load<PackedScene>("res://view/project_view.tscn"), "Project");
-		navBar.RegisterView(GD.Load<PackedScene>("res://view/setting_view.tscn"), "Settings");
+		navBar.RegisterView(GD.Load<PackedScene>("res://view/editor_view.tscn"), Tr("Editor"), 0);
+		navBar.RegisterView(GD.Load<PackedScene>("res://view/project_view.tscn"), Tr("Project"));
+		navBar.RegisterView(GD.Load<PackedScene>("res://view/setting_view.tscn"), Tr("Setting"));
 
 		viewSwitch.Init();
 		loadingBar.Value++;
@@ -116,7 +116,7 @@ public partial class App : Control
 
 	void CreateDirs()
 	{
-		string[] dirs = new string[] {"user://cache"};
+		string[] dirs = new string[] { "user://cache" };
 
 		foreach (string d in dirs)
 		{

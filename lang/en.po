@@ -1,0 +1,130 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2023-12-23 13:03+0800\n"
+"Last-Translator: NoFun <nofuncoding@qq.com>\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.1\n"
+"X-Poedit-Basepath: .\n"
+
+#: view/add_editor_view.tscn
+msgid "What would you do?"
+msgstr "What would you do?"
+
+#: view/add_editor_view.tscn
+msgid "Install New"
+msgstr "Install New"
+
+#: view/add_editor_view.tscn
+msgid "Import Existing"
+msgstr "Import Existing"
+
+#: view/add_editor_view.tscn
+msgid "Channel"
+msgstr "Channel"
+
+#: view/add_editor_view.tscn
+msgid "Version"
+msgstr "Version"
+
+#: view/add_editor_view.tscn
+msgid "Install Path"
+msgstr "Install Path"
+
+#: view/add_editor_view.tscn
+msgid "Mono"
+msgstr "Mono"
+
+#: view/add_editor_view.tscn
+msgid "Version Already Installed"
+msgstr "Version Already Installed"
+
+#: view/add_editor_view.tscn
+msgid "Install"
+msgstr "Install"
+
+#: view/add_editor_view.tscn
+msgid "Finish"
+msgstr "Finish"
+
+#: view/add_editor_view.tscn
+msgid "Where is your Godot?"
+msgstr "Where is your Godot?"
+
+#: view/add_editor_view.tscn
+msgid "Import"
+msgstr "Import"
+
+#: view/editor_view.tscn
+msgid "Editor"
+msgstr "Editor"
+
+#: view/project_view.tscn
+msgid "Project"
+msgstr "Project"
+
+#: view/project_view.tscn
+msgid "Work in Progress"
+msgstr "Work in Progress"
+
+#: view/setting_view.tscn
+msgid "Setting"
+msgstr "Setting"
+
+#: view/setting_view.tscn
+msgid "Network"
+msgstr "Network"
+
+#: view/setting_view.tscn
+msgid "Enable TLS"
+msgstr "Enable TLS"
+
+#: view/setting_view.tscn
+msgid "Using Github Proxy"
+msgstr "Using Github Proxy"
+
+#: view/setting_view.tscn
+msgid "Languages"
+msgstr "Languages"
+
+#: app.tscn
+msgid "Loading"
+msgstr "Loading"
+
+msgid "Editor Launched"
+msgstr "Editor Launched"
+
+msgid "Launched Godot {0}"
+msgstr "Launched Godot {0}"
+
+msgid "Downloading Godot {0} {1}"
+msgstr "Downloading Godot {0} {1}"
+
+msgid "Requesting Godot {0}"
+msgstr "Requesting Godot {0}"
+
+msgid "Download Completed"
+msgstr "Download Completed"
+
+msgid "Unzipping Files"
+msgstr "Unzipping Files"
+
+msgid "Completed"
+msgstr "Completed"
+
+msgid "Checking"
+msgstr "Checking"
+
+msgid "Version Existed!"
+msgstr "Version Existed!"
+
+msgid "Invalid Path. Did you modify the name of the Godot executable?"
+msgstr "Invalid Path. Did you modify the name of the Godot executable?"
+
+msgid "A Great Path!"
+msgstr "A Great Path!"

@@ -50,6 +50,11 @@ folder_colors={
 
 theme/custom_font="res://asset/font/GlowSansSC-Normal-Regular.otf"
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://lang/zh.mo", "res://lang/en.mo")
+locale/translations_pot_files=PackedStringArray("res://view/add_editor_view.tscn", "res://view/editor_view.tscn", "res://view/project_view.tscn", "res://view/setting_view.tscn", "res://app.tscn")
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

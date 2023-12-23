@@ -185,7 +185,7 @@ public partial class GodotManager : Node
                 string[] argument = {"--project-manager"}; // Run in Project Manager
                 int pid = OS.CreateProcess(ProjectSettings.GlobalizePath(executablePath), argument, new AppConfig().OpenEditorConsole); // Open a native OS path
                 
-                GetNode<App>("/root/App").GetNotifySystem().Notify(title: "Editor Launched", description: $"Launched Godot {version.Version}");
+                GetNode<App>("/root/App").GetNotifySystem().Notify(title: Tr("Editor Launched"), description: string.Format(Tr("Launched Godot {0}"), version.Version));
                 return Error.Ok;
             }
         }

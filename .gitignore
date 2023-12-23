@@ -3,3 +3,6 @@
 
 # Build
 build/
+
+# Translates
+lang/*_generated.pot

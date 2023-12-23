@@ -331,8 +331,8 @@ public partial class AddEditorView : Control
 			int downloaded = http.GetDownloadedBytes();
 			if (bodySize != -1)
 			{
-				progressLabel.Text = "Downloading Godot " + versionString 
-									+ $" ({downloaded.Bytes().Humanize()}/{bodySize.Bytes().Humanize()})";
+				progressLabel.Text = string.Format(Tr("Downloading Godot {0} {1}"), versionString, 
+									$"({downloaded.Bytes().Humanize()}/{bodySize.Bytes().Humanize()})");
 				if (progressBar.MaxValue != bodySize) // do i actually need this
 					progressBar.MaxValue = bodySize;
 				progressBar.Value = downloaded;
@@ -340,7 +340,7 @@ public partial class AddEditorView : Control
 
 		};
 
-		progressLabel.Text = "Requesting Godot " + versionString;
+		progressLabel.Text = string.Format(Tr("Requesting Godot {0}"), versionString);
 
 		// Get Url
 		string url = version.GetDownloadUrl(GetTargetPlatform());
@@ -355,7 +355,7 @@ public partial class AddEditorView : Control
 			{
 				GD.Print(responseCode, " OK");
 				progressBar.Value = progressBar.MaxValue + 1;
-				progressLabel.Text = "Download Completed";
+				progressLabel.Text = Tr("Download Completed");
 
 				// Rename File
 				// DirAccess.Rename();
@@ -380,7 +380,7 @@ public partial class AddEditorView : Control
 	void UnpackGodot(DownloadableVersion version, string zipPath)
 	{
 		progressBar.Value = 0;
-		progressLabel.Text = "Unzipping Files";
+		progressLabel.Text = Tr("Unzipping Files");
 
 		// Unzipping Godot
 		ZipReader zip = new();
@@ -432,7 +432,7 @@ public partial class AddEditorView : Control
 		zip.Close();
 		
 		// Setting up
-		progressLabel.Text = "Completed";
+		progressLabel.Text = Tr("Completed");
 
 		string editorPath = path.PathJoin(totalFiles[0]);
 		if (!monoCheckButton.ButtonPressed)
@@ -464,17 +464,17 @@ public partial class AddEditorView : Control
 
 	void CheckPath(string text) {
 		resultTextLabel.Clear();
-		resultTextLabel.Text = "Checking...";
+		resultTextLabel.Text = Tr("Checking") + "...";
 		importButton.Disabled = true;
 
 		GodotVersion ver = godotManager.PathAvailable(text);
 		if (ver is null)
 		{
-			resultTextLabel.Text = "[color=red][font=res://asset/font/MaterialSymbolsSharp.ttf]error[/font] Invaild Path. Are you modified the name of the Godot executable?[/color]";
+			resultTextLabel.Text = $"[color=red][font=res://asset/font/MaterialSymbolsSharp.ttf]error[/font] {Tr("Invalid Path. Did you modify the name of the Godot executable?")}[/color]";
 		} else {
 			if (!godotManager.VersionExists(ver))
 			{
-				resultTextLabel.Text = "[color=green][font=res://asset/font/MaterialSymbolsSharp.ttf]done[/font] A Great Path![/color]\n";
+				resultTextLabel.Text = $"[color=green][font=res://asset/font/MaterialSymbolsSharp.ttf]done[/font] {Tr("A Great Path!")}[/color]\n";
 				
 				// Display the version detected:
 				resultTextLabel.AppendText($"Version: [b]{ver.Version}[/b]\n");
@@ -484,7 +484,7 @@ public partial class AddEditorView : Control
 				importButton.Disabled = false;
 			}
 			else
-				resultTextLabel.Text = "[color=yellow][font=res://asset/font/MaterialSymbolsSharp.ttf]warning[/font] Version Existed![/color]";
+				resultTextLabel.Text = $"[color=yellow][font=res://asset/font/MaterialSymbolsSharp.ttf]warning[/font] {Tr("Version Existed!")}[/color]";
 		}
 	}
 }
