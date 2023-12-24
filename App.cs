@@ -28,8 +28,7 @@ public partial class App : Control
 	[Export]
 	ProgressBar loadingBar;
 
-	GodotManager godotManager;
-	GodotRequester godotRequester;
+	GodotManager.Manager godotManager;
 
 	public Godot.Collections.Array<DownloadableVersion> stableVersions;
 	public Godot.Collections.Array<DownloadableVersion> unstableVersions;
@@ -42,10 +41,9 @@ public partial class App : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		godotManager = GetNode<GodotManager>("/root/GodotManager");
-		godotRequester = godotManager.GetRequester();
+		godotManager = GetNode<GodotManager.Manager>("/root/GodotManager"); // Autoload
 
-		godotRequester.VersionsRequested += (Godot.Collections.Array<DownloadableVersion> downloadableVersions, int channel) =>
+		godotManager.Requester().VersionsRequested += (Godot.Collections.Array<DownloadableVersion> downloadableVersions, int channel) =>
 		{
 			switch (channel)
 			{
@@ -63,7 +61,6 @@ public partial class App : Control
 	void Init()
 	{
 		string lang = new AppConfig().Language;
-		GD.Print(lang);
 		if (lang != "")
 			TranslationServer.SetLocale(lang);
 
@@ -130,6 +127,8 @@ public partial class App : Control
 	// FIXME: Buggy Cache Updating
 	Error GetGodotList()
 	{
+		GodotManager.Requester godotRequester = godotManager.Requester();
+
 		if (!FileAccess.FileExists(GODOT_LIST_CACHE_PATH)) {
 			godotRequester.RequestEditorList();
 			godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);
@@ -165,6 +164,8 @@ public partial class App : Control
 
 	Error ProcessGodotListCache()
 	{
+		GodotManager.Requester godotRequester = godotManager.Requester();
+
 		using var file = FileAccess.Open(GODOT_LIST_CACHE_PATH, FileAccess.ModeFlags.ReadWrite);
 		if (file is null)
 			return FileAccess.GetOpenError();

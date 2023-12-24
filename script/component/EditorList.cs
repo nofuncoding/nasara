@@ -16,13 +16,13 @@ public partial class EditorList : VBoxContainer
 
 	// [{ "index": .., "version": .., "path": .., "channel": .. }, ..]
 	Godot.Collections.Array<Godot.Collections.Dictionary> editorItems = new();
-	GodotManager godotManager;
+	GodotManager.Manager godotManager;
 
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		godotManager = GetNode<GodotManager>("/root/GodotManager");
+		godotManager = GetNode<GodotManager.Manager>("/root/GodotManager");
 		
 		launchButton.Disabled = true;
 		launchButton.Pressed += LaunchEditor;
@@ -43,7 +43,7 @@ public partial class EditorList : VBoxContainer
 	public void RefreshEditors()
 	{
 		// TODO: Find out the Editors
-		Godot.Collections.Array<GodotVersion> godotVersions = godotManager.GetVersions();
+		Godot.Collections.Array<GodotVersion> godotVersions = godotManager.Version().GetVersions();
 
 		editorItemList.Clear();
 
@@ -89,16 +89,7 @@ public partial class EditorList : VBoxContainer
 		
 		int index = items[0];
 		
-
-		string selectedName = editorItemList.GetItemText(index);
-		foreach (Godot.Collections.Dictionary editor in editorItems)
-		{
-			if ((string)editor["name"] == selectedName)
-			{
-				godotManager.LaunchVersion((GodotVersion)editor["version"]);
-				return;
-			}
-		}
+		LaunchEditor(index);
 	}
 
 	void LaunchEditor(long index)
@@ -108,7 +99,7 @@ public partial class EditorList : VBoxContainer
 		{
 			if ((string)editor["name"] == selectedName)
 			{
-				godotManager.LaunchVersion((GodotVersion)editor["version"]);
+				godotManager.Launch((GodotVersion)editor["version"]);
 				return;
 			}
 		}

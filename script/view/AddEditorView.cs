@@ -7,7 +7,8 @@ public partial class AddEditorView : Control
 {
 	App app;
 
-	GodotManager godotManager;
+	GodotManager.Manager godotManager;
+	GodotManager.Version versionManager;
 
 	Godot.Collections.Array<DownloadableVersion> stableVersions = new();
 	Godot.Collections.Array<DownloadableVersion> unstableVersions = new();
@@ -69,8 +70,9 @@ public partial class AddEditorView : Control
 	public override void _Ready()
 	{
 		app = GetNode<App>("/root/App");
-		godotManager = GetNode<GodotManager>("/root/GodotManager");
-		installedVersions = godotManager.GetVersions();
+		godotManager = GetNode<GodotManager.Manager>("/root/GodotManager");
+		versionManager = godotManager.Version();
+		installedVersions = versionManager.GetVersions();
 		SwitchView(0);
 		GetGodotList();
 
@@ -100,7 +102,7 @@ public partial class AddEditorView : Control
 		};
 		importButton.Pressed += () => {
 			pageImportExisting.Visible = false;
-			godotManager.AddVersion(godotManager.PathAvailable(pathEdit.Text));
+			versionManager.AddVersion(GodotManager.Version.PathHasGodot(pathEdit.Text));
 
 			EmitSignal(SignalName.AddedEditor);
 		};
@@ -450,7 +452,7 @@ public partial class AddEditorView : Control
 		GodotVersion.VersionChannel versionChannel = GodotVersion.VersionChannel.Stable;
 		if (version.Version.IsPrerelease)
 			versionChannel = GodotVersion.VersionChannel.Unstable;
-		godotManager.AddVersion(new GodotVersion(version.Version, editorPath, versionChannel, monoCheckButton.ButtonPressed));
+		versionManager.AddVersion(new GodotVersion(version.Version, editorPath, versionChannel, monoCheckButton.ButtonPressed));
 
 		// Cleaning up
 		DirAccess.RemoveAbsolute(zipPath);
@@ -467,12 +469,12 @@ public partial class AddEditorView : Control
 		resultTextLabel.Text = Tr("Checking") + "...";
 		importButton.Disabled = true;
 
-		GodotVersion ver = godotManager.PathAvailable(text);
+		GodotVersion ver = GodotManager.Version.PathHasGodot(text);
 		if (ver is null)
 		{
 			resultTextLabel.Text = $"[color=red][font=res://asset/font/MaterialSymbolsSharp.ttf]error[/font] {Tr("Invalid Path. Did you modify the name of the Godot executable?")}[/color]";
 		} else {
-			if (!godotManager.VersionExists(ver))
+			if (!versionManager.VersionExists(ver))
 			{
 				resultTextLabel.Text = $"[color=green][font=res://asset/font/MaterialSymbolsSharp.ttf]done[/font] {Tr("A Great Path!")}[/color]\n";
 				
