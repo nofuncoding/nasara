@@ -30,15 +30,19 @@ public partial class AddEditorView : Control
 	[Export]
 	BaseButton importExistingButton;
 	[Export]
-	CheckButton monoCheckButton;
+	BaseButton cancelAddingButton;
 
 	[ExportSubgroup("Install Setting Page")]
+	[Export]
+	CheckButton monoCheckButton;
 	[Export]
 	OptionButton channelOption;
 	[Export]
 	OptionButton versionOption;
 	[Export]
 	BaseButton continueButton;
+	[Export]
+	BaseButton backButton;
 	[Export]
 	Label alreadyInstalled;
 
@@ -49,6 +53,7 @@ public partial class AddEditorView : Control
 	ProgressBar progressBar;
 	[Export]
 	BaseButton finishButton;
+
 	[ExportSubgroup("Import Page")]
 	[Export]
 	LineEdit pathEdit;
@@ -58,6 +63,8 @@ public partial class AddEditorView : Control
 	RichTextLabel resultTextLabel;
 	[Export]
 	BaseButton importButton;
+	[Export]
+	BaseButton importBackButton;
 
 
 	[Signal]
@@ -80,8 +87,11 @@ public partial class AddEditorView : Control
 		// Buttons
 		installButton.Pressed += () => SwitchView(1);
 		importExistingButton.Pressed += () => SwitchView(3);
+		cancelAddingButton.Pressed += () => EmitSignal(SignalName.AddedEditor); // Don't use Queue Free
 
 		continueButton.Pressed += DownloadTargetVersion;
+		backButton.Pressed += () => SwitchView(0);
+
 		finishButton.Pressed += () => EmitSignal(SignalName.AddedEditor);
 
 		explodeButton.Pressed += () => {
@@ -106,6 +116,7 @@ public partial class AddEditorView : Control
 
 			EmitSignal(SignalName.AddedEditor);
 		};
+		importBackButton.Pressed += () => SwitchView(0);
 
 		// Options
 		channelOption.ItemSelected += (long index) => {

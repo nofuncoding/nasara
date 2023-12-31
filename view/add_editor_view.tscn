@@ -12,7 +12,7 @@ font_color = Color(1, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_88h2p"]
 
-[node name="AddEditorView" type="Control" node_paths=PackedStringArray("pageInstallType", "pageInstallSetting", "pageInstallDownloading", "pageImportExisting", "installButton", "importExistingButton", "monoCheckButton", "channelOption", "versionOption", "continueButton", "alreadyInstalled", "progressLabel", "progressBar", "finishButton", "pathEdit", "explodeButton", "resultTextLabel", "importButton")]
+[node name="AddEditorView" type="Control" node_paths=PackedStringArray("pageInstallType", "pageInstallSetting", "pageInstallDownloading", "pageImportExisting", "installButton", "importExistingButton", "cancelAddingButton", "monoCheckButton", "channelOption", "versionOption", "continueButton", "backButton", "alreadyInstalled", "progressLabel", "progressBar", "finishButton", "pathEdit", "explodeButton", "resultTextLabel", "importButton", "importBackButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,10 +27,12 @@ pageInstallDownloading = NodePath("InstallDownloading")
 pageImportExisting = NodePath("ImportExisting")
 installButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/InstallButton")
 importExistingButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/ImportButton")
+cancelAddingButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/CancelButton")
 monoCheckButton = NodePath("InstallSetting/CenterContainer/VBoxContainer/MonoCheckButton")
 channelOption = NodePath("InstallSetting/CenterContainer/VBoxContainer/ChannelOption")
 versionOption = NodePath("InstallSetting/CenterContainer/VBoxContainer/VersionOption")
 continueButton = NodePath("InstallSetting/ContinueButton")
+backButton = NodePath("InstallSetting/BackButton")
 alreadyInstalled = NodePath("InstallSetting/AlreadyInstalled")
 progressLabel = NodePath("InstallDownloading/CenterContainer/VBoxContainer/Label")
 progressBar = NodePath("InstallDownloading/CenterContainer/VBoxContainer/ProgressBar")
@@ -39,6 +41,7 @@ pathEdit = NodePath("ImportExisting/CenterContainer/VBoxContainer/HBoxContainer/
 explodeButton = NodePath("ImportExisting/CenterContainer/VBoxContainer/HBoxContainer/Button")
 resultTextLabel = NodePath("ImportExisting/CenterContainer/VBoxContainer/RichTextLabel")
 importButton = NodePath("ImportExisting/ImportButton")
+importBackButton = NodePath("ImportExisting/BackButton")
 
 [node name="TypeSelect" type="Control" parent="."]
 visible = false
@@ -76,6 +79,10 @@ text = "Install New"
 layout_mode = 2
 theme = ExtResource("2_nhi8r")
 text = "Import Existing"
+
+[node name="CancelButton" type="Button" parent="TypeSelect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Do Nothing"
 
 [node name="InstallSetting" type="Control" parent="."]
 visible = false
@@ -169,6 +176,17 @@ grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("2_nhi8r")
 text = "Install"
+
+[node name="BackButton" type="Button" parent="InstallSetting"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_right = 8.0
+grow_vertical = 0
+text = "Back"
 
 [node name="InstallDownloading" type="Control" parent="."]
 visible = false
@@ -278,3 +296,14 @@ grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("2_nhi8r")
 text = "Import"
+
+[node name="BackButton" type="Button" parent="ImportExisting"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_right = 8.0
+grow_vertical = 0
+text = "Back"
