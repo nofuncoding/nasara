@@ -78,10 +78,10 @@ namespace GodotManager {
 				"unstable": [ ... ],
 			}
 			*/
-			if (FileAccess.FileExists(App.GODOT_LIST_CACHE_PATH))
+			if (FileAccess.FileExists(VersionList.GODOT_LIST_CACHE_PATH))
 			{
 				// Processing Exists
-				using var file = FileAccess.Open(App.GODOT_LIST_CACHE_PATH, FileAccess.ModeFlags.ReadWrite);
+				using var file = FileAccess.Open(VersionList.GODOT_LIST_CACHE_PATH, FileAccess.ModeFlags.ReadWrite);
 				if (file is null)
 					return FileAccess.GetOpenError();
 				
@@ -104,7 +104,7 @@ namespace GodotManager {
 				file.StoreString(Json.Stringify(version_dict));
 			} else {
 				// Processing NotExists
-				using var file = FileAccess.Open(App.GODOT_LIST_CACHE_PATH, FileAccess.ModeFlags.Write);
+				using var file = FileAccess.Open(VersionList.GODOT_LIST_CACHE_PATH, FileAccess.ModeFlags.Write);
 				if (file is null)
 					return FileAccess.GetOpenError();
 
@@ -122,7 +122,7 @@ namespace GodotManager {
 				file.StoreString(Json.Stringify(version_dict));
 			}
 
-			GD.Print($"Saved Downloadable Cache to {App.GODOT_LIST_CACHE_PATH}");
+			GD.Print($"Saved Downloadable Cache to {VersionList.GODOT_LIST_CACHE_PATH}");
 			return Error.Ok;
 		}
 

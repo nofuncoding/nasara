@@ -8,7 +8,7 @@ namespace GodotManager
     {
         public Godot.Collections.Array<GodotVersion> GetVersions()
         {
-            VersionListReader reader = new();
+            VersionReader reader = new();
             return reader.Read();
         }
         
@@ -34,11 +34,11 @@ namespace GodotManager
                 }
 
                 // Fully Clear and Rewrite
-                using var file = FileAccess.Open(VersionListReader.ListPath, FileAccess.ModeFlags.Write);
+                using var file = FileAccess.Open(VersionReader.ListPath, FileAccess.ModeFlags.Write);
                 foreach (GodotVersion ver in checkedVersions)
                     WriteVersion(file, ver);
             } else {
-                using var file = FileAccess.Open(VersionListReader.ListPath, FileAccess.ModeFlags.ReadWrite);
+                using var file = FileAccess.Open(VersionReader.ListPath, FileAccess.ModeFlags.ReadWrite);
                 WriteVersion(file, godotVersion);
             }
         }
@@ -80,7 +80,7 @@ namespace GodotManager
         {
             Godot.Collections.Array<GodotVersion> versions = GetVersions();
             versions.Remove(godotVersion);
-            using var file = FileAccess.Open(VersionListReader.ListPath, FileAccess.ModeFlags.ReadWrite);
+            using var file = FileAccess.Open(VersionReader.ListPath, FileAccess.ModeFlags.ReadWrite);
             foreach (GodotVersion version in versions)
                 WriteVersion(file, version);
         }
@@ -155,7 +155,7 @@ namespace GodotManager
         }
     }
 
-    class VersionListReader
+    class VersionReader
     {
         public static readonly string ListPath = "user://gdls";
 

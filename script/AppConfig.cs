@@ -34,7 +34,7 @@ public partial class AppConfig : RefCounted
     {
         configFile.SetValue(section, key, value);
         if (Save() != Error.Ok) // Save config
-            GD.PrintErr("Cannot save config: ", key);
+            GD.PrintErr("(config) Cannot save config: ", key);
         
         if (needRestart)
             EmitSignal(SignalName.NeedRestart);

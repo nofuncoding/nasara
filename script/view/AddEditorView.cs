@@ -81,11 +81,14 @@ public partial class AddEditorView : Control
 		versionManager = godotManager.Version();
 		installedVersions = versionManager.GetVersions();
 		SwitchView(0);
-		GetGodotList();
+		
 
 		// Setup Signals
 		// Buttons
-		installButton.Pressed += () => SwitchView(1);
+		installButton.Pressed += () => {
+			SwitchView(1);
+			GetGodotList();
+		};
 		importExistingButton.Pressed += () => SwitchView(3);
 		cancelAddingButton.Pressed += () => EmitSignal(SignalName.AddedEditor); // Don't use Queue Free
 
