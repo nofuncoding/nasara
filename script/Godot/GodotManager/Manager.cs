@@ -33,7 +33,7 @@ namespace GodotManager {
         {
             Launcher launcher = new(version);
             launcher.AddChild(launcher);
-            launcher.Launch();
+            launcher.Launch(); // Free after launch
         }
     }
 }

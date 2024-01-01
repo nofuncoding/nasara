@@ -327,6 +327,8 @@ public partial class AddEditorView : Control
             DownloadFile = savePath,
 			UseThreads = true
         };
+		if (new AppConfig().EnableTLS)
+				http.SetTlsOptions(TlsOptions.Client());
         AddChild(http);
 
 		string versionString = version.Version.ToString();

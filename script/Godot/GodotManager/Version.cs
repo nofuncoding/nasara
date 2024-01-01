@@ -36,9 +36,7 @@ namespace GodotManager
                 // Fully Clear and Rewrite
                 using var file = FileAccess.Open(VersionListReader.ListPath, FileAccess.ModeFlags.Write);
                 foreach (GodotVersion ver in checkedVersions)
-                {
                     WriteVersion(file, ver);
-                }
             } else {
                 using var file = FileAccess.Open(VersionListReader.ListPath, FileAccess.ModeFlags.ReadWrite);
                 WriteVersion(file, godotVersion);
@@ -76,6 +74,15 @@ namespace GodotManager
             else
                 file.StoreLine($"{channel_str}@{godotVersion.Version}={godotVersion.Path}");
             // file.Dispose();
+        }
+
+        public void RemoveVersion(GodotVersion godotVersion)
+        {
+            Godot.Collections.Array<GodotVersion> versions = GetVersions();
+            versions.Remove(godotVersion);
+            using var file = FileAccess.Open(VersionListReader.ListPath, FileAccess.ModeFlags.ReadWrite);
+            foreach (GodotVersion version in versions)
+                WriteVersion(file, version);
         }
 
         public bool VersionExists(string version)

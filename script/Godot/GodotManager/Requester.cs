@@ -19,14 +19,11 @@ namespace GodotManager {
 		[Signal]
 		public delegate void NodeIdRequestedEventHandler(string nodeId, int channel);
 
-		public override void _Ready()
-		{
-			
-		}
-
 		public Error RequestEditorList(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
 		{
 			HttpRequest http = new();
+			if (new AppConfig().EnableTLS)
+				http.SetTlsOptions(TlsOptions.Client());
 			AddChild(http);
 
 			if (!IsNodeReady())
@@ -212,6 +209,8 @@ namespace GodotManager {
 		public Error RequestLatestNodeId(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
 		{
 			HttpRequest http = new();
+			if (new AppConfig().EnableTLS)
+				http.SetTlsOptions(TlsOptions.Client());
 			AddChild(http);
 
 			if (!IsNodeReady())

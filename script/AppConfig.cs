@@ -38,6 +38,8 @@ public partial class AppConfig : RefCounted
         
         if (needRestart)
             EmitSignal(SignalName.NeedRestart);
+        
+        GD.Print($"(config) Set {section}/{key} to {value}");
     }
 
     Error Save()
