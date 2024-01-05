@@ -2,9 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://b43ldqeyl51lx" path="res://component/nav_bar.tscn" id="1_cq3bb"]
 [ext_resource type="Script" path="res://App.cs" id="1_cvbrt"]
-[ext_resource type="Script" path="res://script/component/ViewSwitch.cs" id="3_dmw11"]
+[ext_resource type="Script" path="res://script/ui/component/ViewSwitch.cs" id="3_dmw11"]
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://asset/style/normal_control_theme.tres" id="4_pxc2e"]
-[ext_resource type="Script" path="res://script/NotifySystem.cs" id="5_kqfxe"]
+[ext_resource type="Script" path="res://script/ui/NotifySystem.cs" id="5_kqfxe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7cis"]
 bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.980392)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://wwwcae1iy2bq"]
 
 [ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="1_3lbq7"]
-[ext_resource type="Script" path="res://script/view/EditorView.cs" id="1_5x2bw"]
+[ext_resource type="Script" path="res://script/ui/view/EditorView.cs" id="1_5x2bw"]
 [ext_resource type="PackedScene" uid="uid://bcu6t56ammh32" path="res://component/editor_list.tscn" id="3_lgwwd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6m3yg"]

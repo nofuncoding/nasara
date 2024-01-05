@@ -4,7 +4,7 @@ using Semver;
 using System;
 using System.Linq;
 
-namespace GodotManager {
+namespace Nasara.GodotManager {
 	public partial class Requester : Node
 	{
 		// GitHub API URLs

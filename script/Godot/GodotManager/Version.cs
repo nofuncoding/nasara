@@ -2,7 +2,7 @@ using System;
 using Semver;
 using Godot;
 
-namespace GodotManager
+namespace Nasara.GodotManager
 {
     public partial class Version : Node
     {

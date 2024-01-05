@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://83s66p11m7ov"]
 
-[ext_resource type="Script" path="res://script/view/SettingView.cs" id="1_egxo0"]
 [ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="1_hlw2e"]
+[ext_resource type="Script" path="res://script/ui/view/SettingView.cs" id="2_2efu1"]
 [ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://asset/font/MaterialSymbolsSharp.ttf" id="3_0lwrq"]
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://asset/style/normal_control_theme.tres" id="3_bmssq"]
 
@@ -31,7 +31,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_bmssq")
-script = ExtResource("1_egxo0")
+script = ExtResource("2_2efu1")
 restartBallon = NodePath("VBoxContainer/PanelContainer")
 restartBallonButton = NodePath("VBoxContainer/PanelContainer/HBoxContainer/Button")
 langOption = NodePath("VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/OptionButton")

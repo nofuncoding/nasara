@@ -2,7 +2,7 @@ using Godot;
 using System;
 using Semver;
 
-namespace GodotManager {
+namespace Nasara.GodotManager {
     // Just a pack for ref.
     public partial class Manager : Node
     {

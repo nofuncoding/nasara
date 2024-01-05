@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace GodotManager {
+namespace Nasara.GodotManager {
     public partial class VersionList : Node
     {
         public static readonly string GODOT_LIST_CACHE_PATH = "user://cache/remote_godot.json";

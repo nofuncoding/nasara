@@ -2,55 +2,57 @@ using Godot;
 using System;
 using Semver;
 
-[GlobalClass] // Removable?
-public partial class GodotVersion : RefCounted
+namespace Nasara
 {
-    // TODO: Add Platform
-
-    public VersionChannel Channel { get; }
-    public SemVersion Version { get; }
-    public bool Mono { get; }
-    public string Path { get; }
-    public VersionStatus Status { get; }
-
-    public enum VersionChannel
+    [GlobalClass] // Removable?
+    public partial class GodotVersion : RefCounted
     {
-        Stable,
-        Unstable
-    }
+        // TODO: Add Platform
 
-    public enum VersionStatus
-    {
-        OK,
-        NotFound,
-    }
+        public VersionChannel Channel { get; }
+        public SemVersion Version { get; }
+        public bool Mono { get; }
+        public string Path { get; }
+        public VersionStatus Status { get; }
 
-    // You should use a dir path
-    public GodotVersion(string version, string path, VersionChannel channel=VersionChannel.Stable, bool mono=false)
-    {
-        Version = SemVersion.Parse(version, SemVersionStyles.Strict);
-        Path = path;
-        Status = VersionStatus.OK;
-
-        if (!DirAccess.DirExistsAbsolute(path))
+        public enum VersionChannel
         {
-            // GD.PushError("Godot Installation Not Found: `", path, "` is Unreachable");
-            Status = VersionStatus.NotFound;
+            Stable,
+            Unstable
         }
 
-        Channel = channel;
-        Mono = mono;
-    }
+        public enum VersionStatus
+        {
+            OK,
+            NotFound,
+        }
 
-    public GodotVersion(SemVersion version, string path, VersionChannel channel=VersionChannel.Stable, bool mono=false)
-    {
-        Version = version;
-        Path = path;
-        if (!DirAccess.DirExistsAbsolute(path))
-            GD.PushError("Godot Installation Not Found: `", path, "` is Unreachable");
+        // You should use a dir path
+        public GodotVersion(string version, string path, VersionChannel channel=VersionChannel.Stable, bool mono=false)
+        {
+            Version = SemVersion.Parse(version, SemVersionStyles.Strict);
+            Path = path;
+            Status = VersionStatus.OK;
 
-        Channel = channel;
-        Mono = mono;
+            if (!DirAccess.DirExistsAbsolute(path))
+            {
+                // GD.PushError("Godot Installation Not Found: `", path, "` is Unreachable");
+                Status = VersionStatus.NotFound;
+            }
+
+            Channel = channel;
+            Mono = mono;
+        }
+
+        public GodotVersion(SemVersion version, string path, VersionChannel channel=VersionChannel.Stable, bool mono=false)
+        {
+            Version = version;
+            Path = path;
+            if (!DirAccess.DirExistsAbsolute(path))
+                GD.PushError("Godot Installation Not Found: `", path, "` is Unreachable");
+
+            Channel = channel;
+            Mono = mono;
+        }
     }
 }
-

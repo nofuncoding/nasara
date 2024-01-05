@@ -1,8 +1,7 @@
 using System;
-using System.Security.AccessControl;
 using Godot;
 
-namespace GodotManager {
+namespace Nasara.GodotManager {
     public partial class Launcher : Node
     {
         GodotVersion Version;

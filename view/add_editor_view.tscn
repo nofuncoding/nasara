@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://cdwoeqoyldhs"]
 
-[ext_resource type="Script" path="res://script/view/AddEditorView.cs" id="1_pub8h"]
+[ext_resource type="Script" path="res://script/ui/view/AddEditorView.cs" id="1_pub8h"]
 [ext_resource type="LabelSettings" uid="uid://b7kgxmbojg6m7" path="res://asset/style/action_label_settings.tres" id="1_sbmq0"]
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://asset/style/normal_control_theme.tres" id="2_nhi8r"]
 [ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="4_a7e4s"]
