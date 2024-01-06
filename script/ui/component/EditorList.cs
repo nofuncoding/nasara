@@ -44,7 +44,9 @@ namespace Nasara.UI.Component
 				{
 					PopupMenu menu = new()
 					{
-						Position = DisplayServer.MouseGetPosition()
+						Position = DisplayServer.MouseGetPosition(),
+						Transparent = true,
+						TransparentBg = true,
 					};
 					AddChild(menu);
 					menu.AddItem(Tr("Launch"), 0);
@@ -80,6 +82,7 @@ namespace Nasara.UI.Component
 						DialogText = Tr("Are you sure you want to delete this editor?"),
 						Transparent = true,
 						TransparentBg = true,
+						OkButtonText = Tr("Yes")
 					};
 					dialog.Confirmed += () => {
 						DeleteEditor((GodotVersion)GetCurrentEditor((int)on_item)["version"]);
@@ -100,6 +103,12 @@ namespace Nasara.UI.Component
 			Godot.Collections.Array<GodotVersion> godotVersions = godotManager.Version().GetVersions();
 
 			editorItemList.Clear();
+
+			if (godotVersions.Count == 0)
+			{
+				launchButton.Disabled = true;
+				return;
+			}
 
 			foreach (GodotVersion godot in godotVersions)
 			{
