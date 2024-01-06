@@ -160,5 +160,26 @@ msgstr "启动"
 msgid "Delete"
 msgstr "删除"
 
+msgid "Delete Editor"
+msgstr "删除编辑器"
+
+msgid "Are you sure you want to delete this editor?"
+msgstr "您确定要删除这个编辑器吗？"
+
+msgid "Yes"
+msgstr "是"
+
+msgid "No"
+msgstr "否"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Editor Deleted"
+msgstr "编辑器已删除"
+
+msgid "Deleted Godot {0}"
+msgstr "Godot {0} 已被删除"
+
 #~ msgid "Remove"
 #~ msgstr "删除"
