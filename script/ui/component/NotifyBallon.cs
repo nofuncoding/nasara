@@ -20,13 +20,6 @@ namespace Nasara.UI.Component
 
 		[Export]
 		Button HideButton;
-		
-		public enum NotifyType
-		{
-			Info,
-			Warn,
-			Error,
-		}
 
 		/// <summary>
 		/// If it set to 0, the ballon won't auto hide
@@ -71,21 +64,21 @@ namespace Nasara.UI.Component
 			tween.Play();
 		}
 
-		public void SetNotifyType(NotifyType type)
+		public void SetNotifyType(NotificationType type)
 		{
 			switch (type)
 			{
-				case NotifyType.Info:
+				case NotificationType.Info:
 					IconLabel.Text = "info"; // Set icon
 					IconLabel.LabelSettings = GD.Load<LabelSettings>("res://asset/style/notify/ballon_white_icon.tres");
 					SetTimerBarColor(new Color(1, 1, 1));
 					break;
-				case NotifyType.Warn:
+				case NotificationType.Warn:
 					IconLabel.Text = "warning";
 					IconLabel.LabelSettings = GD.Load<LabelSettings>("res://asset/style/notify/ballon_yellow_icon.tres");
 					SetTimerBarColor(new Color(0.98f, 0.8f, 0.082f));
 					break;
-				case NotifyType.Error:
+				case NotificationType.Error:
 					IconLabel.Text = "error";
 					IconLabel.LabelSettings = GD.Load<LabelSettings>("res://asset/style/notify/ballon_red_icon.tres");
 					SetTimerBarColor(new Color(0.863f, 0.149f, 0.149f));

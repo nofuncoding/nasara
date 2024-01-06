@@ -89,6 +89,12 @@ namespace Nasara.GodotManager
             foreach (GodotVersion version in versions)
                 WriteVersion(file, version);
             GD.Print($"Removed {godotVersion.Version}");
+
+            GetNode<App>("/root/App").GetNotifySystem().Notify(
+                title: Tr("Editor Deleted"),
+                description: string.Format(Tr("Deleted Godot {0}"), godotVersion.Version),
+                type: UI.NotificationType.Warn
+            );
         }
 
         public bool VersionExists(string version)

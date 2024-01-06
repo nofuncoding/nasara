@@ -16,12 +16,12 @@ namespace Nasara.UI
 			ballonRes = GD.Load<PackedScene>("res://component/notify_ballon.tscn");
 		}
 
-		public void Notify(NotifyBallon.NotifyType notifyType = NotifyBallon.NotifyType.Info,
+		public void Notify(NotificationType type = NotificationType.Info,
 			string title="Notify", string description="No description", bool autoHide=true)
 		{
 			var node = ballonRes.Instantiate<NotifyBallon>();
 
-			node.SetNotifyType(notifyType);
+			node.SetNotifyType(type);
 			node.SetTitle(title);
 			node.SetDescription(description);
 			if (!autoHide)
@@ -29,5 +29,12 @@ namespace Nasara.UI
 			
 			notifyContainer.AddChild(node);
 		}
+	}
+
+	public enum NotificationType
+	{
+		Info,
+		Warn,
+		Error,
 	}
 }
