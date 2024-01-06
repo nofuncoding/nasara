@@ -1,36 +1,32 @@
 using Godot;
 using System;
-using System.ComponentModel;
 
-namespace Nasara.Network
+namespace Nasara.Network.Github
 {
-    public partial class Github : HttpRequest
+    public partial class Requester : HttpRequest
     {
         const string GITHUB_API_BASE = "https://api.github.com";
 
-        bool usingProxy = false;
-        string url;
-        RequestType type;
+        string Url;
+        RequestType Type;
 
         [Signal]
         public delegate void GithubRequestCompletedEventHandler(Variant result, RequestType type);
 
-        public Github(string owner, string repo, RequestType type=RequestType.Releases)
+        public Requester(string owner, string repo, RequestType type=RequestType.Releases)
         {
             AppConfig config = new();
             if (config.EnableTLS)
                 SetTlsOptions(TlsOptions.Client());
-            if (config.UsingGithubProxy)
-                usingProxy = true;
 
-            this.type = type;
+            Type = type;
             
-            url = $"{GITHUB_API_BASE}/repos/{owner}/{repo}/";
+            Url = $"{GITHUB_API_BASE}/repos/{owner}/{repo}/";
             switch (type)
             {
                 case RequestType.Releases:
                 case RequestType.LatestNodeId:
-                    url += "releases";
+                    Url += "releases";
                     break;
             }
 
@@ -39,8 +35,11 @@ namespace Nasara.Network
 
         public override void _Ready()
         {
-            GD.Print($"GET {url}");
-            Request(url);
+            GD.Print($"GET {Url}");
+            // You don't need to call Request() any more.
+            // It will be called automatically when the node is ready.
+            // Very lazy, but it works.
+            Request(Url);
         }
 
         void ProcessData(long result, long responseCode, string[] headers, byte[] body)
@@ -50,17 +49,17 @@ namespace Nasara.Network
                 GD.PushError("(network) Failed to Request from GitHub, Result Code: ", result);
 				return;
             }
-            GD.Print($"{responseCode} OK {url}");
+            GD.Print($"{responseCode} OK {Url}");
 
             string data = body.GetStringFromUtf8();
 
-            switch (type)
+            switch (Type)
             {
                 case RequestType.Releases:
-                    EmitSignal(SignalName.GithubRequestCompleted, ProcessReleases(data), (int)type);
+                    EmitSignal(SignalName.GithubRequestCompleted, ProcessReleases(data), (int)Type);
                     break;
                 case RequestType.LatestNodeId:
-                    EmitSignal(SignalName.GithubRequestCompleted, ProcessLatestNodeId(data), (int)type);
+                    EmitSignal(SignalName.GithubRequestCompleted, ProcessLatestNodeId(data), (int)Type);
                     break;
             }
 

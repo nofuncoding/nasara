@@ -20,6 +20,8 @@ namespace Nasara.GodotManager {
         /// <returns></returns>
         public Error Launch()
         {
+            UI.NotifySystem notifySystem = GetNode<App>("/root/App").GetNotifySystem();
+
             DirAccess dirAccess = DirAccess.Open(Version.Path);
             if (dirAccess is null) // Error
                 return DirAccess.GetOpenError();
@@ -33,7 +35,7 @@ namespace Nasara.GodotManager {
                     string[] argument = {"--project-manager"}; // Run in Project Manager
                     _ = OS.CreateProcess(ProjectSettings.GlobalizePath(executablePath), argument, new AppConfig().OpenEditorConsole); // Open a native OS path
 
-                    GetNode<App>("/root/App").GetNotifySystem().Notify(title: Tr("Editor Launched"), description: string.Format(Tr("Launched Godot {0}"), Version.Version));
+                    notifySystem.Notify(title: Tr("Editor Launched"), description: string.Format(Tr("Launched Godot {0}"), Version.Version));
                     QueueFree();
                     return Error.Ok;
                 }

@@ -21,7 +21,7 @@ namespace Nasara.GodotManager {
 
 		public Error RequestEditorList(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
 		{
-			Github github = null;
+			Network.Github.Requester github = null;
 			switch (channel)
 			{
 				case GodotVersion.VersionChannel.Stable:
@@ -35,8 +35,8 @@ namespace Nasara.GodotManager {
 			if (!IsNodeReady())
 				return Error.Busy;
 
-			github.GithubRequestCompleted += (Variant result, Github.RequestType type) => {
-				if (type != Github.RequestType.Releases)
+			github.GithubRequestCompleted += (Variant result, Network.Github.Requester.RequestType type) => {
+				if (type != Network.Github.Requester.RequestType.Releases)
 					return;
 					
 				Godot.Collections.Array godots = (Godot.Collections.Array)result;
@@ -194,7 +194,7 @@ namespace Nasara.GodotManager {
 
 		public Error RequestLatestNodeId(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
 		{
-			Github github = null;
+			Network.Github.Requester github = null;
 			switch (channel)
 			{
 				case GodotVersion.VersionChannel.Stable:
@@ -207,7 +207,7 @@ namespace Nasara.GodotManager {
 			if (!IsNodeReady())
 				return Error.Busy;
 
-			github.GithubRequestCompleted += (Variant result, Github.RequestType type) => {
+			github.GithubRequestCompleted += (Variant result, Network.Github.Requester.RequestType type) => {
 				string node_id = (string)result;
 				EmitSignal(SignalName.NodeIdRequested, node_id, (int)channel);
 			};

@@ -32,7 +32,7 @@ namespace Nasara.GodotManager {
         public void Launch(GodotVersion version)
         {
             Launcher launcher = new(version);
-            launcher.AddChild(launcher);
+            AddChild(launcher);
             launcher.Launch(); // Free after launch
         }
     }
