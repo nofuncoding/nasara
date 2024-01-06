@@ -69,6 +69,14 @@ msgstr "你的 Godot 安装在？"
 msgid "Import"
 msgstr "导入"
 
+#: view/add_editor_view.tscn
+msgid "Back"
+msgstr "返回"
+
+#: view/add_editor_view.tscn
+msgid "Do Nothing"
+msgstr "什么也不做"
+
 #: view/editor_view.tscn
 msgid "Editor"
 msgstr "编辑器"
@@ -145,3 +153,12 @@ msgstr "无效路径。可能您更改了 Godot 可执行文件的文件名？"
 
 msgid "A Great Path!"
 msgstr "路径可用！"
+
+msgid "Launch"
+msgstr "启动"
+
+msgid "Delete"
+msgstr "删除"
+
+#~ msgid "Remove"
+#~ msgstr "删除"

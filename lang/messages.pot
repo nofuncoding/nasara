@@ -56,6 +56,14 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
+#: view/add_editor_view.tscn
+msgid "Back"
+msgstr ""
+
+#: view/add_editor_view.tscn
+msgid "Do Nothing"
+msgstr ""
+
 #: view/editor_view.tscn
 msgid "Editor"
 msgstr ""
@@ -100,7 +108,6 @@ msgstr ""
 msgid "Loading"
 msgstr ""
 
-
 msgid "Editor Launched"
 msgstr ""
 
@@ -132,4 +139,10 @@ msgid "Invalid Path. Did you modify the name of the Godot executable?"
 msgstr ""
 
 msgid "A Great Path!"
+msgstr ""
+
+msgid "Launch"
+msgstr ""
+
+msgid "Delete"
 msgstr ""
