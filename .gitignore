@@ -2,7 +2,9 @@
 .godot/
 
 # Build
-build/
+build/win/*
+build/osx/*
+build/linux/*
 
 # Translates
 lang/*_generated.pot
