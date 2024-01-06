@@ -78,11 +78,17 @@ namespace Nasara.GodotManager
 
         public void RemoveVersion(GodotVersion godotVersion)
         {
-            Godot.Collections.Array<GodotVersion> versions = GetVersions();
-            versions.Remove(godotVersion);
-            using var file = FileAccess.Open(VersionReader.ListPath, FileAccess.ModeFlags.ReadWrite);
+            Godot.Collections.Array<GodotVersion> versionsBeforeRemoval = GetVersions();
+            Godot.Collections.Array<GodotVersion> versions = new();
+
+            foreach (GodotVersion ver in versionsBeforeRemoval)
+                if (ver.Version != godotVersion.Version && ver.Mono != godotVersion.Mono)
+                    versions.Add(ver);
+
+            using var file = FileAccess.Open(VersionReader.ListPath, FileAccess.ModeFlags.Write);
             foreach (GodotVersion version in versions)
                 WriteVersion(file, version);
+            GD.Print($"Removed {godotVersion.Version}");
         }
 
         public bool VersionExists(string version)

@@ -2,6 +2,7 @@ using Godot;
 using Semver;
 using System;
 using Humanizer;
+using Nasara.GodotManager;
 
 namespace Nasara.UI.View
 {
@@ -248,10 +249,9 @@ namespace Nasara.UI.View
 						{
 							/*
 							// Using Unstable to fix
-							// TODO: Remove it
 							if (version.GetDownloadUrl(GetTargetPlatform()) is not null)
 							{
-								StartDownload(version); // FIXME: Get a null url when requesting the latest stable version
+								StartDownload(version);
 								return;
 							}
 							else
@@ -273,7 +273,7 @@ namespace Nasara.UI.View
 							}
 							*/
 
-							if (version.GetDownloadUrl(GetTargetPlatform()) is not null)
+							if (new Downloader().GetDownloadUrl(version, monoCheckButton.ButtonPressed).Length > 0)
 							{
 								StartDownload(version);
 								return;
@@ -295,46 +295,12 @@ namespace Nasara.UI.View
 				//StartDownload(unstableVersions[versionOption.Selected]);
 			}
 
-		DownloadableVersion.TargetPlatform GetTargetPlatform()
-		{
-			DownloadableVersion.TargetPlatform platform = DownloadableVersion.TargetPlatform.Win32;
-
-			// FIXME: May got problems in build of x86 running on x86_64 pc
-			// 64-bit
-			if (OS.HasFeature("x86_64"))
-				if (OS.HasFeature("windows"))
-					if (monoCheckButton.ButtonPressed)
-						platform = DownloadableVersion.TargetPlatform.Win64Mono;
-					else
-						platform = DownloadableVersion.TargetPlatform.Win64;
-				else if (OS.HasFeature("linux")) // Not Supported Yet
-					GD.PushError("Does Not Support Linux Yet");
-			// 32-bit
-			else if (OS.HasFeature("x86_32"))
-				if (OS.HasFeature("windows"))
-					if (monoCheckButton.ButtonPressed)
-						platform = DownloadableVersion.TargetPlatform.Win32Mono;
-					else
-						platform = DownloadableVersion.TargetPlatform.Win32;
-				else if (OS.HasFeature("linux")) // Not Supported Yet
-					GD.PushError("Does Not Support Linux Yet");
-			
-			return platform;
-		}
-
 		void StartDownload(DownloadableVersion version)
 		{
-			string savePath = "user://godot_editor.dl";
-
 			SwitchView(2);
-			HttpRequest http = new()
-			{
-				DownloadFile = savePath,
-				UseThreads = true
-			};
-			if (new AppConfig().EnableTLS)
-					http.SetTlsOptions(TlsOptions.Client());
-			AddChild(http);
+			
+			Downloader downloader = new();
+			AddChild(downloader);
 
 			string versionString = version.Version.ToString();
 			if (monoCheckButton.ButtonPressed)
@@ -347,8 +313,8 @@ namespace Nasara.UI.View
 			AddChild(timer);
 
 			timer.Timeout += () => {
-				int bodySize = http.GetBodySize();
-				int downloaded = http.GetDownloadedBytes();
+				int bodySize = downloader.GetBodySize();
+				int downloaded = downloader.GetDownloadedBytes();
 				if (bodySize != -1)
 				{
 					progressLabel.Text = string.Format(Tr("Downloading Godot {0} {1}"), versionString, 
@@ -361,33 +327,16 @@ namespace Nasara.UI.View
 			};
 
 			progressLabel.Text = string.Format(Tr("Requesting Godot {0}"), versionString);
+							
+			downloader.Download(version, monoCheckButton.ButtonPressed);
+			downloader.DownloadFinished += (string savePath) => {
+				progressBar.Value = progressBar.MaxValue + 1;
+				progressLabel.Text = Tr("Download Completed");
 
-			// Get Url
-			string url = version.GetDownloadUrl(GetTargetPlatform());
-			if (new AppConfig().UsingGithubProxy)
-				url = "https://mirror.ghproxy.com/" + url; // TODO: Replace it using a better way
-			
-			http.Request(url);
-			GD.Print("GET ", url);
-
-			http.RequestCompleted += (long result, long responseCode, string[] headers, byte[] body) => {
-				if (result == (long)HttpRequest.Result.Success)
-				{
-					GD.Print(responseCode, " OK");
-					progressBar.Value = progressBar.MaxValue + 1;
-					progressLabel.Text = Tr("Download Completed");
-
-					// Rename File
-					// DirAccess.Rename();
-					/*
-					foreach (string line in headers)
-						GD.Print(line);
-					*/
-					UnpackGodot(version, savePath);
-				}
-				http.QueueFree();
+				UnpackGodot(version, savePath);
 				timer.QueueFree();
 			};
+
 			timer.Start();
 		}
 

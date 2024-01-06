@@ -37,7 +37,59 @@ namespace Nasara.UI.Component
 			{
 				launchButton.Disabled = false;
 			};
+
+			editorItemList.ItemClicked += (long index, Vector2 at_position, long mouse_button_index) =>
+            {
+				if (mouse_button_index == 2) // Right click
+				{
+					PopupMenu menu = new()
+					{
+						Position = DisplayServer.MouseGetPosition()
+					};
+					AddChild(menu);
+					menu.AddItem(Tr("Launch"), 0);
+					menu.AddItem(Tr("Delete"), 1);
+					menu.IdPressed += (long id) => { PopupMenuHandle(id, index); menu.QueueFree(); };
+					menu.Popup();
+				}
+			};
+			
 			RefreshEditors();
+		}
+
+		Godot.Collections.Dictionary GetCurrentEditor(int index)
+		{
+			string selectedName = editorItemList.GetItemText(index);
+			foreach (Godot.Collections.Dictionary editor in editorItems)
+				if ((string)editor["name"] == selectedName) // TODO: Use another way
+					return editor;
+			
+			return null;
+		}
+
+		void PopupMenuHandle(long index, long on_item)
+		{
+			switch (index)
+			{
+				case 0:
+					LaunchEditor(on_item); break;
+				case 1:
+					ConfirmationDialog dialog = new()
+					{
+						Title = Tr("Delete Editor"),
+						DialogText = Tr("Are you sure you want to delete this editor?"),
+					};
+					dialog.Confirmed += () => {
+						DeleteEditor((GodotVersion)GetCurrentEditor((int)on_item)["version"]);
+						dialog.QueueFree();
+					};
+					dialog.Canceled += () => { dialog.QueueFree(); };
+
+					AddChild(dialog);
+					dialog.PopupCentered();
+					
+					break;
+			}
 		}
 
 		public void RefreshEditors()
@@ -94,15 +146,15 @@ namespace Nasara.UI.Component
 
 		void LaunchEditor(long index)
 		{
-			string selectedName = editorItemList.GetItemText((int)index);
-			foreach (Godot.Collections.Dictionary editor in editorItems)
-			{
-				if ((string)editor["name"] == selectedName)
-				{
-					godotManager.Launch((GodotVersion)editor["version"]);
-					return;
-				}
-			}
+			godotManager.Launch((GodotVersion)GetCurrentEditor((int)index)["version"]);
+		}
+
+		void DeleteEditor(GodotVersion version)
+		{
+			string path = version.Path;
+			OS.MoveToTrash(ProjectSettings.GlobalizePath(path)); // TODO: Use DirAccess to delete
+			godotManager.Version().RemoveVersion(version);
+			RefreshEditors();
 		}
 	}
 }
