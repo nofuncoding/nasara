@@ -82,8 +82,11 @@ namespace Nasara.GodotManager
             Godot.Collections.Array<GodotVersion> versions = new();
 
             foreach (GodotVersion ver in versionsBeforeRemoval)
-                if (ver.Version != godotVersion.Version && ver.Mono != godotVersion.Mono)
+                if (ver.Version != godotVersion.Version)
                     versions.Add(ver);
+                else
+                    if (ver.Mono != godotVersion.Mono)
+                        versions.Add(ver);
 
             using var file = FileAccess.Open(VersionReader.ListPath, FileAccess.ModeFlags.Write);
             foreach (GodotVersion version in versions)
