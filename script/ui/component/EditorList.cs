@@ -78,6 +78,8 @@ namespace Nasara.UI.Component
 					{
 						Title = Tr("Delete Editor"),
 						DialogText = Tr("Are you sure you want to delete this editor?"),
+						Transparent = true,
+						TransparentBg = true,
 					};
 					dialog.Confirmed += () => {
 						DeleteEditor((GodotVersion)GetCurrentEditor((int)on_item)["version"]);

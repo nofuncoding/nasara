@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bcu6t56ammh32"]
+[gd_scene load_steps=9 format=3 uid="uid://bcu6t56ammh32"]
 
 [ext_resource type="Script" path="res://script/ui/component/EditorList.cs" id="1_2kqce"]
+[ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://asset/style/normal_control_theme.tres" id="1_gjy0v"]
 [ext_resource type="Theme" uid="uid://ddranlcsd8vw" path="res://asset/style/icon_button_theme.tres" id="1_vmi3v"]
 [ext_resource type="Theme" uid="uid://drq4e83qvv0u" path="res://asset/style/component_list_theme.tres" id="2_m5nxn"]
 [ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://asset/font/MaterialSymbolsSharp.ttf" id="3_rdhmw"]
@@ -33,6 +34,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
+theme = ExtResource("1_gjy0v")
 theme_override_constants/separation = 0
 script = ExtResource("1_2kqce")
 editorItemList = NodePath("ItemList")

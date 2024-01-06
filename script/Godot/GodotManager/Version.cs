@@ -254,6 +254,11 @@ namespace Nasara.GodotManager
 
                 if (godotVersions.Count > 0)
                     return godotVersions;
+                else if (godotVersions.Count == 0)
+                {
+                    GD.PushWarning("No Godot Versions Found!");
+                    return godotVersions;
+                }
             }
             GD.PushError("Could not get installed godot versions: ", FileAccess.GetOpenError());
             return new();
