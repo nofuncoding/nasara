@@ -1,14 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://ch6d0syqmlexs"]
 
-[ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="1_787ng"]
+[ext_resource type="FontVariation" uid="uid://dupre5xws5hb3" path="res://asset/font/Inter/Inter-Bold.tres" id="1_ienrl"]
 [ext_resource type="Theme" uid="uid://drq4e83qvv0u" path="res://asset/style/component_list_theme.tres" id="2_urait"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_j2hxm"]
-font = ExtResource("1_787ng")
+font = ExtResource("1_ienrl")
 font_size = 24
 
 [sub_resource type="LabelSettings" id="LabelSettings_fwp80"]
-font = ExtResource("1_787ng")
+font = ExtResource("1_ienrl")
 font_size = 18
 
 [node name="ProjectView" type="Control"]

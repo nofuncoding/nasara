@@ -1,0 +1,10 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://cnro0brp6xyys"]
+
+[ext_resource type="FontFile" uid="uid://ctsamacmpyp5r" path="res://asset/font/NotoSans/NotoSansCJK-VF.otf.ttc" id="1_xe27c"]
+
+[resource]
+base_font = ExtResource("1_xe27c")
+variation_opentype = {
+2003265652: 400
+}
+variation_face_index = 2

@@ -1,7 +1,7 @@
 [gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://b7kgxmbojg6m7"]
 
-[ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="1_43sx8"]
+[ext_resource type="FontVariation" uid="uid://dupre5xws5hb3" path="res://asset/font/Inter/Inter-Bold.tres" id="1_eu124"]
 
 [resource]
-font = ExtResource("1_43sx8")
+font = ExtResource("1_eu124")
 font_size = 18

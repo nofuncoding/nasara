@@ -1,0 +1,43 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://c5y8vipo1wdvk"
+path="res://.godot/imported/Inter.ttc-810154b4eec752826b15c3dbacdeacc4.fontdata"
+
+[deps]
+
+source_file="res://asset/font/Inter/Inter.ttc"
+dest_files=["res://.godot/imported/Inter.ttc-810154b4eec752826b15c3dbacdeacc4.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=false
+multichannel_signed_distance_field=true
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+hinting=1
+subpixel_positioning=1
+oversampling=0.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=false
+preload=[{
+"chars": [],
+"glyphs": [2, 1771, 141, 854, 615, 508, 891, 376, 671, 1429, 1000, 792, 917, 873, 986, 775, 598, 738, 690, 1433, 65, 587, 729, 73, 659, 768, 845, 84, 95, 1452, 1343, 1453, 301, 282, 579, 412, 398, 137, 197, 995, 982, 1504, 648, 293, 721, 385, 851, 425, 1024, 457, 460, 473],
+"name": "English",
+"size": Vector2i(16, 0),
+"variation_embolden": 0.0
+}]
+language_support={}
+script_support={}
+opentype_features={
+1667329140: 1,
+1684826471: 1,
+1718772067: 0
+}

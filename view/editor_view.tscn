@@ -1,11 +1,11 @@
 [gd_scene load_steps=5 format=3 uid="uid://wwwcae1iy2bq"]
 
-[ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="1_3lbq7"]
 [ext_resource type="Script" path="res://script/ui/view/EditorView.cs" id="1_5x2bw"]
+[ext_resource type="FontVariation" uid="uid://dupre5xws5hb3" path="res://asset/font/Inter/Inter-Bold.tres" id="2_1gbya"]
 [ext_resource type="PackedScene" uid="uid://bcu6t56ammh32" path="res://component/editor_list.tscn" id="3_lgwwd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6m3yg"]
-font = ExtResource("1_3lbq7")
+font = ExtResource("2_1gbya")
 font_size = 24
 
 [node name="EditorView" type="Control" node_paths=PackedStringArray("editorList")]

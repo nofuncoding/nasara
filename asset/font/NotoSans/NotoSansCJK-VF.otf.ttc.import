@@ -1,0 +1,39 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://ctsamacmpyp5r"
+path="res://.godot/imported/NotoSansCJK-VF.otf.ttc-afe250bb63c81c5f5d2b1b0e81306dfc.fontdata"
+
+[deps]
+
+source_file="res://asset/font/NotoSans/NotoSansCJK-VF.otf.ttc"
+dest_files=["res://.godot/imported/NotoSansCJK-VF.otf.ttc-afe250bb63c81c5f5d2b1b0e81306dfc.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=false
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+hinting=1
+subpixel_positioning=1
+oversampling=0.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[{
+"chars": [],
+"glyphs": [39263, 17383, 11918, 27051, 63147, 17851, 28470, 15499, 37329, 11175, 43165, 40121, 9540, 31809, 39965, 58920, 11968, 63152, 40110, 13137, 11879, 23509, 40288, 40442, 21387, 21031, 9544, 15470, 18519, 40, 80, 69, 85, 1, 92, 17, 94, 16662, 36872, 9756, 9579, 9608, 9496, 10402, 9494, 39945, 22620, 13255, 12010, 11393, 53, 45, 52, 15703, 10893, 15367, 27699, 25783, 20759, 15463, 36920, 20109, 20208, 19934, 1398, 32775, 20652, 19914, 9661, 18670, 36710, 20036, 9837, 11955, 38506, 37544, 11382, 46, 79, 31904, 31751, 11990, 44152, 27864, 38516, 23027, 41222, 16914, 9812, 27039, 38459, 31948, 37487, 11757, 10035, 74, 41, 86, 67, 9807, 26492, 17974, 9987, 11722, 15720, 19168, 11124, 20333],
+"name": "Chinese",
+"size": Vector2i(16, 0),
+"variation_embolden": 0.0
+}]
+language_support={}
+script_support={}
+opentype_features={}

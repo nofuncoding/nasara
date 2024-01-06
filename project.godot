@@ -23,7 +23,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GodotManager="*res://script/godot/GodotManager/Manager.cs"
+GodotManager="*res://script/Godot/GodotManager/Manager.cs"
 
 [display]
 
@@ -48,7 +48,7 @@ folder_colors={
 
 [gui]
 
-theme/custom_font="res://asset/font/GlowSansSC-Normal-Regular.otf"
+theme/custom_font="res://asset/font/Inter/Inter-Regular.tres"
 
 [internationalization]
 

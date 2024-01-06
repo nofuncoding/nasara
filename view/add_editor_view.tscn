@@ -3,11 +3,11 @@
 [ext_resource type="Script" path="res://script/ui/view/AddEditorView.cs" id="1_pub8h"]
 [ext_resource type="LabelSettings" uid="uid://b7kgxmbojg6m7" path="res://asset/style/action_label_settings.tres" id="1_sbmq0"]
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://asset/style/normal_control_theme.tres" id="2_nhi8r"]
-[ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://asset/font/GlowSansSC-Normal-Medium.otf" id="4_a7e4s"]
+[ext_resource type="FontVariation" uid="uid://dupre5xws5hb3" path="res://asset/font/Inter/Inter-Bold.tres" id="4_qg21m"]
 [ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://asset/font/MaterialSymbolsSharp.ttf" id="5_4kiqk"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2bjn2"]
-font = ExtResource("4_a7e4s")
+font = ExtResource("4_qg21m")
 font_color = Color(1, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_6ebm7"]
@@ -92,7 +92,6 @@ layout_mode = 2
 text = "Do Nothing"
 
 [node name="InstallSetting" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -196,6 +195,7 @@ grow_vertical = 0
 text = "Back"
 
 [node name="InstallDownloading" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

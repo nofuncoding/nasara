@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=3 format=3 uid="uid://dkqkstgnpg3f0"]
+
+[ext_resource type="FontFile" uid="uid://c5y8vipo1wdvk" path="res://asset/font/Inter/Inter.ttc" id="1_j8aog"]
+[ext_resource type="FontVariation" uid="uid://cnro0brp6xyys" path="res://asset/font/NotoSans/NotoSans-SC-Regular.tres" id="2_ktg41"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_ktg41")])
+base_font = ExtResource("1_j8aog")
+variation_face_index = 3
