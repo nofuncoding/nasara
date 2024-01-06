@@ -45,6 +45,14 @@ namespace Nasara.GodotManager
             else
                 return -1;
         }
+
+        public int GetSpeedPerSecond()
+        {
+            if (downloader is not null)
+                return downloader.speedPerSecond;
+            else
+                return -1;
+        }
         
         DownloadableVersion.TargetPlatform GetTargetPlatform(bool mono)
 		{

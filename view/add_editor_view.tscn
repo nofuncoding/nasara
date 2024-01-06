@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cdwoeqoyldhs"]
+[gd_scene load_steps=10 format=3 uid="uid://cdwoeqoyldhs"]
 
 [ext_resource type="Script" path="res://script/ui/view/AddEditorView.cs" id="1_pub8h"]
 [ext_resource type="LabelSettings" uid="uid://b7kgxmbojg6m7" path="res://asset/style/action_label_settings.tres" id="1_sbmq0"]
@@ -10,9 +10,15 @@
 font = ExtResource("4_a7e4s")
 font_color = Color(1, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_6ebm7"]
+font_size = 14
+
+[sub_resource type="LabelSettings" id="LabelSettings_blgph"]
+font_size = 14
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_88h2p"]
 
-[node name="AddEditorView" type="Control" node_paths=PackedStringArray("pageInstallType", "pageInstallSetting", "pageInstallDownloading", "pageImportExisting", "installButton", "importExistingButton", "cancelAddingButton", "monoCheckButton", "channelOption", "versionOption", "continueButton", "backButton", "alreadyInstalled", "progressLabel", "progressBar", "finishButton", "pathEdit", "explodeButton", "resultTextLabel", "importButton", "importBackButton")]
+[node name="AddEditorView" type="Control" node_paths=PackedStringArray("pageInstallType", "pageInstallSetting", "pageInstallDownloading", "pageImportExisting", "installButton", "importExistingButton", "cancelAddingButton", "monoCheckButton", "channelOption", "versionOption", "continueButton", "backButton", "alreadyInstalled", "progressLabel", "progressBar", "finishButton", "downloadDisplay", "pathEdit", "explodeButton", "resultTextLabel", "importButton", "importBackButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,6 +43,7 @@ alreadyInstalled = NodePath("InstallSetting/AlreadyInstalled")
 progressLabel = NodePath("InstallDownloading/CenterContainer/VBoxContainer/Label")
 progressBar = NodePath("InstallDownloading/CenterContainer/VBoxContainer/ProgressBar")
 finishButton = NodePath("InstallDownloading/FinishButton")
+downloadDisplay = NodePath("InstallDownloading/CenterContainer/VBoxContainer/DownloadDisplay")
 pathEdit = NodePath("ImportExisting/CenterContainer/VBoxContainer/HBoxContainer/LineEdit")
 explodeButton = NodePath("ImportExisting/CenterContainer/VBoxContainer/HBoxContainer/Button")
 resultTextLabel = NodePath("ImportExisting/CenterContainer/VBoxContainer/RichTextLabel")
@@ -44,6 +51,7 @@ importButton = NodePath("ImportExisting/ImportButton")
 importBackButton = NodePath("ImportExisting/BackButton")
 
 [node name="TypeSelect" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -188,7 +196,6 @@ grow_vertical = 0
 text = "Back"
 
 [node name="InstallDownloading" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -215,8 +222,27 @@ text = "Downloading Godot {Version}"
 [node name="ProgressBar" type="ProgressBar" parent="InstallDownloading/CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 theme = ExtResource("2_nhi8r")
 max_value = 1.0
+
+[node name="DownloadDisplay" type="HBoxContainer" parent="InstallDownloading/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SizeLabel" type="Label" parent="InstallDownloading/CenterContainer/VBoxContainer/DownloadDisplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "This is Size!"
+label_settings = SubResource("LabelSettings_6ebm7")
+vertical_alignment = 1
+
+[node name="SpeedLabel" type="Label" parent="InstallDownloading/CenterContainer/VBoxContainer/DownloadDisplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "This is Speed!"
+label_settings = SubResource("LabelSettings_blgph")
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="FinishButton" type="Button" parent="InstallDownloading"]
 custom_minimum_size = Vector2(100, 0)

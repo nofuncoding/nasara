@@ -56,6 +56,8 @@ namespace Nasara.UI.View
 		ProgressBar progressBar;
 		[Export]
 		BaseButton finishButton;
+		[Export]
+		HBoxContainer downloadDisplay;
 
 		[ExportSubgroup("Import Page")]
 		[Export]
@@ -148,6 +150,7 @@ namespace Nasara.UI.View
 			monoCheckButton.ButtonPressed = false;
 			finishButton.Visible = false;
 			alreadyInstalled.Visible = false;
+			downloadDisplay.Visible = false;
 			importButton.Disabled = true;
 			resultTextLabel.Clear();
 		}
@@ -305,6 +308,9 @@ namespace Nasara.UI.View
 			string versionString = version.Version.ToString();
 			if (monoCheckButton.ButtonPressed)
 				versionString = "Mono " + versionString;
+			
+			Label sizeLabel = downloadDisplay.GetNode<Label>("SizeLabel");
+			Label speedLabel = downloadDisplay.GetNode<Label>("SpeedLabel");
 
 			Timer timer = new()
 			{
@@ -317,8 +323,15 @@ namespace Nasara.UI.View
 				int downloaded = downloader.GetDownloadedBytes();
 				if (bodySize != -1)
 				{
-					progressLabel.Text = string.Format(Tr("Downloading Godot {0} {1}"), versionString, 
-										$"({downloaded.Bytes().Humanize()}/{bodySize.Bytes().Humanize()})");
+					// should not put here, but no other places to put this
+					if (downloadDisplay.Visible == false)
+						downloadDisplay.Visible = true;
+					
+					progressLabel.Text = string.Format(Tr("Downloading Godot {0}"), versionString); 
+
+					sizeLabel.Text = string.Format("{0}/{1}", downloaded.Bytes().Humanize(), bodySize.Bytes().Humanize());
+					speedLabel.Text = $"{downloader.GetSpeedPerSecond().Bytes().Humanize()}/s";
+
 					if (progressBar.MaxValue != bodySize) // do i actually need this
 						progressBar.MaxValue = bodySize;
 					progressBar.Value = downloaded;
@@ -332,6 +345,7 @@ namespace Nasara.UI.View
 			downloader.DownloadFinished += (string savePath) => {
 				progressBar.Value = progressBar.MaxValue + 1;
 				progressLabel.Text = Tr("Download Completed");
+				downloadDisplay.Visible = false;
 
 				UnpackGodot(version, savePath);
 				timer.QueueFree();
