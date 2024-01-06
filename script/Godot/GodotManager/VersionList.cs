@@ -89,7 +89,7 @@ namespace Nasara.GodotManager {
 
                 GodotCurrentNodeId = (string)latest["node_id"];
 
-                string data = Json.Stringify(version_dict["stable"]);
+                Godot.Collections.Array data = (Godot.Collections.Array)version_dict["stable"];
                 stableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Stable);
             } else {
                 // GodotRequester will auto save cache
@@ -103,7 +103,7 @@ namespace Nasara.GodotManager {
 
                 GodotUnstableCurrentNodeId = (string)latest["node_id"];
 
-                string data = Json.Stringify(version_dict["unstable"]);
+                Godot.Collections.Array data = (Godot.Collections.Array)version_dict["unstable"];
                 unstableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Unstable);
             } else {
                 // GodotRequester will auto save cache

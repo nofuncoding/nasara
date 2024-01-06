@@ -3,15 +3,15 @@ using Godot.Collections;
 using Semver;
 using System;
 using System.Linq;
+using Nasara.Network;
 
 namespace Nasara.GodotManager {
 	public partial class Requester : Node
 	{
-		// GitHub API URLs
-		const string GODOT_STABLE = "https://api.github.com/repos/godotengine/godot/releases";
-		// const string GODOT_STABLE_LATEST = "https://api.github.com/repos/godotengine/godot/releases/latest";
-		// No latest for unstable
-		const string GODOT_UNSTABLE = "https://api.github.com/repos/godotengine/godot-builds/releases";
+		// GitHub
+		const string GODOT_OWNER = "godotengine";
+		const string GODOT_REPO_STABLE = "godot";
+		const string GODOT_REPO_UNSTABLE = "godot-builds";
 
 		[Signal]
 		public delegate void VersionsRequestedEventHandler(Array<DownloadableVersion> downloadableVersions, int channel);
@@ -21,42 +21,39 @@ namespace Nasara.GodotManager {
 
 		public Error RequestEditorList(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
 		{
-			HttpRequest http = new();
-			if (new AppConfig().EnableTLS)
-				http.SetTlsOptions(TlsOptions.Client());
-			AddChild(http);
+			Github github = null;
+			switch (channel)
+			{
+				case GodotVersion.VersionChannel.Stable:
+					github = new(GODOT_OWNER, GODOT_REPO_STABLE); break;
+				case GodotVersion.VersionChannel.Unstable:
+					github = new(GODOT_OWNER, GODOT_REPO_UNSTABLE); break;
+			}
+			if (github is not null)
+				AddChild(github);
 
 			if (!IsNodeReady())
 				return Error.Busy;
 
-			http.RequestCompleted += (long result, long responseCode, string[] headers, byte[] body)
-								=> { GodotRequestCompleted(channel, result, responseCode, headers, body); http.QueueFree(); };
-
-			switch (channel)
-			{
-				case GodotVersion.VersionChannel.Stable:
-					http.Request(GODOT_STABLE); GD.Print("GET ", GODOT_STABLE); break;
-				case GodotVersion.VersionChannel.Unstable:
-					http.Request(GODOT_UNSTABLE); GD.Print("GET ", GODOT_UNSTABLE); break;
-			}
+			github.GithubRequestCompleted += (Variant result, Github.RequestType type) => {
+				if (type != Github.RequestType.Releases)
+					return;
+					
+				Godot.Collections.Array godots = (Godot.Collections.Array)result;
+				if (godots.Count == 0)
+					return;
+				GodotRequestCompleted(channel, godots);
+			};
 
 			return Error.Ok;
 		}
 
-		void GodotRequestCompleted(GodotVersion.VersionChannel channel, long result, long responseCode, string[] headers, byte[] body)
+		void GodotRequestCompleted(GodotVersion.VersionChannel channel, Godot.Collections.Array data)
 		{
-			if (result != (long)HttpRequest.Result.Success)
-			{
-				GD.PushError("Failed to Request Godot Releases, Result Code: ", result);
-				return;
-			}
-			GD.Print(responseCode, " OK");
-			
-			string data = body.GetStringFromUtf8();
 			Array<DownloadableVersion> downloadableVersions = ProcessRawData(data, channel);
 			if (downloadableVersions is null)
 			{
-				GD.PushError("Failed to process json data");
+				GD.PushError("Failed to process data");
 				return;
 			}
 			EmitSignal(SignalName.VersionsRequested, downloadableVersions, (int)channel);
@@ -66,12 +63,8 @@ namespace Nasara.GodotManager {
 				GD.PushError("Can not save cache: ", error);
 		}
 
-		Error SaveCache(string data, GodotVersion.VersionChannel channel)
+		Error SaveCache(Godot.Collections.Array data, GodotVersion.VersionChannel channel)
 		{
-			Json json = new();
-			if (json.Parse(data) != Error.Ok)
-				return Error.InvalidData;
-
 			/*
 			{
 				"stable": [ ... ],
@@ -94,10 +87,10 @@ namespace Nasara.GodotManager {
 
 				switch (channel) {
 					case GodotVersion.VersionChannel.Stable:
-						version_dict["stable"] = (Godot.Collections.Array)json.Data;
+						version_dict["stable"] = data;
 						break;
 					case GodotVersion.VersionChannel.Unstable:
-						version_dict["unstable"] = (Godot.Collections.Array)json.Data;
+						version_dict["unstable"] = data;
 						break;
 				}
 				
@@ -112,10 +105,10 @@ namespace Nasara.GodotManager {
 
 				switch (channel) {
 					case GodotVersion.VersionChannel.Stable:
-						version_dict["stable"] = (Godot.Collections.Array)json.Data;
+						version_dict["stable"] = data;
 						break;
 					case GodotVersion.VersionChannel.Unstable:
-						version_dict["unstable"] = (Godot.Collections.Array)json.Data;
+						version_dict["unstable"] = data;
 						break;
 				}
 
@@ -126,15 +119,8 @@ namespace Nasara.GodotManager {
 			return Error.Ok;
 		}
 
-		public Array<DownloadableVersion> ProcessRawData(string data, GodotVersion.VersionChannel channel)
+		public Array<DownloadableVersion> ProcessRawData(Godot.Collections.Array godots, GodotVersion.VersionChannel channel)
 		{
-			Json json = new();
-			if (json.Parse(data) != Error.Ok)
-			{
-				GD.PushError("Failed to Parse GitHub Api Data");
-				return null;
-			}
-
 			Array<DownloadableVersion> downloadableVersions = new();
 
 			/*
@@ -149,7 +135,7 @@ namespace Nasara.GodotManager {
 			]
 			*/
 
-			foreach (Dictionary version in ((Godot.Collections.Array)json.Data).Select(v => (Dictionary)v))
+			foreach (Dictionary version in godots.Select(v => (Dictionary)v))
 			{
 				string versionWithoutStable = ((string)version["tag_name"]).TrimSuffix("-stable");
 				SemVersion semVersion = SemVersion.Parse(versionWithoutStable, SemVersionStyles.Any);
@@ -208,46 +194,23 @@ namespace Nasara.GodotManager {
 
 		public Error RequestLatestNodeId(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
 		{
-			HttpRequest http = new();
-			if (new AppConfig().EnableTLS)
-				http.SetTlsOptions(TlsOptions.Client());
-			AddChild(http);
-
-			if (!IsNodeReady())
-				return Error.Busy;
-
-			http.RequestCompleted += (long result, long responseCode, string[] headers, byte[] body) => {
-				if (result != (long)HttpRequest.Result.Success)
-				{
-					GD.PushError("Failed to Request Godot Releases, Result Code: ", result);
-					return;
-				}
-				GD.Print(responseCode, " OK");
-				//GD.Print(headers);
-
-				Json json = new();
-				if (json.Parse(body.GetStringFromUtf8()) != Error.Ok)
-				{
-					GD.PushError("Failed to Parse GitHub Api Data: ", json.GetErrorMessage());
-					// GD.Print(body.GetStringFromUtf8());
-					return;
-				}
-
-				Dictionary latest = (Dictionary)((Godot.Collections.Array)json.Data)[0];
-				string nodeId = (string)latest["node_id"];
-				
-				EmitSignal(SignalName.NodeIdRequested, nodeId, (int)channel);
-
-				http.QueueFree();
-			};
-
+			Github github = null;
 			switch (channel)
 			{
 				case GodotVersion.VersionChannel.Stable:
-					http.Request(GODOT_STABLE); GD.Print("GET ", GODOT_STABLE); break;
+					github = new(GODOT_OWNER, GODOT_REPO_STABLE); break;
 				case GodotVersion.VersionChannel.Unstable:
-					http.Request(GODOT_UNSTABLE); GD.Print("GET ", GODOT_UNSTABLE); break;
+					github = new(GODOT_OWNER, GODOT_REPO_UNSTABLE); break;
 			}
+			if (github is not null)
+				AddChild(github);
+			if (!IsNodeReady())
+				return Error.Busy;
+
+			github.GithubRequestCompleted += (Variant result, Github.RequestType type) => {
+				string node_id = (string)result;
+				EmitSignal(SignalName.NodeIdRequested, node_id, (int)channel);
+			};
 
 			return Error.Ok;
 		}
