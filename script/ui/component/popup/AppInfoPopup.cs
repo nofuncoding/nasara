@@ -31,7 +31,7 @@ namespace Nasara.UI.Component
 			"System Language: " + OS.GetLocaleLanguage();
 
 			Godot.Collections.Dictionary engineInfo = Engine.GetVersionInfo();
-			versionDetail.Text += $"\nBuild on Godot {engineInfo["string"]}";
+			versionDetail.Text += $"\nBuilt on Godot {engineInfo["string"]}";
 
 			if (OS.IsDebugBuild())
 				versionDetail.Text += "\nDebug Build";
