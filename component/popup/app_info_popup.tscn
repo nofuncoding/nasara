@@ -57,11 +57,12 @@ layout_mode = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 30
+alignment = 1
 
 [node name="ProductName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 text = "Nasara"
 label_settings = SubResource("LabelSettings_6ow54")
 horizontal_alignment = 2
@@ -69,7 +70,7 @@ vertical_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 alignment = 1
 
 [node name="ProductVersion" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -80,7 +81,7 @@ vertical_alignment = 1
 
 [node name="ProductCopyright" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-text = "© 2023 NoFun & Contributors"
+text = "© 2023-2024 NoFun & Contributors"
 vertical_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]

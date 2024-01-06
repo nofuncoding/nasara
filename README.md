@@ -39,4 +39,4 @@ If you got any problems, please write an issue.
 
 Nasara is licensed under the MIT License.
 
-© 2023 NoFun, All Rights Reversed.
+© 2023-2024 NoFun & Contributors
