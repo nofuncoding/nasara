@@ -114,7 +114,7 @@ msgstr ""
 msgid "Launched Godot {0}"
 msgstr ""
 
-msgid "Downloading Godot {0} {1}"
+msgid "Downloading Godot {0}"
 msgstr ""
 
 msgid "Requesting Godot {0}"

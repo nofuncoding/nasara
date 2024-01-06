@@ -127,8 +127,8 @@ msgstr "编辑器已启动"
 msgid "Launched Godot {0}"
 msgstr "已启动 Godot {0}"
 
-msgid "Downloading Godot {0} {1}"
-msgstr "正在下载 Godot {0} {1}"
+msgid "Downloading Godot {0}"
+msgstr "正在下载 Godot {0}"
 
 msgid "Requesting Godot {0}"
 msgstr "正在请求 Godot {0}"
