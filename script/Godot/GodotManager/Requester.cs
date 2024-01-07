@@ -198,9 +198,9 @@ namespace Nasara.GodotManager {
 			switch (channel)
 			{
 				case GodotVersion.VersionChannel.Stable:
-					github = new(GODOT_OWNER, GODOT_REPO_STABLE); break;
+					github = new(GODOT_OWNER, GODOT_REPO_STABLE, Network.Github.Requester.RequestType.LatestNodeId); break;
 				case GodotVersion.VersionChannel.Unstable:
-					github = new(GODOT_OWNER, GODOT_REPO_UNSTABLE); break;
+					github = new(GODOT_OWNER, GODOT_REPO_UNSTABLE, Network.Github.Requester.RequestType.LatestNodeId); break;
 			}
 			if (github is not null)
 				AddChild(github);

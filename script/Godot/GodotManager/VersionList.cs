@@ -28,8 +28,11 @@ namespace Nasara.GodotManager {
 
             godotRequester.RequestLatestNodeId();
             godotRequester.RequestLatestNodeId(GodotVersion.VersionChannel.Unstable);
+            
+            // Updating Cache
+            godotRequester.NodeIdRequested += (string nodeId, int channel) => {
+                GD.Print($"({channel}) LS:{GodotCurrentNodeId}; LU:{GodotUnstableCurrentNodeId}; R:{nodeId}");
 
-            godotRequester.NodeIdRequested += (string nodeId, int channel) => { // Updating Cache
                 switch (channel)
                 {
                     case (int)GodotVersion.VersionChannel.Stable:
