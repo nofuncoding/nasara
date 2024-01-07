@@ -17,7 +17,7 @@ namespace Nasara.UI.Component
 		Label versionLabel;
 
 		[Export]
-		BaseButton infoButton;
+		MenuButton menuButton;
 
 		[Signal]
 		public delegate void NavigatedEventHandler(int nav);
@@ -31,13 +31,14 @@ namespace Nasara.UI.Component
 			
 			buttonGroup = GD.Load<ButtonGroup>("res://component/nav_button_group.tres");
 			buttonGroup.Pressed += NavChanged;
-			infoButton.Pressed += () => {
-				Window AppInfo = GD.Load<PackedScene>("res://component/popup/app_info_popup.tscn").Instantiate<Window>();
-				AddChild(AppInfo);
-				AppInfo.PopupCentered();
-			};
+			
+			PopupMenu menu = menuButton.GetPopup();
+			menu.Theme = GD.Load<Theme>("res://asset/style/normal_control_theme.tres");
+			menu.RemoveThemeFontOverride("font"); // Do not use theme override of the menu button
+			menu.AddItem("About...", 0);
+			menu.IdPressed += MenuIdPressed;
 
-			if (OS.IsDebugBuild())
+			if (OS.IsDebugBuild()) // Display version
 			{
 				versionLabel.Visible = true;
 				versionLabel.Text = "v" + (string)ProjectSettings.GetSetting("application/config/version");
@@ -45,6 +46,19 @@ namespace Nasara.UI.Component
 				versionLabel.Visible = false;
 			}
 
+		}
+
+		void MenuIdPressed(long id)
+		{
+			switch (id)
+			{
+				case 0:
+					// open about dialog
+					Window AppInfo = GD.Load<PackedScene>("res://component/popup/app_info_popup.tscn").Instantiate<Window>();
+					AddChild(AppInfo);
+					AppInfo.PopupCentered();
+					break;
+			}
 		}
 
 		public int RegisterView(PackedScene packedScene, string displayName, int viewIndex = -1)
