@@ -31,7 +31,7 @@ namespace Nasara.GodotManager {
             
             // Updating Cache
             godotRequester.NodeIdRequested += (string nodeId, int channel) => {
-                GD.Print($"({channel}) LS:{GodotCurrentNodeId}; LU:{GodotUnstableCurrentNodeId}; R:{nodeId}");
+                // GD.Print($"({channel}) LS:{GodotCurrentNodeId}; LU:{GodotUnstableCurrentNodeId}; R:{nodeId}");
 
                 switch (channel)
                 {

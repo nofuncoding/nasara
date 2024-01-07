@@ -42,6 +42,7 @@ namespace Nasara.GodotManager {
 				Godot.Collections.Array godots = (Godot.Collections.Array)result;
 				if (godots.Count == 0)
 					return;
+				
 				GodotRequestCompleted(channel, godots);
 			};
 
@@ -53,14 +54,14 @@ namespace Nasara.GodotManager {
 			Array<DownloadableVersion> downloadableVersions = ProcessRawData(data, channel);
 			if (downloadableVersions is null)
 			{
-				GD.PushError("Failed to process data");
+				GD.PushError("(requester) Failed to process data");
 				return;
 			}
 			EmitSignal(SignalName.VersionsRequested, downloadableVersions, (int)channel);
 
 			Error error = SaveCache(data, channel);
 			if (error != Error.Ok)
-				GD.PushError("Can not save cache: ", error);
+				GD.PushError("(requester) Can not save cache: ", error);
 		}
 
 		Error SaveCache(Godot.Collections.Array data, GodotVersion.VersionChannel channel)
@@ -115,7 +116,7 @@ namespace Nasara.GodotManager {
 				file.StoreString(Json.Stringify(version_dict));
 			}
 
-			GD.Print($"Saved Downloadable Cache to {VersionList.GODOT_LIST_CACHE_PATH}");
+			GD.Print($"(requester) Saved Downloadable Godots Cache to {VersionList.GODOT_LIST_CACHE_PATH}");
 			return Error.Ok;
 		}
 
