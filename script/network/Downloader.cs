@@ -26,20 +26,31 @@ public partial class Downloader : HttpRequest
         RequestCompleted += CompleteDownloading;
     }
 
-    public override void _Process(double delta)
+    void UpdateSpeed()
     {
-        // Update Speed
         int downloadedBytes = GetDownloadedBytes();
-        int speed = (int)Math.Floor((downloadedBytes - prevDownloadedBytes) / delta);
-        if (speed > 0) // the speed may become 0 when the update is too fast
-            speedPerSecond = speed; // if the speed is 0, it will not be changed.
+        int speed = (int)Math.Floor((downloadedBytes - prevDownloadedBytes) / 0.5f);
+        speedPerSecond = speed;
         prevDownloadedBytes = downloadedBytes;
+
+        // GD.Print($"Total Downloaded: {downloadedBytes} bytes, Previous Downloaded: {prevDownloadedBytes} bytes, Downloaded: {downloadedBytes} bytes,\nSpeed: {speedPerSecond} bytes/s");
     }
 
     public override void _Ready()
     {
         GD.Print($"DOWNLOAD {Url}");
         Request(Url);
+
+        // Add a Timer to update speed
+        Timer timer = new()
+        {
+            OneShot = false,
+            WaitTime = 0.5f
+        };
+        timer.Timeout += UpdateSpeed;
+
+        AddChild(timer);
+        timer.Start();
     }
 
     public override void _Notification(int what)
