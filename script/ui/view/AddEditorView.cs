@@ -82,11 +82,10 @@ public partial class AddEditorView : Control
 	public override void _Ready()
 	{
 		app = GetNode<App>("/root/App");
-		godotManager = GetNode<GodotManager.Manager>("/root/GodotManager");
+		godotManager = GetNode<Manager>("/root/GodotManager");
 		versionManager = godotManager.Version();
 		installedVersions = versionManager.GetVersions();
 		SwitchView(0);
-		
 
 		// Setup Signals
 		// Buttons
@@ -314,7 +313,7 @@ public partial class AddEditorView : Control
 
 		Timer timer = new()
 		{
-			WaitTime = 0.1
+			WaitTime = 0.1f
 		};
 		AddChild(timer);
 
@@ -346,18 +345,19 @@ public partial class AddEditorView : Control
 			progressBar.Value = progressBar.MaxValue + 1;
 			progressLabel.Text = Tr("Download Completed");
 			downloadDisplay.Visible = false;
-
-			UnpackGodot(version, savePath);
+			VerifyFile(version, savePath);
+			
 			timer.QueueFree();
 		};
 
 		timer.Start();
 	}
 
-	void VerifyFile()
+	void VerifyFile(DownloadableVersion version, string savePath)
 	{
 		// TODO: Verifying Files using Sha-512
 		// Use System.Security.Cryptography.SHA512
+		UnpackGodot(version, savePath);
 	}
 
 	void UnpackGodot(DownloadableVersion version, string zipPath)
@@ -390,6 +390,7 @@ public partial class AddEditorView : Control
 			byte[] content = zip.ReadFile(filePath);
 			string absFilePath = path.PathJoin(filePath);
 
+			
 			using var file = FileAccess.Open(absFilePath, FileAccess.ModeFlags.Write);
 
 			// if not a file, then it's a dir
@@ -402,10 +403,9 @@ public partial class AddEditorView : Control
 					progressBar.Value += 1;
 					continue;
 				}
-				/*
+				
 				GD.PushError("Failed to Unzip: ", FileAccess.GetOpenError());
 				return;
-				*/
 			}
 			
 			file.StoreBuffer(content);

@@ -27,7 +27,7 @@ font = ExtResource("3_rdhmw")
 font_size = 12
 font_color = Color(1, 1, 1, 0.0392157)
 
-[node name="EditorList" type="VBoxContainer" node_paths=PackedStringArray("editorItemList", "addButton", "launchButton")]
+[node name="EditorList" type="VBoxContainer" node_paths=PackedStringArray("editorItemList", "tipNotFound", "addButton", "launchButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -37,7 +37,8 @@ size_flags_vertical = 3
 theme = ExtResource("1_gjy0v")
 theme_override_constants/separation = 0
 script = ExtResource("1_2kqce")
-editorItemList = NodePath("ItemList")
+editorItemList = NodePath("Editors/ItemList")
+tipNotFound = NodePath("Editors/NotFound")
 addButton = NodePath("Panel/ActionList/AddButton")
 launchButton = NodePath("Panel/ActionList/LaunchButton")
 
@@ -92,8 +93,28 @@ text = "godot"
 label_settings = SubResource("LabelSettings_brxkl")
 vertical_alignment = 1
 
-[node name="ItemList" type="ItemList" parent="."]
+[node name="Editors" type="Control" parent="."]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemList" type="ItemList" parent="Editors"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 3
 theme = ExtResource("2_m5nxn")
 allow_search = false
+
+[node name="NotFound" type="Label" parent="Editors"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "No Editor Found"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -7,6 +7,8 @@ public partial class EditorList : VBoxContainer
 {
 	[Export]
 	ItemList editorItemList;
+	[Export]
+	Label tipNotFound;
 
 	[ExportCategory("Button")]
 	[Export]
@@ -107,6 +109,7 @@ public partial class EditorList : VBoxContainer
 		if (godotVersions.Count == 0)
 		{
 			launchButton.Disabled = true;
+			tipNotFound.Visible = true;
 			return;
 		}
 
@@ -142,6 +145,7 @@ public partial class EditorList : VBoxContainer
 		}
 
 		editorItemList.SortItemsByText();
+		tipNotFound.Visible = false;
 	}
 
 	void LaunchEditor()
