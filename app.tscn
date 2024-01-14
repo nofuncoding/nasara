@@ -50,8 +50,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NavBar" parent="Main/HBoxContainer" instance=ExtResource("1_cq3bb")]
+[node name="NavBar" parent="Main/HBoxContainer" node_paths=PackedStringArray("versionLabel", "menuButton") instance=ExtResource("1_cq3bb")]
 layout_mode = 2
+versionLabel = NodePath("VersionHint")
+menuButton = NodePath("HBoxContainer/MenuButton")
 
 [node name="MarginContainer" type="MarginContainer" parent="Main/HBoxContainer"]
 layout_mode = 2
