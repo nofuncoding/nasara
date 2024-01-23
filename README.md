@@ -1,8 +1,12 @@
 # Nasara Godot Manager
 
-<div align="center">
+<picture>
+ <source media="(prefers-color-scheme: dark)" srcset="/doc/readme-header-dark.png">
+ <source media="(prefers-color-scheme: light)" srcset="/doc/readme-header-light.png">
+ <img alt="header" src="readme-header-light.png">
+</picture>
+
 A Simple Godot Versions Manager, and it's also made with Godot!
-</div>
 
 > [!CAUTION]
 > Nasara is still in the early stages of development. Important features are missing.
