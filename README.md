@@ -1,5 +1,3 @@
-# Nasara Godot Manager
-
 <picture>
  <source media="(prefers-color-scheme: dark)" srcset="/doc/readme-header-dark.png">
  <source media="(prefers-color-scheme: light)" srcset="/doc/readme-header-light.png">
