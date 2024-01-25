@@ -9,6 +9,6 @@ public partial class Downloader : Network.Downloader
     public Downloader(string url, string save_path) : base(url, save_path)
     {
         if (new AppConfig().UsingGithubProxy)
-            Url = "https://mirror.ghproxy.com/" + url; // TODO: Replace it using a better way
+            Url = "https://github.moeyy.xyz/" + url; // TODO: Replace it using a better way
     }
 }
