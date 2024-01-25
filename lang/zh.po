@@ -1,10 +1,10 @@
 # LANGUAGE translation for Nasara Godot Manager for the following files:
-# res://view/add_editor_view.tscn
-# res://view/editor_view.tscn
-# res://view/project_view.tscn
-# res://view/setting_view.tscn
+# res://ui/view/add_editor_view.tscn
+# res://ui/view/editor_view.tscn
+# res://ui/view/project_view.tscn
+# res://ui/view/setting_view.tscn
 # res://app.tscn
-# res://component/popup/app_info_popup.tscn
+# res://ui/component/popup/app_info_popup.tscn
 #
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
