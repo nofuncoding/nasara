@@ -1,8 +1,0 @@
-[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://dv4rjhtb22xuo"]
-
-[ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://asset/font/MaterialSymbolsSharp.ttf" id="1_0puiq"]
-
-[resource]
-font = ExtResource("1_0puiq")
-font_size = 24
-font_color = Color(0.862745, 0.14902, 0.14902, 1)

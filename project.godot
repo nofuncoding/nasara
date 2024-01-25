@@ -23,7 +23,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GodotManager="*res://script/Godot/GodotManager/Manager.cs"
+GodotManager="*res://core/Management/Editor/GodotManager/Manager.cs"
 
 [display]
 
@@ -40,20 +40,20 @@ project/assembly_name="Nasara"
 [file_customization]
 
 folder_colors={
-"res://asset/": "teal",
-"res://component/": "green",
-"res://script/": "orange",
-"res://view/": "green"
+"res://core/": "orange",
+"res://res/": "teal",
+"res://ui/component/": "green",
+"res://ui/view/": "green"
 }
 
 [gui]
 
-theme/custom_font="res://asset/font/GlowSansSC-Normal-Regular.otf"
+theme/custom_font="res://res/font/GlowSansSC-Normal-Regular.otf"
 
 [internationalization]
 
 locale/translations=PackedStringArray("res://lang/zh.mo", "res://lang/en.mo")
-locale/translations_pot_files=PackedStringArray("res://view/add_editor_view.tscn", "res://view/editor_view.tscn", "res://view/project_view.tscn", "res://view/setting_view.tscn", "res://app.tscn")
+locale/translations_pot_files=PackedStringArray("res://ui/view/add_editor_view.tscn", "res://ui/view/editor_view.tscn", "res://ui/view/project_view.tscn", "res://ui/view/setting_view.tscn", "res://app.tscn")
 
 [rendering]
 

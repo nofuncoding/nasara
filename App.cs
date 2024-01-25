@@ -2,6 +2,7 @@ using Godot;
 using System;
 using Nasara.UI;
 using Nasara.UI.Component;
+using Nasara.Core.Management.Editor;
 
 namespace Nasara;
 
@@ -31,15 +32,15 @@ public partial class App : Control
 	[Export]
 	ProgressBar loadingBar;
 
-	GodotManager.Manager godotManager;
-	GodotManager.VersionList versionList;
+	Manager godotManager;
+	VersionList versionList;
 
 	public Godot.Collections.Array<DownloadableVersion> stableVersions;
 	public Godot.Collections.Array<DownloadableVersion> unstableVersions;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		godotManager = GetNode<GodotManager.Manager>("/root/GodotManager"); // Autoload
+		godotManager = GetNode<Manager>("/root/GodotManager"); // Autoload
 		versionList = new();
 		AddChild(versionList);
 
@@ -97,9 +98,9 @@ public partial class App : Control
 			navBar.RegisterView(packed, name); Stopped running here
 */
 
-		navBar.RegisterView(GD.Load<PackedScene>("res://view/editor_view.tscn"), Tr("Editor"), 0);
-		navBar.RegisterView(GD.Load<PackedScene>("res://view/project_view.tscn"), Tr("Project"));
-		navBar.RegisterView(GD.Load<PackedScene>("res://view/setting_view.tscn"), Tr("Setting"));
+		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/editor_view.tscn"), Tr("Editor"), 0);
+		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/project_view.tscn"), Tr("Project"));
+		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/setting_view.tscn"), Tr("Setting"));
 
 		viewSwitch.Init();
 		loadingBar.Value++;
