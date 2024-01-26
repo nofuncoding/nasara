@@ -23,7 +23,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GodotManager="*res://core/Management/Editor/GodotManager/Manager.cs"
+GodotManager="*res://core/Management/Editor/Manager/Manager.cs"
 
 [display]
 

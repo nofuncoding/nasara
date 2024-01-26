@@ -1,23 +1,26 @@
 using System;
 using Semver;
 using Godot;
+using System.Linq;
+using Godot.Collections;
+using System.Threading.Tasks.Dataflow;
 
 namespace Nasara.Core.Management.Editor;
 
 public partial class Version : Node
 {
-    public Godot.Collections.Array<GodotVersion> GetVersions()
+    public Array<GodotVersion> GetVersions()
     {
-        VersionReader reader = new();
-        return reader.Read();
+        return VersionWriter.Read();
     }
     
     public void AddVersion(GodotVersion godotVersion)
     {
         if (VersionExists(godotVersion)) // FIXME: Bad coding, need refactor
         {
-            Godot.Collections.Array<GodotVersion> versions = GetVersions();
-            Godot.Collections.Array<GodotVersion> checkedVersions = new();
+            Array<GodotVersion> versions = GetVersions();
+            Array<GodotVersion> checkedVersions = new();
+
             foreach (GodotVersion ver in versions)
             {
                 if (ver.Version == godotVersion.Version)
@@ -33,53 +36,18 @@ public partial class Version : Node
                     checkedVersions.Add(ver);
             }
 
-            // Fully Clear and Rewrite
-            using var file = FileAccess.Open(VersionReader.ListPath, FileAccess.ModeFlags.Write);
-            foreach (GodotVersion ver in checkedVersions)
-                WriteVersion(file, ver);
+            VersionWriter.Write(checkedVersions);
         } else {
-            using var file = FileAccess.Open(VersionReader.ListPath, FileAccess.ModeFlags.ReadWrite);
-            WriteVersion(file, godotVersion);
+            Array<GodotVersion> versions = GetVersions();
+            versions.Add(godotVersion);
+            VersionWriter.Write(versions);
         }
-    }
-
-    private void WriteVersion(FileAccess file, GodotVersion godotVersion)
-    {
-        /* Contents in `godot_list` will like this:
-        [mono](channel)@(version)=(path)
-        e.g.
-        stable@4.1.1=C:/Godot/4.1.1
-        [mono]unstable@4.2-rc1=C:/Godot/4.2-rc1
-
-        channel must be `stable` or `unstable`
-
-        TODO: Change the whole manager because it's shit
-        */
-
-        string channel_str = "";
-
-        switch (godotVersion.Channel)
-        {
-            case GodotVersion.VersionChannel.Stable:
-                channel_str = "stable";
-                break;
-            case GodotVersion.VersionChannel.Unstable:
-                channel_str = "unstable";
-                break;
-        }
-
-        file.SeekEnd();
-        if (godotVersion.Mono)
-            file.StoreLine($"[mono]{channel_str}@{godotVersion.Version}={godotVersion.Path}");
-        else
-            file.StoreLine($"{channel_str}@{godotVersion.Version}={godotVersion.Path}");
-        // file.Dispose();
     }
 
     public void RemoveVersion(GodotVersion godotVersion)
     {
-        Godot.Collections.Array<GodotVersion> versionsBeforeRemoval = GetVersions();
-        Godot.Collections.Array<GodotVersion> versions = new();
+        Array<GodotVersion> versionsBeforeRemoval = GetVersions();
+        Array<GodotVersion> versions = new();
 
         foreach (GodotVersion ver in versionsBeforeRemoval)
             if (ver.Version != godotVersion.Version)
@@ -88,9 +56,7 @@ public partial class Version : Node
                 if (ver.Mono != godotVersion.Mono)
                     versions.Add(ver);
 
-        using var file = FileAccess.Open(VersionReader.ListPath, FileAccess.ModeFlags.Write);
-        foreach (GodotVersion version in versions)
-            WriteVersion(file, version);
+        VersionWriter.Write(versions);
         GD.Print($"Removed {godotVersion.Version}");
 
         GetNode<App>("/root/App").GetNotifySystem().Notify(
@@ -102,7 +68,7 @@ public partial class Version : Node
 
     public bool VersionExists(string version)
     {
-        Godot.Collections.Array<GodotVersion> versions = GetVersions();
+        Array<GodotVersion> versions = GetVersions();
         foreach (GodotVersion ver in versions)
             if (ver.Version.Equals(SemVersion.Parse(version, SemVersionStyles.Strict))) // ugly
                 return true;
@@ -111,7 +77,7 @@ public partial class Version : Node
 
     public bool VersionExists(GodotVersion version)
     {
-        Godot.Collections.Array<GodotVersion> versions = GetVersions();
+        Array<GodotVersion> versions = GetVersions();
         foreach (GodotVersion ver in versions)
             if (ver.Version == version.Version && ver.Mono == version.Mono) // Wtf
                 return true;
@@ -170,34 +136,11 @@ public partial class Version : Node
     }
 }
 
-class VersionReader
+class VersionReaderLegacy
 {
-    public static readonly string ListPath = "user://gdls";
-
-    /// <summary>
-    /// Process legacy version
-    /// </summary>
-    /// <returns></returns>
-    bool LegacyProcess() // maybe dont need return
+    public static Array<GodotVersion> ReadFile(FileAccess file)
     {
-        if (FileAccess.FileExists("user://godot_list")) // v0.1.0-beta.1
-        {
-            if (DirAccess.CopyAbsolute("user://godot_list", ListPath) == Error.Ok)
-                DirAccess.RemoveAbsolute("user://godot_list");
-            else
-                throw new Exception("Failed to delete old file");
-        } else {
-            return false;
-        }
-        GD.Print("[VersionListReader] Found Old Version List. Translated.");
-
-        return true;
-    }
-
-    Godot.Collections.Array<GodotVersion> ReadFile(FileAccess file)
-    {
-        Godot.Collections.Array<GodotVersion> godotVersions = new();
-
+        Array<GodotVersion> godotVersions = new();
         
         /*
         FIXME: Error when file full of spaces
@@ -249,26 +192,115 @@ class VersionReader
         return godotVersions;
     }
 
-    public Godot.Collections.Array<GodotVersion> Read()
+}
+
+class VersionWriter
+{
+    public const string EDITORLIST = "user://editors.json";
+
+    /*Example:
+    [
+        {
+            "version": "4.0",
+            "path": "X:/xx/editors/Godot-4.0",
+            "mono": false,
+            "unstable": false,
+        },
+        ...
+    ]*/
+
+    public static Error Write(Array<GodotVersion> godotVersions)
     {
-        LegacyProcess();
+        Array<Dictionary> version_data = new();
+        foreach (var ver in godotVersions)
+        {
+            Dictionary verData = new();
+            verData["version"] = ver.Version.ToString();
+            verData["path"] = ver.Path;
+            verData["mono"] = ver.Mono;
+            verData["unstable"] = ver.Channel == GodotVersion.VersionChannel.Unstable;
+            version_data.Add(verData);
+        }
 
-        if (!FileAccess.FileExists(ListPath))
-            FileAccess.Open(ListPath, FileAccess.ModeFlags.Write); // Creating File
+        string data = Json.Stringify(version_data);
+        using var file = FileAccess.Open(EDITORLIST, FileAccess.ModeFlags.Write);
+        if (file is null)
+            return FileAccess.GetOpenError();
+        
+        file.StoreString(data);
+        return Error.Ok;
+    }
 
-        using var file = FileAccess.Open(ListPath, FileAccess.ModeFlags.Read);
+    static Array<GodotVersion> ReadFile(FileAccess file)
+    {
+        if (file.GetLength() == 0) // Empty file
+            return new();
+
+        Json json = new();
+        var error = json.Parse(file.GetAsText());
+        if (error != Error.Ok)
+        {
+            GD.PushError($"Failed to Parse {file.GetPath()}: {error}");
+            return new();
+        }
+
+        var data = (Godot.Collections.Array)json.Data;
+        Array<GodotVersion> versions = new();
+        foreach (Dictionary ver in data.Select(v => (Dictionary)v))
+        {
+            SemVersion semVersion = SemVersion.Parse((string)ver["version"], SemVersionStyles.Any);
+            string path = (string)ver["path"];
+            bool mono = (bool)ver["mono"];
+            GodotVersion.VersionChannel channel = (bool)ver["unstable"] ? GodotVersion.VersionChannel.Unstable : GodotVersion.VersionChannel.Stable;
+        
+            GodotVersion godotVersion = new(semVersion, path, channel, mono);
+            versions.Add(godotVersion);
+        }
+
+        return versions;
+    }
+
+    static Array<GodotVersion> ProcessLegacy()
+    {
+        string path = FileAccess.FileExists("user://gdls") ? "user://gdls" : "user://godot_list";
+        using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+        
+        if (file is null)
+            return new();
+        
+        var data = VersionReaderLegacy.ReadFile(file); // Read from legacy
+        Write(data); // Write to new
+
+        DirAccess.RemoveAbsolute(path); // Remove legacy
+
+        return data;
+    }
+
+    public static Array<GodotVersion> Read()
+    {
+
+        if (!FileAccess.FileExists(EDITORLIST))
+        {
+            // Creating File
+            FileAccess.Open(EDITORLIST, FileAccess.ModeFlags.Write);
+
+            if (FileAccess.FileExists("user://gdls") || FileAccess.FileExists("user://godot_list"))
+                return ProcessLegacy();
+
+            return new();
+        }
+
+        using var file = FileAccess.Open(EDITORLIST, FileAccess.ModeFlags.Read);
         if (file is not null)
         {
-            Godot.Collections.Array<GodotVersion> godotVersions = ReadFile(file);
-
-            if (godotVersions.Count > 0)
-                return godotVersions;
-            else if (godotVersions.Count == 0)
-            {
+            Array<GodotVersion> godotVersions = ReadFile(file);
+            if (godotVersions.Count == 0) // TODO: Remove or expand this
                 GD.PushWarning("No Godot Versions Found!");
-                return godotVersions;
-            }
+            
+            return godotVersions;
         }
+
+        // file is null
         GD.PushError("Could not get installed godot versions: ", FileAccess.GetOpenError());
         return new();
     }
