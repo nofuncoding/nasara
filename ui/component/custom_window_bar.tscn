@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://cjkqjwjphgrut"]
+
+[ext_resource type="Script" path="res://ui/controller/component/bar/CustomWindowBar.cs" id="1_wd4ug"]
+[ext_resource type="Script" path="res://ui/controller/component/bar/DragComponent.cs" id="2_6ad51"]
+[ext_resource type="Script" path="res://ui/controller/component/bar/ResizeComponent.cs" id="2_fkxfw"]
+[ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://res/font/MaterialSymbolsSharp.ttf" id="3_e62j5"]
+[ext_resource type="Script" path="res://ui/controller/component/bar/StateComponent.cs" id="3_jh1fe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6i1eu"]
+bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.980392)
+
+[node name="CustomWindowBar" type="PanelContainer" node_paths=PackedStringArray("MinWindowButton", "MaxWindowButton", "CloseWindowButton")]
+clip_contents = true
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6i1eu")
+script = ExtResource("1_wd4ug")
+MinWindowButton = NodePath("HBoxContainer/MinWindowButton")
+MaxWindowButton = NodePath("HBoxContainer/MaxWindowButton")
+CloseWindowButton = NodePath("HBoxContainer/CloseWindowButton")
+
+[node name="ResizeComponent" type="Node" parent="."]
+script = ExtResource("2_fkxfw")
+MinSize = Vector2i(300, 100)
+
+[node name="StateComponent" type="Node" parent="."]
+script = ExtResource("3_jh1fe")
+
+[node name="DragComponent" type="Node" parent="."]
+script = ExtResource("2_6ad51")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 16
+
+[node name="WindowTitle" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Nasara"
+clip_text = true
+
+[node name="MinWindowButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(64, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_e62j5")
+text = "minimize"
+
+[node name="MaxWindowButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(64, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_e62j5")
+text = "fullscreen"
+
+[node name="CloseWindowButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(64, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_e62j5")
+text = "close"

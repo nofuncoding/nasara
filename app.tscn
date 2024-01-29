@@ -1,40 +1,48 @@
-[gd_scene load_steps=7 format=3 uid="uid://bhmo5fqi55jgx"]
+[gd_scene load_steps=8 format=3 uid="uid://bhmo5fqi55jgx"]
 
 [ext_resource type="PackedScene" uid="uid://b43ldqeyl51lx" path="res://ui/component/nav_bar.tscn" id="1_cq3bb"]
 [ext_resource type="Script" path="res://App.cs" id="1_cvbrt"]
+[ext_resource type="PackedScene" uid="uid://cjkqjwjphgrut" path="res://ui/component/custom_window_bar.tscn" id="2_fslgt"]
 [ext_resource type="Script" path="res://ui/controller/component/ViewSwitch.cs" id="3_dmw11"]
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://res/style/normal_control_theme.tres" id="4_pxc2e"]
 [ext_resource type="Script" path="res://ui/controller/NotifySystem.cs" id="5_kqfxe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7cis"]
 bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.980392)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[node name="App" type="Control" node_paths=PackedStringArray("notifySystem", "mainPage", "loadingPage", "navBar", "viewSwitch", "loadingBar")]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_cvbrt")
-notifySystem = NodePath("NotifySystem")
-mainPage = NodePath("Main")
-loadingPage = NodePath("Loading")
-navBar = NodePath("Main/HBoxContainer/NavBar")
-viewSwitch = NodePath("Main/HBoxContainer/MarginContainer/ViewSwitch")
-loadingBar = NodePath("Loading/CenterContainer/VBoxContainer/ProgressBar")
-
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 1
+[node name="App" type="PanelContainer" node_paths=PackedStringArray("notifySystem", "mainPage", "loadingPage", "navBar", "viewSwitch", "loadingBar")]
+clip_children = 2
+clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7cis")
+script = ExtResource("1_cvbrt")
+notifySystem = NodePath("NotifySystem")
+mainPage = NodePath("VSplitContainer/Main")
+loadingPage = NodePath("Loading")
+navBar = NodePath("VSplitContainer/Main/HBoxContainer/NavBar")
+viewSwitch = NodePath("VSplitContainer/Main/HBoxContainer/MarginContainer/ViewSwitch")
+loadingBar = NodePath("Loading/CenterContainer/VBoxContainer/ProgressBar")
 
-[node name="Main" type="Control" parent="."]
-visible = false
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+layout_mode = 2
+collapsed = true
+dragger_visibility = 2
+
+[node name="CustomWindowBar" parent="VSplitContainer" instance=ExtResource("2_fslgt")]
+layout_mode = 2
+
+[node name="Main" type="Control" parent="VSplitContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer/Main"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,38 +50,26 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Main"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="NavBar" parent="Main/HBoxContainer" node_paths=PackedStringArray("versionLabel", "menuButton") instance=ExtResource("1_cq3bb")]
+[node name="NavBar" parent="VSplitContainer/Main/HBoxContainer" node_paths=PackedStringArray("versionLabel", "menuButton") instance=ExtResource("1_cq3bb")]
 layout_mode = 2
 versionLabel = NodePath("VersionHint")
 menuButton = NodePath("HBoxContainer/MenuButton")
 
-[node name="MarginContainer" type="MarginContainer" parent="Main/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VSplitContainer/Main/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 30
 
-[node name="ViewSwitch" type="Control" parent="Main/HBoxContainer/MarginContainer"]
+[node name="ViewSwitch" type="Control" parent="VSplitContainer/Main/HBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("3_dmw11")
 
 [node name="Loading" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+visible = false
+layout_mode = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="Loading"]
 layout_mode = 1
@@ -97,12 +93,7 @@ theme = ExtResource("4_pxc2e")
 show_percentage = false
 
 [node name="NotifySystem" type="Control" parent="." node_paths=PackedStringArray("notifyContainer")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
 script = ExtResource("5_kqfxe")
 notifyContainer = NodePath("MarginContainer/ScrollContainer/VBoxContainer")

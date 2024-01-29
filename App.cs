@@ -6,7 +6,7 @@ using Nasara.Core.Management.Editor;
 
 namespace Nasara;
 
-public partial class App : Control
+public partial class App : PanelContainer
 {
 //	[Export]
 //  [{"name": string, "path": string}, ...]
