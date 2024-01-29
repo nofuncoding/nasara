@@ -9,7 +9,7 @@ namespace Nasara.Core.Management.Editor;
 
 public partial class Version : Node
 {
-    public Array<GodotVersion> GetVersions()
+    public static Array<GodotVersion> GetVersions()
     {
         return VersionWriter.Read();
     }
