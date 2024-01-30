@@ -36,8 +36,11 @@ layout_mode = 2
 collapsed = true
 dragger_visibility = 2
 
-[node name="CustomWindowBar" parent="VSplitContainer" instance=ExtResource("2_fslgt")]
+[node name="CustomWindowBar" parent="VSplitContainer" node_paths=PackedStringArray("MinWindowButton", "MaxWindowButton", "CloseWindowButton") instance=ExtResource("2_fslgt")]
 layout_mode = 2
+MinWindowButton = NodePath("HBoxContainer/MinWindowButton")
+MaxWindowButton = NodePath("HBoxContainer/MaxWindowButton")
+CloseWindowButton = NodePath("HBoxContainer/CloseWindowButton")
 
 [node name="Main" type="Control" parent="VSplitContainer"]
 layout_mode = 2

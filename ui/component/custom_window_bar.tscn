@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://cjkqjwjphgrut"]
 
-[ext_resource type="Script" path="res://ui/controller/component/bar/CustomWindowBar.cs" id="1_wd4ug"]
-[ext_resource type="Script" path="res://ui/controller/component/bar/DragComponent.cs" id="2_6ad51"]
-[ext_resource type="Script" path="res://ui/controller/component/bar/ResizeComponent.cs" id="2_fkxfw"]
+[ext_resource type="Script" path="res://ui/controller/component/titlebar/CustomWindowBar.cs" id="1_wd4ug"]
+[ext_resource type="Script" path="res://ui/controller/component/titlebar/DragComponent.cs" id="2_6ad51"]
+[ext_resource type="Script" path="res://ui/controller/component/titlebar/ResizeComponent.cs" id="2_fkxfw"]
 [ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://res/font/MaterialSymbolsSharp.ttf" id="3_e62j5"]
-[ext_resource type="Script" path="res://ui/controller/component/bar/StateComponent.cs" id="3_jh1fe"]
+[ext_resource type="Script" path="res://ui/controller/component/titlebar/StateComponent.cs" id="3_jh1fe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6i1eu"]
 bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.980392)
