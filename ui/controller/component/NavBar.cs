@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Nasara.UI.Component;
 
-public partial class NavBar : Control
+public partial class NavBar : PanelContainer
 {
 	ButtonGroup buttonGroup;
 
@@ -28,7 +28,6 @@ public partial class NavBar : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		
 		buttonGroup = GD.Load<ButtonGroup>("res://ui/component/nav_button_group.tres");
 		buttonGroup.Pressed += NavChanged;
 		
@@ -84,7 +83,7 @@ public partial class NavBar : Control
 			ToggleMode = true,
 			ButtonGroup = buttonGroup
 		};
-		GetNode("VBoxContainer").AddChild(viewButton);
+		GetNode("VBoxContainer/ButtonList").AddChild(viewButton);
 
 		if (index == 0) // Default View
 			viewButton.ButtonPressed = true;

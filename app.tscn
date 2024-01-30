@@ -55,8 +55,8 @@ grow_vertical = 2
 
 [node name="NavBar" parent="VSplitContainer/Main/HBoxContainer" node_paths=PackedStringArray("versionLabel", "menuButton") instance=ExtResource("1_cq3bb")]
 layout_mode = 2
-versionLabel = NodePath("VersionHint")
-menuButton = NodePath("HBoxContainer/MenuButton")
+versionLabel = NodePath("VBoxContainer/HBoxContainer/VersionHint")
+menuButton = NodePath("VBoxContainer/HBoxContainer/MenuButton")
 
 [node name="MarginContainer" type="MarginContainer" parent="VSplitContainer/Main/HBoxContainer"]
 layout_mode = 2
