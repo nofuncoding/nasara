@@ -13,9 +13,9 @@ A Simple Godot Versions Manager, and it's also made with Godot!
 ## Features
 
 - Manage Godot Installations
-  - Install Latest Release
-  - Add Exists Godot (WIP)
-  - Remove / Update Godot Version (WIP)
+  - Install Latest Releases
+  - Add Existing Editors
+  - Update Godot Version (WIP)
 - Manage Your Projects between different Godot versions (WIP)
 
 And More!
@@ -32,7 +32,7 @@ The application's architecture is like this:
       - EditorList    -> Component
     - ProjectView     -> View
     - ...
-  - `NavBar` (control `ViewSwitch`)
+  - `NavBar` (controls `ViewSwitch`)
     - Auto-generated `NavButton`
 
 If you got any problems, please write an issue.
