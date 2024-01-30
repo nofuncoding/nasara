@@ -22,7 +22,7 @@ CloseWindowButton = NodePath("HBoxContainer/CloseWindowButton")
 
 [node name="ResizeComponent" type="Node" parent="."]
 script = ExtResource("2_fkxfw")
-MinSize = Vector2i(300, 100)
+MinSize = Vector2i(720, 450)
 
 [node name="StateComponent" type="Node" parent="."]
 script = ExtResource("3_jh1fe")

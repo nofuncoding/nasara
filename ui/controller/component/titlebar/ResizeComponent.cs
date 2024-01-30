@@ -135,7 +135,6 @@ public partial class ResizeComponent : Node
 
 	/* Static Methods */
 
-	// FIXME: the min size doesnt work well
 	static Rect2 ResizeRect(Rect2I rect, Vector2I pos, int index, Vector2 minSize)
 	{
 		var start = rect.Position;
@@ -175,6 +174,7 @@ public partial class ResizeComponent : Node
 			if (index == 1 || index == 2 || index == 3)
 				start.Y = end.Y - (int)minSize.Y;
 		}
+
 		newSize.X = Math.Max((int)minSize.X, newSize.X);
 		newSize.Y = Math.Max((int)minSize.Y, newSize.Y);
 
