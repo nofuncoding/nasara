@@ -36,6 +36,8 @@ public partial class NavBar : PanelContainer
 		menu.RemoveThemeFontOverride("font"); // Do not use theme override of the menu button
 		menu.AddItem("About...", 0);
 		menu.IdPressed += MenuIdPressed;
+		menu.Transparent = true;
+		menu.TransparentBg = true;
 
 		if (OS.IsDebugBuild()) // Display version
 		{
