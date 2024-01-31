@@ -6,7 +6,7 @@ namespace Nasara.Core.Management.Editor;
 // TODO: Refactor to `Installer`
 public partial class Downloader : Node
 {
-    const string CACHE_PATH = "user://godot.cache";
+    const string CACHE_PATH = "user://cache/godot.cache";
     Network.Github.Downloader downloader;
 
     [Signal]
