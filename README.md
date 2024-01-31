@@ -1,6 +1,6 @@
 # Nasara
 
-A Simple Godot Versions Manager, and it's also made with Godot!
+Download, Install, and Launch Godot Editors/Projects from one place
 
 > [!CAUTION]
 > Nasara is still in the early stages of development. Important features are missing.
@@ -16,9 +16,19 @@ A Simple Godot Versions Manager, and it's also made with Godot!
 
 And More!
 
+## FAQ
+
+Q: Why is this project called Nasara?
+
+A: I don't know. It just born out of my head when I am working on it.
+
+Q: What's different from other projects like ..?
+
+A: Nasara is designed to be like *Unity Hub*. I recommend you to try [Godots](https://github.com/MakovWait/godots) if you don't like Nasara's style.
+
 ## Development
 
-This application needs Godot 4.2 above and Mono support
+This application needs Godot 4.3 above and Mono support
 
 The application's architecture is like this:
 
