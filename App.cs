@@ -6,7 +6,7 @@ using Nasara.Core.Management.Editor;
 
 namespace Nasara;
 
-public partial class App : Control
+public partial class App : PanelContainer
 {
 //	[Export]
 //  [{"name": string, "path": string}, ...]
@@ -59,6 +59,9 @@ public partial class App : Control
 		if (lang != "")
 			TranslationServer.SetLocale(lang);
 
+		var splitContainer = GetNode<VSplitContainer>("VSplitContainer");
+
+		splitContainer.Visible = false;
 		mainPage.Visible = false;
 		loadingPage.Visible = true;
 
@@ -74,8 +77,9 @@ public partial class App : Control
 		
 		loadingBar.Value++;
 
-		loadingPage.Visible = false; 
+		splitContainer.Visible = true;
 		mainPage.Visible = true;
+		loadingPage.Visible = false; 
 	}
 
 	void InitViews()
