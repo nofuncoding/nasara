@@ -1,8 +1,4 @@
-<picture>
- <source media="(prefers-color-scheme: dark)" srcset="/doc/readme-header-dark.png">
- <source media="(prefers-color-scheme: light)" srcset="/doc/readme-header-light.png">
- <img alt="header" src="readme-header-light.png">
-</picture>
+# Nasara
 
 A Simple Godot Versions Manager, and it's also made with Godot!
 
