@@ -6,7 +6,7 @@
 [ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://res/font/MaterialSymbolsSharp.ttf" id="4_mqm5p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7kc6"]
-bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.941176)
+bg_color = Color(0.0588235, 0.0588235, 0.0588235, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_6hvqp"]
 font = ExtResource("4_mqm5p")
