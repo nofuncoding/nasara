@@ -3,7 +3,6 @@ using Semver;
 using Godot;
 using System.Linq;
 using Godot.Collections;
-using System.Threading.Tasks.Dataflow;
 
 namespace Nasara.Core.Management.Editor;
 
@@ -19,7 +18,7 @@ public partial class Version : Node
         if (VersionExists(godotVersion)) // FIXME: Bad coding, need refactor
         {
             Array<GodotVersion> versions = GetVersions();
-            Array<GodotVersion> checkedVersions = new();
+            Array<GodotVersion> checkedVersions = [];
 
             foreach (GodotVersion ver in versions)
             {
@@ -47,7 +46,7 @@ public partial class Version : Node
     public void RemoveVersion(GodotVersion godotVersion)
     {
         Array<GodotVersion> versionsBeforeRemoval = GetVersions();
-        Array<GodotVersion> versions = new();
+        Array<GodotVersion> versions = [];
 
         foreach (GodotVersion ver in versionsBeforeRemoval)
             if (ver.Version != godotVersion.Version)
@@ -66,7 +65,7 @@ public partial class Version : Node
         );
     }
 
-    public bool VersionExists(string version)
+    public static bool VersionExists(string version)
     {
         Array<GodotVersion> versions = GetVersions();
         foreach (GodotVersion ver in versions)
@@ -75,7 +74,7 @@ public partial class Version : Node
         return false;
     }
 
-    public bool VersionExists(GodotVersion version)
+    public static bool VersionExists(GodotVersion version)
     {
         Array<GodotVersion> versions = GetVersions();
         foreach (GodotVersion ver in versions)
@@ -140,7 +139,7 @@ class VersionReaderLegacy
 {
     public static Array<GodotVersion> ReadFile(FileAccess file)
     {
-        Array<GodotVersion> godotVersions = new();
+        Array<GodotVersion> godotVersions = [];
         
         /*
         FIXME: Error when file full of spaces
@@ -211,14 +210,16 @@ class VersionWriter
 
     public static Error Write(Array<GodotVersion> godotVersions)
     {
-        Array<Dictionary> version_data = new();
+        Array<Dictionary> version_data = [];
         foreach (var ver in godotVersions)
         {
-            Dictionary verData = new();
-            verData["version"] = ver.Version.ToString();
-            verData["path"] = ver.Path;
-            verData["mono"] = ver.Mono;
-            verData["unstable"] = ver.Channel == GodotVersion.VersionChannel.Unstable;
+            Dictionary verData = new()
+            {
+                ["version"] = ver.Version.ToString(),
+                ["path"] = ver.Path,
+                ["mono"] = ver.Mono,
+                ["unstable"] = ver.Channel == GodotVersion.VersionChannel.Unstable
+            };
             version_data.Add(verData);
         }
 
@@ -234,18 +235,18 @@ class VersionWriter
     static Array<GodotVersion> ReadFile(FileAccess file)
     {
         if (file.GetLength() == 0) // Empty file
-            return new();
+            return [];
 
         Json json = new();
         var error = json.Parse(file.GetAsText());
         if (error != Error.Ok)
         {
             GD.PushError($"Failed to Parse {file.GetPath()}: {error}");
-            return new();
+            return [];
         }
 
         var data = (Godot.Collections.Array)json.Data;
-        Array<GodotVersion> versions = new();
+        Array<GodotVersion> versions = [];
         foreach (Dictionary ver in data.Select(v => (Dictionary)v))
         {
             SemVersion semVersion = SemVersion.Parse((string)ver["version"], SemVersionStyles.Any);
@@ -266,7 +267,7 @@ class VersionWriter
         using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
         
         if (file is null)
-            return new();
+            return [];
         
         var data = VersionReaderLegacy.ReadFile(file); // Read from legacy
         Write(data); // Write to new
@@ -287,7 +288,7 @@ class VersionWriter
             if (FileAccess.FileExists("user://gdls") || FileAccess.FileExists("user://godot_list"))
                 return ProcessLegacy();
 
-            return new();
+            return [];
         }
 
         using var file = FileAccess.Open(EDITORLIST, FileAccess.ModeFlags.Read);
@@ -302,6 +303,6 @@ class VersionWriter
 
         // file is null
         GD.PushError("Could not get installed godot versions: ", FileAccess.GetOpenError());
-        return new();
+        return [];
     }
 }

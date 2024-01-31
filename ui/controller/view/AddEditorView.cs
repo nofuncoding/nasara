@@ -2,7 +2,8 @@ using Godot;
 using Semver;
 using System;
 using Humanizer;
-using Nasara.Core.Management.Editor;
+using Editor = Nasara.Core.Management.Editor;
+using static Nasara.Core.Management.Editor.GodotVersion;
 
 namespace Nasara.UI.View;
 
@@ -10,12 +11,12 @@ public partial class AddEditorView : Control
 {
 	App app;
 
-	Manager godotManager;
-	Core.Management.Editor.Version versionManager;
+	Editor.Manager godotManager;
+	Editor.Version versionManager;
 
-	Godot.Collections.Array<DownloadableVersion> stableVersions = new();
-	Godot.Collections.Array<DownloadableVersion> unstableVersions = new();
-	Godot.Collections.Array<GodotVersion> installedVersions = new();
+	Godot.Collections.Array<Editor.DownloadableVersion> stableVersions = [];
+	Godot.Collections.Array<Editor.DownloadableVersion> unstableVersions = [];
+	Godot.Collections.Array<Editor.GodotVersion> installedVersions = [];
 
 	[ExportGroup("Pages", "page")] // TODO: Refactor these to make code clean
 	[Export]
@@ -82,9 +83,9 @@ public partial class AddEditorView : Control
 	public override void _Ready()
 	{
 		app = GetNode<App>("/root/App");
-		godotManager = GetNode<Manager>("/root/GodotManager");
+		godotManager = GetNode<Editor.Manager>("/root/GodotManager");
 		versionManager = godotManager.Version();
-		installedVersions = versionManager.GetVersions();
+		installedVersions = Editor.Version.GetVersions();
 		SwitchView(0);
 
 		// Setup Signals
@@ -129,14 +130,14 @@ public partial class AddEditorView : Control
 		channelOption.ItemSelected += (long index) => {
 			switch (index)
 			{
-				case (int)GodotVersion.VersionChannel.Stable:
+				case (int)VersionChannel.Stable:
 					versionOption.Clear();
-					foreach (DownloadableVersion version in stableVersions)
+					foreach (Editor.DownloadableVersion version in stableVersions)
 						versionOption.AddItem(version.Version.ToString());
 					break;
-				case (int)GodotVersion.VersionChannel.Unstable:
+				case (int)VersionChannel.Unstable:
 					versionOption.Clear();
-					foreach (DownloadableVersion version in unstableVersions)
+					foreach (Editor.DownloadableVersion version in unstableVersions)
 						versionOption.AddItem(version.Version.ToString());
 					break;
 			}
@@ -160,7 +161,7 @@ public partial class AddEditorView : Control
 		unstableVersions = app.unstableVersions;
 
 		versionOption.Clear();
-		foreach (DownloadableVersion version in stableVersions) 
+		foreach (Editor.DownloadableVersion version in stableVersions) 
 			versionOption.AddItem(version.Version.ToString());
 			InstallVersionSelected(0);
 	}
@@ -172,8 +173,8 @@ public partial class AddEditorView : Control
 		monoCheckButton.ButtonPressed = false;
 		alreadyInstalled.Visible = false;
 
-		DownloadableVersion selectedVersion;
-		if (channelOption.Selected == (int)GodotVersion.VersionChannel.Stable)
+		Editor.DownloadableVersion selectedVersion;
+		if (channelOption.Selected == (int)VersionChannel.Stable)
 			selectedVersion = stableVersions[(int)index]; // Why not use the `Text`?
 		else
 			selectedVersion = unstableVersions[(int)index];
@@ -181,7 +182,7 @@ public partial class AddEditorView : Control
 		bool hasMono = false;
 		bool hasGds = false;
 
-		foreach (GodotVersion version in installedVersions)
+		foreach (Editor.GodotVersion version in installedVersions)
 		{
 			if (version.Version.Equals(selectedVersion.Version))
 				if (version.Mono)
@@ -243,9 +244,9 @@ public partial class AddEditorView : Control
 
 	void DownloadTargetVersion()
 	{
-			if (channelOption.Selected == (int)GodotVersion.VersionChannel.Stable)
+			if (channelOption.Selected == (int)VersionChannel.Stable)
 			{ 
-				foreach (DownloadableVersion version in stableVersions)
+				foreach (Editor.DownloadableVersion version in stableVersions)
 				{
 					if (version.Version.Equals(SemVersion.Parse(versionOption.Text, SemVersionStyles.Any)))
 					{
@@ -275,7 +276,7 @@ public partial class AddEditorView : Control
 						}
 						*/
 
-						if (new Downloader().GetDownloadUrl(version, monoCheckButton.ButtonPressed).Length > 0)
+						if (new Editor.Downloader().GetDownloadUrl(version, monoCheckButton.ButtonPressed).Length > 0)
 						{
 							StartDownload(version);
 							return;
@@ -285,7 +286,7 @@ public partial class AddEditorView : Control
 			}
 			else
 			{
-				foreach (DownloadableVersion _version in unstableVersions)
+				foreach (Editor.DownloadableVersion _version in unstableVersions)
 				{
 					if (_version.Version.Equals(SemVersion.Parse(versionOption.Text, SemVersionStyles.Any)))
 					{
@@ -297,11 +298,11 @@ public partial class AddEditorView : Control
 			//StartDownload(unstableVersions[versionOption.Selected]);
 		}
 
-	void StartDownload(DownloadableVersion version)
+	void StartDownload(Editor.DownloadableVersion version)
 	{
 		SwitchView(2);
 		
-		Downloader downloader = new();
+		Editor.Downloader downloader = new();
 		AddChild(downloader);
 
 		string versionString = version.Version.ToString();
@@ -353,14 +354,14 @@ public partial class AddEditorView : Control
 		timer.Start();
 	}
 
-	void VerifyFile(DownloadableVersion version, string savePath)
+	void VerifyFile(Editor.DownloadableVersion version, string savePath)
 	{
 		// TODO: Verifying Files using Sha-512
 		// Use System.Security.Cryptography.SHA512
 		UnpackGodot(version, savePath);
 	}
 
-	void UnpackGodot(DownloadableVersion version, string zipPath)
+	void UnpackGodot(Editor.DownloadableVersion version, string zipPath)
 	{
 		progressBar.Value = 0;
 		progressLabel.Text = Tr("Unzipping Files");
@@ -426,14 +427,14 @@ public partial class AddEditorView : Control
 		FinishInstalling(version, zipPath, editorPath);
 	}
 
-	void FinishInstalling(DownloadableVersion version, string zipPath, string editorPath)
+	void FinishInstalling(Editor.DownloadableVersion version, string zipPath, string editorPath)
 	{
 		// godotManager.AddVersion(new GodotVersion(version.Version, editorPath, version.Channel, monoCheckButton.ButtonPressed));
 		// Because of bug above, we use this:
-		GodotVersion.VersionChannel versionChannel = GodotVersion.VersionChannel.Stable;
+		VersionChannel versionChannel = VersionChannel.Stable;
 		if (version.Version.IsPrerelease)
-			versionChannel = GodotVersion.VersionChannel.Unstable;
-		versionManager.AddVersion(new GodotVersion(version.Version, editorPath, versionChannel, monoCheckButton.ButtonPressed));
+			versionChannel = VersionChannel.Unstable;
+		versionManager.AddVersion(new Editor.GodotVersion(version.Version, editorPath, versionChannel, monoCheckButton.ButtonPressed));
 
 		// Cleaning up
 		DirAccess.RemoveAbsolute(zipPath);
@@ -450,12 +451,12 @@ public partial class AddEditorView : Control
 		resultTextLabel.Text = Tr("Checking") + "...";
 		importButton.Disabled = true;
 
-		GodotVersion ver = Core.Management.Editor.Version.PathHasGodot(text);
+		Editor.GodotVersion ver = Editor.Version.PathHasGodot(text);
 		if (ver is null)
 		{
 			resultTextLabel.Text = $"[color=red][font=res://res/font/MaterialSymbolsSharp.ttf]error[/font] {Tr("Invalid Path. Did you modify the name of the Godot executable?")}[/color]";
 		} else {
-			if (!versionManager.VersionExists(ver))
+			if (!Editor.Version.VersionExists(ver))
 			{
 				resultTextLabel.Text = $"[color=green][font=res://res/font/MaterialSymbolsSharp.ttf]done[/font] {Tr("A Great Path!")}[/color]\n";
 				

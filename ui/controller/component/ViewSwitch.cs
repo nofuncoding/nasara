@@ -6,12 +6,12 @@ namespace Nasara.UI.Component;
 public partial class ViewSwitch : Control
 {
 	// Need to Add Scene Manually
-	public Godot.Collections.Dictionary<int, PackedScene> packedView = new();
+	public Godot.Collections.Dictionary<int, PackedScene> packedView = [];
 
 	[Signal]
 	public delegate void ViewSwitchedEventHandler(int viewIndex);
 
-	Godot.Collections.Dictionary<int, Control> availableViews = new();
+	Godot.Collections.Dictionary<int, Control> availableViews = [];
 
 
 	public void Init()

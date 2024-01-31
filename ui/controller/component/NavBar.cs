@@ -11,7 +11,7 @@ public partial class NavBar : Control
 	int currentNav = 0;
 	int availableViewsCount = 0;
 
-	Godot.Collections.Dictionary<int, BaseButton> buttonDictionary = new();
+	Godot.Collections.Dictionary<int, BaseButton> buttonDictionary = [];
 
 	[Export]
 	Label versionLabel;
