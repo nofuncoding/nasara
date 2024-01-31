@@ -47,7 +47,7 @@ public partial class GodotVersion : RefCounted
     public GodotVersion(SemVersion version, string path, VersionChannel channel=VersionChannel.Stable, bool mono=false)
     {
         Version = version;
-        Path = path;
+        Path = ProjectSettings.GlobalizePath(path);
         if (!DirAccess.DirExistsAbsolute(path))
             GD.PushError("Godot Installation Not Found: `", path, "` is Unreachable");
 

@@ -102,7 +102,7 @@ public partial class Requester : Node
 			if (file is null)
 				return FileAccess.GetOpenError();
 
-			Dictionary version_dict = new();
+			Dictionary version_dict = [];
 
 			switch (channel) {
 				case GodotVersion.VersionChannel.Stable:
@@ -122,7 +122,7 @@ public partial class Requester : Node
 
 	public Array<DownloadableVersion> ProcessRawData(Godot.Collections.Array godots, GodotVersion.VersionChannel channel)
 	{
-		Array<DownloadableVersion> downloadableVersions = new();
+		Array<DownloadableVersion> downloadableVersions = [];
 
 		/*
 		We should get:

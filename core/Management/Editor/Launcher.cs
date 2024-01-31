@@ -33,7 +33,7 @@ public partial class Launcher : Node
             {
                 string executablePath = Version.Path.PathJoin(filename);
                 GD.Print($"Running Godot {Version.Version}; Mono={Version.Mono}\nPath: {ProjectSettings.GlobalizePath(executablePath)}");
-                string[] argument = {"--project-manager"}; // Run in Project Manager
+                string[] argument = ["--project-manager"]; // Run in Project Manager
                 _ = OS.CreateProcess(ProjectSettings.GlobalizePath(executablePath), argument, new AppConfig().OpenEditorConsole); // Open a native OS path
 
                 notifySystem.Notify(title: Tr("Editor Launched"), description: string.Format(Tr("Launched Godot {0}"), Version.Version));

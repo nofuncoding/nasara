@@ -1,6 +1,7 @@
 using Godot;
 using System;
-using Nasara.Core.Management.Editor;
+using Editor = Nasara.Core.Management.Editor;
+using static Nasara.Core.Management.Editor.GodotVersion;
 
 namespace Nasara.UI.Component;
 
@@ -18,14 +19,14 @@ public partial class EditorList : VBoxContainer
 	public BaseButton launchButton;
 
 	// [{ "index": .., "version": .., "path": .., "channel": .. }, ..]
-	Godot.Collections.Array<Godot.Collections.Dictionary> editorItems = new();
-	Manager godotManager;
+	Godot.Collections.Array<Godot.Collections.Dictionary> editorItems = [];
+	Editor.Manager godotManager;
 
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		godotManager = GetNode<Manager>("/root/GodotManager");
+		godotManager = GetNode<Editor.Manager>("/root/GodotManager");
 		
 		launchButton.Disabled = true;
 		launchButton.Pressed += LaunchEditor;
@@ -88,7 +89,7 @@ public partial class EditorList : VBoxContainer
 					OkButtonText = Tr("Yes")
 				};
 				dialog.Confirmed += () => {
-					DeleteEditor((GodotVersion)GetCurrentEditor((int)on_item)["version"]);
+					DeleteEditor((Editor.GodotVersion)GetCurrentEditor((int)on_item)["version"]);
 					dialog.QueueFree();
 				};
 				dialog.Canceled += () => { dialog.QueueFree(); };
@@ -103,7 +104,7 @@ public partial class EditorList : VBoxContainer
 	public void RefreshEditors()
 	{
 		// TODO: Find out the Editors
-		Godot.Collections.Array<GodotVersion> godotVersions = godotManager.Version().GetVersions();
+		Godot.Collections.Array<Editor.GodotVersion> godotVersions = Editor.Version.GetVersions();
 
 		editorItemList.Clear();
 
@@ -114,7 +115,7 @@ public partial class EditorList : VBoxContainer
 			return;
 		}
 
-		foreach (GodotVersion godot in godotVersions)
+		foreach (Editor.GodotVersion godot in godotVersions)
 		{
 			string version_name = $"Godot {godot.Version}";
 			if (godot.Mono)
@@ -126,11 +127,11 @@ public partial class EditorList : VBoxContainer
 				{ "name", version_name },
 				{ "version", godot },
 			};
-			if (godot.Status != GodotVersion.VersionStatus.OK)
+			if (godot.Status != VersionStatus.OK)
 			{
 				switch (godot.Status)
 				{
-					case GodotVersion.VersionStatus.NotFound:
+					case VersionStatus.NotFound:
 						var i = editorItemList.AddItem(version_name);
 						editorItemList.SetItemDisabled(i, true);
 						editorItemList.SetItemTooltip(i, "Executable Not Found");
@@ -162,10 +163,10 @@ public partial class EditorList : VBoxContainer
 
 	void LaunchEditor(long index)
 	{
-		godotManager.Launch((GodotVersion)GetCurrentEditor((int)index)["version"]);
+		godotManager.Launch((Editor.GodotVersion)GetCurrentEditor((int)index)["version"]);
 	}
 
-	void DeleteEditor(GodotVersion version)
+	void DeleteEditor(Editor.GodotVersion version)
 	{
 		string path = version.Path;
 		OS.MoveToTrash(ProjectSettings.GlobalizePath(path)); // TODO: Use DirAccess to delete

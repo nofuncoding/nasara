@@ -23,7 +23,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GodotManager="*res://core/Management/Editor/GodotManager/Manager.cs"
+GodotManager="*res://core/Management/Editor/Manager.cs"
 
 [display]
 
@@ -54,7 +54,6 @@ theme/custom_font="res://res/font/GlowSansSC-Normal-Regular.otf"
 [internationalization]
 
 locale/translations=PackedStringArray("res://lang/zh.mo", "res://lang/en.mo")
-locale/translations_pot_files=PackedStringArray("res://ui/view/add_editor_view.tscn", "res://ui/view/editor_view.tscn", "res://ui/view/project_view.tscn", "res://ui/view/setting_view.tscn", "res://app.tscn")
 
 [rendering]
 

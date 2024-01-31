@@ -19,7 +19,7 @@ public partial class Downloader : HttpRequest
         UseThreads = true;
         DownloadFile = save_path;
 
-        Nasara.AppConfig config = new();
+        AppConfig config = new();
         if (config.EnableTLS)
             SetTlsOptions(TlsOptions.Client());
         
