@@ -10,7 +10,7 @@ namespace Nasara.Core.Management.Project;
 /// <summary>
 /// Reads the godot project file `project.godot`
 /// </summary>
-public partial class ProjectFile
+public partial class ProjectFile : RefCounted
 {
     public readonly string Path;
     
@@ -58,11 +58,5 @@ public partial class ProjectFile
     public Variant GetValueRaw(string section, string key, Variant @default = default)
     {
         return file.GetValue(section, key, @default);
-    }
-
-    ~ProjectFile() // i dont know why it is here
-    {
-        file.Free();
-        file = null;
     }
 }

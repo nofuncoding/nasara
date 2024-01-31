@@ -1,9 +1,10 @@
 using Godot;
+using Semver;
 using System;
 
 namespace Nasara.Core.Management.Project;
 
-public partial class Project
+public partial class Project : RefCounted
 {
     const string PROJECT_FILE = "project.godot";
 
@@ -11,6 +12,7 @@ public partial class Project
     public string ProjectFilePath { get; private set; }
 
     public string Name { get; private set; }
+    public SemVersion UsingGodotVersion { get; private set; }
 
     ProjectFile projectFile;
 
@@ -44,6 +46,7 @@ public partial class Project
         // Load the project file
         projectFile = new ProjectFile(ProjectFilePath);
         Name = projectFile.GetProjectName();
+        UsingGodotVersion = projectFile.GetProjectGodotVersion();
     }
 
     static bool DirHasProjectFile(string dirPath)
