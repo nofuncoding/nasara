@@ -193,9 +193,9 @@ class VersionReaderLegacy
 
 }
 
-class VersionWriter
+static class VersionWriter
 {
-    public const string EDITORLIST = "user://editors.json";
+    public const string EDITOR_LIST = "user://editors.json";
 
     /*Example:
     [
@@ -208,7 +208,7 @@ class VersionWriter
         ...
     ]*/
 
-    public static Error Write(Array<GodotVersion> godotVersions)
+    public static void Write(Array<GodotVersion> godotVersions)
     {
         Array<Dictionary> version_data = [];
         foreach (var ver in godotVersions)
@@ -224,12 +224,12 @@ class VersionWriter
         }
 
         string data = Json.Stringify(version_data);
-        using var file = FileAccess.Open(EDITORLIST, FileAccess.ModeFlags.Write);
+        using var file = FileAccess.Open(EDITOR_LIST, FileAccess.ModeFlags.Write);
         if (file is null)
-            return FileAccess.GetOpenError();
+            GD.PushError($"Failed to write to {EDITOR_LIST}: {FileAccess.GetOpenError()}");
         
         file.StoreString(data);
-        return Error.Ok;
+        GD.Print($"Writing to {EDITOR_LIST}");
     }
 
     static Array<GodotVersion> ReadFile(FileAccess file)
@@ -280,10 +280,10 @@ class VersionWriter
     public static Array<GodotVersion> Read()
     {
 
-        if (!FileAccess.FileExists(EDITORLIST))
+        if (!FileAccess.FileExists(EDITOR_LIST))
         {
             // Creating File
-            FileAccess.Open(EDITORLIST, FileAccess.ModeFlags.Write);
+            FileAccess.Open(EDITOR_LIST, FileAccess.ModeFlags.Write);
 
             if (FileAccess.FileExists("user://gdls") || FileAccess.FileExists("user://godot_list"))
                 return ProcessLegacy();
@@ -291,7 +291,7 @@ class VersionWriter
             return [];
         }
 
-        using var file = FileAccess.Open(EDITORLIST, FileAccess.ModeFlags.Read);
+        using var file = FileAccess.Open(EDITOR_LIST, FileAccess.ModeFlags.Read);
         if (file is not null)
         {
             Array<GodotVersion> godotVersions = ReadFile(file);
