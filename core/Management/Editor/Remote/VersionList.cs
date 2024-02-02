@@ -4,7 +4,7 @@ using System;
 namespace Nasara.Core.Management.Editor;
 public partial class VersionList : Node
 {
-    public static readonly string GODOT_LIST_CACHE_PATH = "user://cache/remote_godot.json";
+    public static readonly string GODOT_LIST_CACHE_PATH = App.CACHE_PATH.PathJoin("remote_godot.json");
     string GodotCurrentNodeId = null;
     string GodotUnstableCurrentNodeId = null;
 

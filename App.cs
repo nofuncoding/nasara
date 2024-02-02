@@ -12,6 +12,11 @@ public partial class App : PanelContainer
 //  [{"name": string, "path": string}, ...]
 //	Godot.Collections.Array<Godot.Collections.Dictionary<string, string>> views;
 
+	// HttpClient is intended to be instantiated once per application, rather than per-use.
+	public static readonly System.Net.Http.HttpClient sysHttpClient = new();
+
+	public const string CACHE_PATH = "user://cache";
+
 	[Export]
 	NotifySystem notifySystem;
 
@@ -104,6 +109,7 @@ public partial class App : PanelContainer
 
 		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/editor_view.tscn"), Tr("Editor"), 0);
 		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/project_view.tscn"), Tr("Project"));
+		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/news_view.tscn"), Tr("News"));
 		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/setting_view.tscn"), Tr("Setting"));
 
 		viewSwitch.Init();
@@ -112,7 +118,7 @@ public partial class App : PanelContainer
 
 	void CreateDirs()
 	{
-		string[] dirs = new string[] { "user://cache" };
+		string[] dirs = [CACHE_PATH];
 
 		foreach (string d in dirs)
 		{
