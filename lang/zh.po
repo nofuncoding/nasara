@@ -19,7 +19,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: view/add_editor_view.tscn
 msgid "What would you do?"
@@ -180,6 +180,9 @@ msgstr "编辑器已删除"
 
 msgid "Deleted Godot {0}"
 msgstr "Godot {0} 已被删除"
+
+msgid "News"
+msgstr "新闻"
 
 #~ msgid "Remove"
 #~ msgstr "删除"

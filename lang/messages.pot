@@ -167,3 +167,6 @@ msgstr ""
 
 msgid "Deleted Godot {0}"
 msgstr ""
+
+msgid "News"
+msgstr ""
