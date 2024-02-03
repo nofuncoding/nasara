@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cio5c07rcv3kk"]
+[gd_scene load_steps=5 format=3 uid="uid://cio5c07rcv3kk"]
 
 [ext_resource type="Script" path="res://ui/controller/component/NewsHolder.cs" id="1_6j35d"]
 [ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://res/font/GlowSansSC-Normal-Medium.otf" id="2_fqj23"]
@@ -14,7 +14,12 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="NewsHolder" type="PanelContainer" node_paths=PackedStringArray("titleRtl", "descriptionLabel", "imageRect")]
+[sub_resource type="LabelSettings" id="LabelSettings_pg2sf"]
+line_spacing = 0.0
+font_size = 12
+font_color = Color(0.47788, 0.47788, 0.47788, 1)
+
+[node name="NewsHolder" type="PanelContainer" node_paths=PackedStringArray("titleRtl", "descriptionLabel", "pubDateLabel", "imageRect")]
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
@@ -22,6 +27,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_tyvvy")
 script = ExtResource("1_6j35d")
 titleRtl = NodePath("HBoxContainer/VBoxContainer/Title")
 descriptionLabel = NodePath("HBoxContainer/VBoxContainer/Description")
+pubDateLabel = NodePath("HBoxContainer/VBoxContainer/PubDate")
 imageRect = NodePath("HBoxContainer/MarginContainer/TextureRect")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -61,6 +67,12 @@ scroll_active = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 auto_translate = false
-text = "hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello "
+text = "hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello "
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="PubDate" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "This is date"
+label_settings = SubResource("LabelSettings_pg2sf")
+horizontal_alignment = 2

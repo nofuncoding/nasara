@@ -39,6 +39,10 @@ public partial class NewsView : Control
 				holder.SetDescription(item.description);
 				holder.SetLink(item.link);
 
+				var date = DateTime.Parse(item.pubDate);
+				var readable_date = date.ToString("g");
+				holder.SetPubDate(readable_date);
+
 				var image_path = await GodotRssJson.CacheImage(item);
 				if (FileAccess.FileExists(image_path))
 				{

@@ -10,6 +10,8 @@ public partial class NewsHolder : PanelContainer
 	[Export]
 	Label descriptionLabel;
 	[Export]
+	Label pubDateLabel;
+	[Export]
 	TextureRect imageRect;
 
 	public override void _Ready()
@@ -27,6 +29,7 @@ public partial class NewsHolder : PanelContainer
 
 		titleRtl.Clear();
 		descriptionLabel.Text = "";
+		pubDateLabel.Text = "";
 	}
 
 	public void SetTitle(string title)
@@ -52,5 +55,10 @@ public partial class NewsHolder : PanelContainer
 		titleRtl.PushMeta(link);
 		titleRtl.AddText(original);
 		titleRtl.Pop();
+	}
+
+	public void SetPubDate(string pubDate)
+	{
+		pubDateLabel.Text = pubDate;
 	}
 }
