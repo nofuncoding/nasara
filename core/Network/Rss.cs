@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Web;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -136,8 +137,8 @@ public readonly struct GodotRssFeed
 {
     public GodotRssFeed(Godot.Collections.Dictionary data)
     {
-        title = (string)data["title"];
-        description = (string)data["description"];
+        title = HttpUtility.HtmlDecode((string)data["title"]);
+        description = HttpUtility.HtmlDecode((string)data["description"]);
 
         var item_list = (Godot.Collections.Array)data["items"];
 
@@ -156,9 +157,8 @@ public readonly struct GodotRssFeed
 
 public readonly struct GodotRssItem(Godot.Collections.Dictionary data)
 {
-    // FIXME: String parse problem like `&amp;`
-    public readonly string title = (string)data["title"];
-    public readonly string description = (string)data["description"];
+    public readonly string title = HttpUtility.HtmlDecode((string)data["title"]);
+    public readonly string description = HttpUtility.HtmlDecode((string)data["description"]);
     public readonly string link = (string)data["link"];
     public readonly string pubDate = (string)data["pubDate"];
     public readonly string image = (string)data["image"];
