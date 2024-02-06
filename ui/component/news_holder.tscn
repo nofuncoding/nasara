@@ -19,13 +19,13 @@ line_spacing = 0.0
 font_size = 12
 font_color = Color(0.47788, 0.47788, 0.47788, 1)
 
-[node name="NewsHolder" type="PanelContainer" node_paths=PackedStringArray("titleRtl", "descriptionLabel", "pubDateLabel", "imageRect")]
+[node name="NewsHolder" type="PanelContainer" node_paths=PackedStringArray("titleButton", "descriptionLabel", "pubDateLabel", "imageRect")]
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tyvvy")
 script = ExtResource("1_6j35d")
-titleRtl = NodePath("HBoxContainer/VBoxContainer/Title")
+titleButton = NodePath("HBoxContainer/VBoxContainer/Title")
 descriptionLabel = NodePath("HBoxContainer/VBoxContainer/Description")
 pubDateLabel = NodePath("HBoxContainer/VBoxContainer/PubDate")
 imageRect = NodePath("HBoxContainer/MarginContainer/TextureRect")
@@ -53,15 +53,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Title" type="RichTextLabel" parent="HBoxContainer/VBoxContainer"]
+[node name="Title" type="LinkButton" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
-auto_translate = false
-theme_override_fonts/normal_font = ExtResource("2_fqj23")
-theme_override_font_sizes/normal_font_size = 20
-bbcode_enabled = true
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_fqj23")
+theme_override_font_sizes/font_size = 22
 text = "This is title!"
-fit_content = true
-scroll_active = false
+underline = 1
 
 [node name="Description" type="Label" parent="HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
