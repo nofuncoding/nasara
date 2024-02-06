@@ -71,7 +71,7 @@ public partial class Requester : HttpRequest
         Json json = new();
         if (json.Parse(data) != Error.Ok)
         {
-            GD.PushError("Failed to Parse GitHub API Data");
+            GD.PushError($"Failed to Parse GitHub API Data: (line {json.GetErrorLine()}) {json.GetErrorMessage()}");
             return null;
         }
 
