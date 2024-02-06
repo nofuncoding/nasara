@@ -60,9 +60,11 @@ public partial class App : PanelContainer
 
 	void Init()
 	{
-		string lang = new AppConfig().Language;
+		AppConfig config = new();
+		string lang = config.Language;
 		if (lang != "")
 			TranslationServer.SetLocale(lang);
+		GetTree().Root.TransparentBg = config.TransparentBackground;
 
 		var splitContainer = GetNode<VSplitContainer>("VSplitContainer");
 

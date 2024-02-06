@@ -5,15 +5,17 @@ namespace Nasara;
 
 public partial class AppConfig : RefCounted
 {
-    static string configPath = "user://nasara.cfg";
+    const string CONFIG_PATH = "user://nasara.cfg";
     ConfigFile configFile;
 
-    // public bool TestVar { get { return (bool)GetValue("test", false); }  set { SetValue("test", value); } }
-
-    // TODO: add option to enable TLS
-    public string Language { get { return (string)GetValue("language", ""); } set { SetValue("language", value, needRestart: true);} }
+    /* App */
+    public string Language { get { return (string)GetValue("language"); } set { SetValue("language", value, needRestart: true);} }
+    /* Network */
     public bool EnableTLS { get { return (bool)GetValue("enable_tls", false, "network"); }  set { SetValue("enable_tls", value, "network"); } }
     public bool UsingGithubProxy { get { return (bool)GetValue("github_proxy", false, "network"); }  set { SetValue("github_proxy", value, "network"); } }
+    /* Theme */
+    public bool TransparentBackground { get { return (bool)GetValue("transparent_background", true, "theme"); }  set { SetValue("transparent_background", value, "theme"); } }
+    /* Editor */
     public bool OpenEditorConsole { get { return (bool)GetValue("open_console", false, "editor"); }  set { SetValue("open_console", value, "editor"); } }
 
     [Signal]
@@ -21,6 +23,7 @@ public partial class AppConfig : RefCounted
 
     public AppConfig()
     {
+        // TODO: Use a cache in memory to avoid reloading the config file every time
         configFile = new ConfigFile();
         
         if (Load() != Error.Ok)
@@ -46,11 +49,11 @@ public partial class AppConfig : RefCounted
 
     Error Save()
     {
-        return configFile.Save(configPath);
+        return configFile.Save(CONFIG_PATH);
     }
 
     Error Load()
     {
-        return configFile.Load(configPath);
+        return configFile.Load(CONFIG_PATH);
     }
 }
