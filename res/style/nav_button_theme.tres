@@ -12,6 +12,8 @@ content_margin_bottom = 5.0
 bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cbvur"]
+content_margin_top = 5.0
+content_margin_bottom = 5.0
 bg_color = Color(0.054902, 0.454902, 0.564706, 1)
 
 [resource]
