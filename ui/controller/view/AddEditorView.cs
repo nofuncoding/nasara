@@ -141,6 +141,7 @@ public partial class AddEditorView : Control
 						versionOption.AddItem(version.Version.ToString());
 					break;
 			}
+			InstallVersionSelected(versionOption.Selected);
 		};
 		versionOption.ItemSelected += InstallVersionSelected;
 		
