@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 namespace Nasara;
 
@@ -15,6 +14,7 @@ public partial class AppConfig : RefCounted
     public bool UsingGithubProxy { get { return (bool)GetValue("github_proxy", false, "network"); }  set { SetValue("github_proxy", value, "network"); } }
     /* Theme */
     public bool TransparentBackground { get { return (bool)GetValue("transparent_background", true, "theme"); }  set { SetValue("transparent_background", value, "theme"); } }
+    public bool UseCustomTitlebar { get { return (bool)GetValue("use_custom_titlebar", true, "theme"); }  set { SetValue("use_custom_titlebar", value, "theme", needRestart: true); } }
     /* Editor */
     public bool OpenEditorConsole { get { return (bool)GetValue("open_console", false, "editor"); }  set { SetValue("open_console", value, "editor"); } }
 

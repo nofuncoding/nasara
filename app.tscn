@@ -1,18 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhmo5fqi55jgx"]
+[gd_scene load_steps=7 format=3 uid="uid://bhmo5fqi55jgx"]
 
+[ext_resource type="StyleBox" uid="uid://d27gjy5q4owlp" path="res://res/style/app_panel.tres" id="1_3n241"]
 [ext_resource type="PackedScene" uid="uid://b43ldqeyl51lx" path="res://ui/component/nav_bar.tscn" id="1_cq3bb"]
 [ext_resource type="Script" path="res://App.cs" id="1_cvbrt"]
-[ext_resource type="PackedScene" uid="uid://cjkqjwjphgrut" path="res://ui/component/custom_window_bar.tscn" id="2_fslgt"]
 [ext_resource type="Script" path="res://ui/controller/component/ViewSwitch.cs" id="3_dmw11"]
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://res/style/normal_control_theme.tres" id="4_pxc2e"]
 [ext_resource type="Script" path="res://ui/controller/NotifySystem.cs" id="5_kqfxe"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7cis"]
-bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.980392)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [node name="App" type="PanelContainer" node_paths=PackedStringArray("mainPage", "loadingPage", "navBar", "viewSwitch", "loadingBar")]
 clip_children = 2
@@ -22,7 +15,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_a7cis")
+theme_override_styles/panel = ExtResource("1_3n241")
 script = ExtResource("1_cvbrt")
 notifySystemPath = NodePath("NotifySystem")
 mainPage = NodePath("VSplitContainer/Main")
@@ -35,12 +28,6 @@ loadingBar = NodePath("Loading/CenterContainer/VBoxContainer/ProgressBar")
 layout_mode = 2
 collapsed = true
 dragger_visibility = 2
-
-[node name="CustomWindowBar" parent="VSplitContainer" node_paths=PackedStringArray("MinWindowButton", "MaxWindowButton", "CloseWindowButton") instance=ExtResource("2_fslgt")]
-layout_mode = 2
-MinWindowButton = NodePath("HBoxContainer/MinWindowButton")
-MaxWindowButton = NodePath("HBoxContainer/MaxWindowButton")
-CloseWindowButton = NodePath("HBoxContainer/CloseWindowButton")
 
 [node name="Main" type="Control" parent="VSplitContainer"]
 layout_mode = 2

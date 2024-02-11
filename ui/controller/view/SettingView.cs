@@ -5,7 +5,7 @@ namespace Nasara.UI.View;
 
 public partial class SettingView : Control
 {
-	AppConfig config = new();
+	AppConfig _config = new();
 
 	[Export]
 	PanelContainer restartBallon;
@@ -25,12 +25,14 @@ public partial class SettingView : Control
 	[ExportGroup("Theme")]
 	[Export]
 	CheckButton transparent;
+	[Export]
+	CheckButton customTitlebar;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		restartBallon.Visible = false;
-		config.NeedRestart += () => restartBallon.Visible = true;
+		_config.NeedRestart += () => restartBallon.Visible = true;
 
 		restartBallonButton.Pressed += () => {
 			// GetTree().ReloadCurrentScene(); // Reload the `App` Scene only
@@ -42,22 +44,24 @@ public partial class SettingView : Control
 
 		InitLanguageOptions();
 
-		enableTLS.ButtonPressed = config.EnableTLS;
-		githubProxy.ButtonPressed = config.UsingGithubProxy;
+		enableTLS.ButtonPressed = _config.EnableTLS;
+		githubProxy.ButtonPressed = _config.UsingGithubProxy;
 
-		transparent.ButtonPressed = config.TransparentBackground;
+		transparent.ButtonPressed = _config.TransparentBackground;
+		customTitlebar.ButtonPressed = _config.UseCustomTitlebar;
 		
 		/* Events */
 
-		langOption.ItemSelected += (long index) => config.Language = TranslationServer.GetLoadedLocales()[index];
+		langOption.ItemSelected += (long index) => _config.Language = TranslationServer.GetLoadedLocales()[index];
 		
-		enableTLS.Toggled += (bool s) => config.EnableTLS = s;
-		githubProxy.Toggled += (bool s) => config.UsingGithubProxy = s;
+		enableTLS.Toggled += (bool s) => _config.EnableTLS = s;
+		githubProxy.Toggled += (bool s) => _config.UsingGithubProxy = s;
 	
 		transparent.Toggled += (bool s) => {
-			config.TransparentBackground = s;
+			_config.TransparentBackground = s;
 			GetTree().Root.TransparentBg = s;
 		};
+		customTitlebar.Toggled += (bool s) => _config.UseCustomTitlebar = s;
 	}
 
 	void InitLanguageOptions()

@@ -2,6 +2,7 @@ using Godot;
 using System;
 using Nasara.UI;
 using Nasara.UI.Component;
+using Nasara.UI.Component.Titlebar;
 using Editor = Nasara.Core.Management.Editor;
 
 namespace Nasara;
@@ -70,11 +71,9 @@ public partial class App : PanelContainer
 		string lang = config.Language;
 		if (lang != "")
 			TranslationServer.SetLocale(lang);
-		GetTree().Root.TransparentBg = config.TransparentBackground;
+		
+		InitStyles();
 
-		var splitContainer = GetNode<VSplitContainer>("VSplitContainer");
-
-		splitContainer.Visible = false;
 		mainPage.Visible = false;
 		loadingPage.Visible = true;
 
@@ -90,9 +89,31 @@ public partial class App : PanelContainer
 		
 		loadingBar.Value++;
 
-		splitContainer.Visible = true;
 		mainPage.Visible = true;
 		loadingPage.Visible = false; 
+	}
+
+	void InitStyles()
+	{
+		AppConfig config = new();
+
+		GetTree().Root.TransparentBg = config.TransparentBackground;
+
+		var splitContainer = GetNode<VSplitContainer>("VSplitContainer");
+		
+		if (config.UseCustomTitlebar)
+		{
+			GetTree().Root.Borderless = true;
+			var titlebar = GD.Load<PackedScene>("res://ui/component/custom_window_bar.tscn").Instantiate();
+			splitContainer.AddChild(titlebar);
+			splitContainer.MoveChild(titlebar, 0);
+		}
+
+		if (!config.TransparentBackground || !config.UseCustomTitlebar)
+		{
+			var appPanel = GD.Load<StyleBoxFlat>("res://res/style/app_panel.tres");
+			appPanel.SetCornerRadiusAll(0);
+		}
 	}
 
 	void InitViews()
