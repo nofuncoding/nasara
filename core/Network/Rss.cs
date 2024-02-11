@@ -19,8 +19,10 @@ public class GodotRssJson
         try
         {
             // Get the json string
+            GD.Print($"GET {RSS_URL}");
             using HttpResponseMessage response = await App.sysHttpClient.GetAsync(RSS_URL);
-            response.EnsureSuccessStatusCode();
+            var code = response.EnsureSuccessStatusCode();
+            GD.Print($"{code.StatusCode} {RSS_URL}");
             string responseBody = await response.Content.ReadAsStringAsync();
 
             // Parse the json string
@@ -38,21 +40,20 @@ public class GodotRssJson
         }
         catch (HttpRequestException e)
         {
-            GD.PushError(e);
+            GD.PushError($"{e.Message} ERR {RSS_URL}");
         }
         return null;
     }
 
     public static async Task<string[]> CacheImages(GodotRssFeed feed)
     {
-        try
+        var image_path = new string[feed.items.Length];
+        for (int i = 0; i < feed.items.Length; i++)
         {
-            var image_path = new string[feed.items.Length];
-
-            for (int i = 0; i < feed.items.Length; i++)
+            Uri uri = new(feed.items[i].image);
+            
+            try
             {
-                Uri uri = new(feed.items[i].image);
-
                 var filename = uri.Segments.Last();
                 var save_path = IMG_CACHE_PATH.PathJoin(filename);
 
@@ -81,20 +82,21 @@ public class GodotRssJson
 
                 image_path[i] = save_path;
             }
+            catch (HttpRequestException e)
+            {
+                GD.PushError($"{e.Message} ERR {uri}");
+            }
         }
-        catch (HttpRequestException e)
-        {
-            GD.PushError(e);
-        }
+        
         return [];
     }
 
     public static async Task<string> CacheImage(GodotRssItem item)
     {
+        Uri uri = new(item.image);
+
         try
         {
-            Uri uri = new(item.image);
-
             var filename = uri.Segments.Last();
             var save_path = App.CACHE_PATH.PathJoin(filename);
 
@@ -126,7 +128,7 @@ public class GodotRssJson
         }
         catch (HttpRequestException e)
         {
-            GD.PushError(e);
+            GD.PushError($"{e.Message} ERR {uri}");
         }
 
         return "";

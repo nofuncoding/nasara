@@ -58,7 +58,7 @@ public partial class Version : Node
         VersionWriter.Write(versions);
         GD.Print($"Removed {godotVersion.Version}");
 
-        GetNode<App>("/root/App").GetNotifySystem().Notify(
+        App.GetNotifySystem().Notify(
             title: Tr("Editor Deleted"),
             description: string.Format(Tr("Deleted Godot {0}"), godotVersion.Version),
             type: UI.NotificationType.Warn

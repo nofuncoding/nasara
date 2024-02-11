@@ -21,7 +21,7 @@ public partial class Launcher : Node
     /// <returns></returns>
     public Error Launch()
     {
-        UI.NotifySystem notifySystem = GetNode<App>("/root/App").GetNotifySystem();
+        UI.NotifySystem notifySystem = App.GetNotifySystem();
 
         DirAccess dirAccess = DirAccess.Open(Version.Path);
         if (dirAccess is null) // Error

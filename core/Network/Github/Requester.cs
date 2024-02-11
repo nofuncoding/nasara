@@ -49,6 +49,13 @@ public partial class Requester : HttpRequest
             GD.PushError("(network) Failed to Request from GitHub, Result Code: ", result);
             return;
         }
+
+        if (responseCode != 200) // 502
+        {
+            GD.PushError($"(network) Failed to Request from GitHub, Response Code: {responseCode}");
+            return;
+        }
+
         GD.Print($"{responseCode} OK {Url}");
 
         string data = body.GetStringFromUtf8();
@@ -66,7 +73,7 @@ public partial class Requester : HttpRequest
         QueueFree();
     }
 
-    Godot.Collections.Array ProcessReleases(string data)
+    static Godot.Collections.Array ProcessReleases(string data)
     {
         Json json = new();
         if (json.Parse(data) != Error.Ok)

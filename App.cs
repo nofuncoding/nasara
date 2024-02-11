@@ -2,7 +2,7 @@ using Godot;
 using System;
 using Nasara.UI;
 using Nasara.UI.Component;
-using Nasara.Core.Management.Editor;
+using Editor = Nasara.Core.Management.Editor;
 
 namespace Nasara;
 
@@ -15,10 +15,12 @@ public partial class App : PanelContainer
 	// HttpClient is intended to be instantiated once per application, rather than per-use.
 	public static readonly System.Net.Http.HttpClient sysHttpClient = new();
 
+	private static App instance;
+
 	public const string CACHE_PATH = "user://cache";
 
-	[Export]
-	NotifySystem notifySystem;
+	[Export(PropertyHint.NodePathToEditedNode)]
+	NodePath notifySystemPath;
 
 	[ExportGroup("Pages")]
 	[Export]
@@ -37,19 +39,20 @@ public partial class App : PanelContainer
 	[Export]
 	ProgressBar loadingBar;
 
-	Manager godotManager;
-	VersionList versionList;
+	static Editor.Manager godotManager;
+	static NotifySystem notifySystem;
+	Editor.VersionList versionList;
 
-	public Godot.Collections.Array<DownloadableVersion> stableVersions;
-	public Godot.Collections.Array<DownloadableVersion> unstableVersions;
+	public Godot.Collections.Array<Editor.DownloadableVersion> stableVersions;
+	public Godot.Collections.Array<Editor.DownloadableVersion> unstableVersions;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		godotManager = GetNode<Manager>("/root/GodotManager"); // Autoload
+		godotManager = GetNode<Editor.Manager>("/root/GodotManager"); // Autoload
 		versionList = new();
 		AddChild(versionList);
 
-		versionList.GetList += (Godot.Collections.Dictionary<string, Godot.Collections.Array<DownloadableVersion>> list) => {
+		versionList.GetList += (Godot.Collections.Dictionary<string, Godot.Collections.Array<Editor.DownloadableVersion>> list) => {
 			stableVersions = list["stable"];
 			unstableVersions = list["unstable"];
 		};
@@ -60,6 +63,9 @@ public partial class App : PanelContainer
 
 	void Init()
 	{
+		instance = this;
+		notifySystem = GetNode<NotifySystem>(notifySystemPath);
+
 		AppConfig config = new();
 		string lang = config.Language;
 		if (lang != "")
@@ -130,8 +136,19 @@ public partial class App : PanelContainer
 			}
 		}
 	}
-	public NotifySystem GetNotifySystem()
+
+	public static NotifySystem GetNotifySystem()
 	{
 		return notifySystem;
+	}
+
+	public static Editor.Manager GetGodotManager()
+	{
+		return godotManager;
+	}
+
+	public static App Get()
+	{
+		return instance;
 	}
 }

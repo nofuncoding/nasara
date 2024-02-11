@@ -14,7 +14,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="App" type="PanelContainer" node_paths=PackedStringArray("notifySystem", "mainPage", "loadingPage", "navBar", "viewSwitch", "loadingBar")]
+[node name="App" type="PanelContainer" node_paths=PackedStringArray("mainPage", "loadingPage", "navBar", "viewSwitch", "loadingBar")]
 clip_children = 2
 clip_contents = true
 anchors_preset = 15
@@ -24,7 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7cis")
 script = ExtResource("1_cvbrt")
-notifySystem = NodePath("NotifySystem")
+notifySystemPath = NodePath("NotifySystem")
 mainPage = NodePath("VSplitContainer/Main")
 loadingPage = NodePath("Loading")
 navBar = NodePath("VSplitContainer/Main/HBoxContainer/NavBar")

@@ -82,8 +82,8 @@ public partial class AddEditorView : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		app = GetNode<App>("/root/App");
-		godotManager = GetNode<Editor.Manager>("/root/GodotManager");
+		app = App.Get();
+		godotManager = App.GetGodotManager();
 		versionManager = godotManager.Version();
 		installedVersions = Editor.Version.GetVersions();
 		SwitchView(0);

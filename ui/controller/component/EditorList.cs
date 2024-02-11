@@ -26,7 +26,7 @@ public partial class EditorList : VBoxContainer
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		godotManager = GetNode<Editor.Manager>("/root/GodotManager");
+		godotManager = App.GetGodotManager();
 		
 		launchButton.Disabled = true;
 		launchButton.Pressed += LaunchEditor;
