@@ -26,7 +26,7 @@ public partial class Project : RefCounted
                 ProjectFilePath = path;
             }
             else
-                throw new Exception("Invalid Project File");
+                throw new System.IO.IOException("Invalid Project File");
         else if (DirAccess.DirExistsAbsolute(path)) // Is directory
             if (DirHasProjectFile(path))
             {
@@ -34,15 +34,10 @@ public partial class Project : RefCounted
                 ProjectFilePath = path.PathJoin(PROJECT_FILE);
             }
             else
-                throw new Exception("Invalid Project Directory");
+                throw new System.IO.IOException("Invalid Project Directory");
         else
-            throw new Exception("Invalid Project Path");
+            throw new System.IO.IOException("Invalid Project Path");
 
-        Init();
-    }
-
-    void Init()
-    {
         // Load the project file
         projectFile = new ProjectFile(ProjectFilePath);
         Name = projectFile.GetProjectName();
@@ -53,7 +48,10 @@ public partial class Project : RefCounted
     {
         var dir = DirAccess.Open(dirPath);
         if (dir is null)
+        {
             GD.PushError(DirAccess.GetOpenError());
+            return false;
+        }
         
         // Get all files in *the root directory*
         var all_files = dir.GetFiles();

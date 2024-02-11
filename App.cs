@@ -124,7 +124,7 @@ public partial class App : PanelContainer
 		loadingBar.Value++;
 	}
 
-	void CreateDirs()
+	static void CreateDirs()
 	{
 		string[] dirs = [CACHE_PATH];
 

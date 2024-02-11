@@ -8,14 +8,104 @@ public partial class Manager : Node
 {
     Array<Project> versions;
 
-    public override void _Ready()
+    public Manager()
     {
         versions = ProjectList.Read();
     }
 
-    public void Add(Project project)
+    public static void Add(Project project)
     {
         ProjectList.Add(project);
+    }
+
+    /// <summary>
+    /// Get local projects from the editors saved projects.
+    ///
+    /// It usually saves the project list in the user folder.
+    /// The file path is `user://projects.cfg` (note: the path is for the godot editor)
+    /// </summary>
+    public static Project[] GetLocalProjectsFromEditors()
+    {
+        ConfigFile config = new();
+        var file_path = GetLocalProjectsFilePath();
+        if (file_path is null)
+            return [];
+
+        var err = config.Load(file_path);
+        if (err != Error.Ok)
+        {
+            GD.PushError($"Failed to load projects.cfg: {err}");
+            return [];
+        }
+
+        string[] paths = config.GetSections();
+        System.Collections.ArrayList p = [];
+        foreach (var path in paths)
+        {
+            try
+            {
+                Project project = new(path);
+                p.Add(project);
+            }
+            catch (Exception e)
+            {
+                GD.PushError($"Failed to load project \"{path}\": {e.Message}");
+            }
+        }
+
+        return (Project[])p.ToArray();
+    }
+
+    /// <summary>
+    /// Launches a project using the given godot version.
+    /// </summary>
+    /// <param name="project">The project to launch.</param>
+    /// <param name="godot">The godot version to launch the project with.</param>
+    /// <returns></returns>
+    public Error LaunchProject(Project project, Editor.GodotVersion godot)
+    {
+        Editor.Launcher launcher = new(godot);
+        AddChild(launcher);
+        return launcher.Launch(project.ProjectDirPath);
+    }
+
+    static string GetLocalProjectsFilePath()
+    {
+        const string LOCAL_EDITORS_FILE = "projects.cfg";
+
+        const string LINUX_GODOT_DATA_DIR = "~/.local/share/godot/";
+        const string FLATPAK_GODOT_DATA_DIR = "~/.var/app/org.godotengine.godot/";
+        const string MACOS_GODOT_DATA_DIR = "~/Library/Application Support/Godot/";
+
+        string file_path;
+
+        if (OperatingSystem.IsWindows())
+        {
+            string appdata = System.Environment.GetEnvironmentVariable("APPDATA") ?? "C:/Users/Administrator/AppData/Roaming/";
+            if (appdata is null)
+                return null;
+            file_path = appdata.PathJoin("/Godot/").PathJoin(LOCAL_EDITORS_FILE);
+        }
+        else if (OperatingSystem.IsLinux())
+        {
+            if (DirAccess.DirExistsAbsolute(FLATPAK_GODOT_DATA_DIR))
+                file_path = FLATPAK_GODOT_DATA_DIR.PathJoin(LOCAL_EDITORS_FILE);
+            else
+                file_path = LINUX_GODOT_DATA_DIR.PathJoin(LOCAL_EDITORS_FILE);
+        }
+        else if (OperatingSystem.IsMacOS())
+        {
+            file_path = MACOS_GODOT_DATA_DIR.PathJoin(LOCAL_EDITORS_FILE);
+        }
+        else
+        {
+            throw new SystemException("Operating system not supported");
+        }
+
+        if (FileAccess.FileExists(file_path))
+            return file_path;
+        else
+            return "";
     }
 
     // TODO
