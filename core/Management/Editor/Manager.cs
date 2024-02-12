@@ -10,28 +10,17 @@ namespace Nasara.Core.Management.Editor;
 /// </summary>
 public partial class Manager : Node
 {
-    Requester requester;
-    Version version;
+    public Requester Requester { get; private set; }
+    public Version Version { get; private set; }
 
     public override void _Ready()
     {
-        requester = new();
-        version = new();
+        Requester = new();
+        Version = new();
 
-        AddChild(requester);
-        AddChild(version);
+        AddChild(Requester);
+        AddChild(Version);
     }
-
-    public Requester Requester() // why need it
-    {
-        return requester;
-    }
-
-    public Version Version() // and this?
-    {
-        return version;
-    }
-
 
     public void Launch(GodotVersion version)
     {

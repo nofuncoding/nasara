@@ -17,7 +17,7 @@ public partial class VersionList : Node
     // FIXME: Buggy Cache Updating
     public Error GetGodotList(Manager godotManager)
     {
-        Requester godotRequester = godotManager.Requester();
+        var godotRequester = godotManager.Requester;
 
         if (!FileAccess.FileExists(GODOT_LIST_CACHE_PATH)) {
             godotRequester.RequestEditorList();
@@ -57,7 +57,7 @@ public partial class VersionList : Node
     
     Error ProcessGodotListCache(Manager godotManager)
     {
-        Requester godotRequester = godotManager.Requester();
+        Requester godotRequester = godotManager.Requester;
 
         godotRequester.VersionsRequested += (Godot.Collections.Array<DownloadableVersion> downloadableVersions, int channel) =>
         {
@@ -93,7 +93,7 @@ public partial class VersionList : Node
             GodotCurrentNodeId = (string)latest["node_id"];
 
             Godot.Collections.Array data = (Godot.Collections.Array)version_dict["stable"];
-            stableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Stable);
+            stableVersions = Requester.ProcessRawData(data, GodotVersion.VersionChannel.Stable);
         } else {
             // GodotRequester will auto save cache
             godotRequester.RequestEditorList();
@@ -107,7 +107,7 @@ public partial class VersionList : Node
             GodotUnstableCurrentNodeId = (string)latest["node_id"];
 
             Godot.Collections.Array data = (Godot.Collections.Array)version_dict["unstable"];
-            unstableVersions = godotRequester.ProcessRawData(data, GodotVersion.VersionChannel.Unstable);
+            unstableVersions = Requester.ProcessRawData(data, GodotVersion.VersionChannel.Unstable);
         } else {
             // GodotRequester will auto save cache
             godotRequester.RequestEditorList(GodotVersion.VersionChannel.Unstable);

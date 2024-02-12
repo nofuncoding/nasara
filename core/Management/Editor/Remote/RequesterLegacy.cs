@@ -6,8 +6,10 @@ using System.Linq;
 
 namespace Nasara.Core.Management.Editor;
 
-public partial class Requester : Node
+[Obsolete("Use Requester instead")]
+public partial class RequesterLegacy : Node
 {
+	// GitHub
 	const string GODOT_OWNER = "godotengine";
 	const string GODOT_REPO_STABLE = "godot";
 	const string GODOT_REPO_UNSTABLE = "godot-builds";
@@ -18,23 +20,34 @@ public partial class Requester : Node
 	[Signal]
 	public delegate void NodeIdRequestedEventHandler(string nodeId, int channel);
 
-	public async void RequestEditorList(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
+	public Error RequestEditorList(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
 	{
-		var repo = "";
+		Network.Github.RequesterLegacy github = null;
 		switch (channel)
 		{
 			case GodotVersion.VersionChannel.Stable:
-				repo = GODOT_REPO_STABLE; break;
+				github = new(GODOT_OWNER, GODOT_REPO_STABLE); break;
 			case GodotVersion.VersionChannel.Unstable:
-				repo = GODOT_REPO_UNSTABLE; break;
+				github = new(GODOT_OWNER, GODOT_REPO_UNSTABLE); break;
 		}
+		if (github is not null)
+			AddChild(github);
 
-		var releases = await Network.Github.Requester.RequestReleases(GODOT_OWNER, repo);
+		if (!IsNodeReady())
+			return Error.Busy;
 
-		if (releases.Count == 0)
-			return;
-		
-		GodotRequestCompleted(channel, releases);
+		github.GithubRequestCompleted += (Variant result, Network.Github.RequesterLegacy.RequestType type) => {
+			if (type != Network.Github.RequesterLegacy.RequestType.Releases)
+				return;
+				
+			Godot.Collections.Array godots = (Godot.Collections.Array)result;
+			if (godots.Count == 0)
+				return;
+			
+			GodotRequestCompleted(channel, godots);
+		};
+
+		return Error.Ok;
 	}
 
 	void GodotRequestCompleted(GodotVersion.VersionChannel channel, Godot.Collections.Array data)
@@ -108,7 +121,7 @@ public partial class Requester : Node
 		return Error.Ok;
 	}
 
-	public static Array<DownloadableVersion> ProcessRawData(Godot.Collections.Array godots, GodotVersion.VersionChannel channel)
+	public Array<DownloadableVersion> ProcessRawData(Godot.Collections.Array godots, GodotVersion.VersionChannel channel)
 	{
 		Array<DownloadableVersion> downloadableVersions = [];
 
@@ -181,19 +194,26 @@ public partial class Requester : Node
 		return downloadableVersions;
 	}
 
-	public async void RequestLatestNodeId(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
+	public Error RequestLatestNodeId(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
 	{
-		var repo = "";
+		Network.Github.RequesterLegacy github = null;
 		switch (channel)
 		{
 			case GodotVersion.VersionChannel.Stable:
-				repo = GODOT_REPO_STABLE; break;
+				github = new(GODOT_OWNER, GODOT_REPO_STABLE, Network.Github.RequesterLegacy.RequestType.LatestNodeId); break;
 			case GodotVersion.VersionChannel.Unstable:
-				repo = GODOT_REPO_UNSTABLE; break;
+				github = new(GODOT_OWNER, GODOT_REPO_UNSTABLE, Network.Github.RequesterLegacy.RequestType.LatestNodeId); break;
 		}
+		if (github is not null)
+			AddChild(github);
+		if (!IsNodeReady())
+			return Error.Busy;
 
-		var nodeId = await Network.Github.Requester.RequestLatestNodeId(GODOT_OWNER ,repo);
+		github.GithubRequestCompleted += (Variant result, Network.Github.RequesterLegacy.RequestType type) => {
+			string node_id = (string)result;
+			EmitSignal(SignalName.NodeIdRequested, node_id, (int)channel);
+		};
 
-		EmitSignal(SignalName.NodeIdRequested, nodeId, (int)channel);
+		return Error.Ok;
 	}
 }

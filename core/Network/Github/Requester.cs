@@ -1,76 +1,44 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
+using Http = System.Net.Http;
 
 namespace Nasara.Core.Network.Github;
 
-public partial class Requester : HttpRequest
+public static class Requester
 {
-    const string GITHUB_API_BASE = "https://api.github.com";
+    const string GITHUB_API_BASE = "https://api.github.com/";
+    static Http.HttpClient _client;
 
-    string Url;
-    RequestType Type;
-
-    [Signal]
-    public delegate void GithubRequestCompletedEventHandler(Variant result, RequestType type);
-
-    public Requester(string owner, string repo, RequestType type=RequestType.Releases)
+    public static void Init()
     {
-        AppConfig config = new();
-        if (config.EnableTLS)
-            SetTlsOptions(TlsOptions.Client());
+        _client = new()
+        {
+            BaseAddress = new Uri(GITHUB_API_BASE),
+            Timeout = TimeSpan.FromSeconds(10),
+        };
+        _client.DefaultRequestHeaders.Add("User-Agent", "Nasara");
+    }
 
-        Type = type;
+    public static async Task<Godot.Collections.Array> RequestReleases(string owner, string repo)
+    {
+        using var response = await _client.GetAsync($"repos/{owner}/{repo}/releases");
+        GD.Print($"GET {response.RequestMessage.RequestUri}");
+        var code = response.EnsureSuccessStatusCode();
         
-        Url = $"{GITHUB_API_BASE}/repos/{owner}/{repo}/";
-        switch (type)
-        {
-            case RequestType.Releases:
-            case RequestType.LatestNodeId:
-                Url += "releases";
-                break;
-        }
+        string responseBody = await response.Content.ReadAsStringAsync();
 
-        RequestCompleted += ProcessData;
+        return ProcessReleases(responseBody);
     }
 
-    public override void _Ready()
+    public static async Task<string> RequestLatestNodeId(string owner, string repo)
     {
-        GD.Print($"GET {Url}");
-        // You don't need to call Request() any more.
-        // It will be called automatically when the node is ready.
-        // Very lazy, but it works.
-        Request(Url);
-    }
+        using var response = await _client.GetAsync($"repos/{owner}/{repo}/releases");
+        var code = response.EnsureSuccessStatusCode();
 
-    void ProcessData(long result, long responseCode, string[] headers, byte[] body)
-    {
-        if (result != (long)Result.Success)
-        {
-            GD.PushError("(network) Failed to Request from GitHub, Result Code: ", result);
-            return;
-        }
+        string responseBody = response.Content.ReadAsStringAsync().Result;
 
-        if (responseCode != 200) // 502
-        {
-            GD.PushError($"(network) Failed to Request from GitHub, Response Code: {responseCode}");
-            return;
-        }
-
-        GD.Print($"{responseCode} OK {Url}");
-
-        string data = body.GetStringFromUtf8();
-
-        switch (Type)
-        {
-            case RequestType.Releases:
-                EmitSignal(SignalName.GithubRequestCompleted, ProcessReleases(data), (int)Type);
-                break;
-            case RequestType.LatestNodeId:
-                EmitSignal(SignalName.GithubRequestCompleted, ProcessLatestNodeId(data), (int)Type);
-                break;
-        }
-
-        QueueFree();
+        return ProcessLatestNodeId(responseBody);
     }
 
     static Godot.Collections.Array ProcessReleases(string data)
@@ -85,7 +53,7 @@ public partial class Requester : HttpRequest
         return (Godot.Collections.Array)json.Data;
     }
 
-    string ProcessLatestNodeId(string data)
+    static string ProcessLatestNodeId(string data)
     {
         Godot.Collections.Array releases = ProcessReleases(data);
         if (releases is null || releases.Count == 0)
@@ -94,11 +62,5 @@ public partial class Requester : HttpRequest
         Godot.Collections.Dictionary latestRelease = (Godot.Collections.Dictionary)releases[0];
 
         return (string)latestRelease["node_id"];
-    }
-
-    public enum RequestType
-    {
-        Releases,
-        LatestNodeId
     }
 }

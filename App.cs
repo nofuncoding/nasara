@@ -66,6 +66,7 @@ public partial class App : PanelContainer
 	{
 		instance = this;
 		notifySystem = GetNode<NotifySystem>(notifySystemPath);
+		Core.Network.Github.Requester.Init();
 
 		AppConfig config = new();
 		string lang = config.Language;

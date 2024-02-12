@@ -170,7 +170,7 @@ public partial class EditorList : VBoxContainer
 	{
 		string path = version.Path;
 		OS.MoveToTrash(ProjectSettings.GlobalizePath(path)); // TODO: Use DirAccess to delete
-		godotManager.Version().RemoveVersion(version);
+		godotManager.Version.RemoveVersion(version);
 		RefreshEditors();
 	}
 }

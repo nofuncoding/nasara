@@ -20,7 +20,7 @@ public class GodotRssJson
         {
             // Get the json string
             GD.Print($"GET {RSS_URL}");
-            using HttpResponseMessage response = await App.sysHttpClient.GetAsync(RSS_URL);
+            using var response = await App.sysHttpClient.GetAsync(RSS_URL);
             var code = response.EnsureSuccessStatusCode();
             GD.Print($"{code.StatusCode} {RSS_URL}");
             string responseBody = await response.Content.ReadAsStringAsync();

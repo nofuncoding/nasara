@@ -84,7 +84,7 @@ public partial class AddEditorView : Control
 	{
 		app = App.Get();
 		godotManager = App.GetGodotManager();
-		versionManager = godotManager.Version();
+		versionManager = godotManager.Version;
 		installedVersions = Editor.Version.GetVersions();
 		SwitchView(0);
 
