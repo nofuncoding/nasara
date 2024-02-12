@@ -47,6 +47,8 @@ public class GodotRssJson
 
     public static async Task<string[]> CacheImages(GodotRssFeed feed)
     {
+        DirAccess.MakeDirAbsolute(IMG_CACHE_PATH);
+
         var image_path = new string[feed.items.Length];
         for (int i = 0; i < feed.items.Length; i++)
         {
@@ -95,10 +97,12 @@ public class GodotRssJson
     {
         Uri uri = new(item.image);
 
+        DirAccess.MakeDirAbsolute(IMG_CACHE_PATH);
+
         try
         {
             var filename = uri.Segments.Last();
-            var save_path = App.CACHE_PATH.PathJoin(filename);
+            var save_path = IMG_CACHE_PATH.PathJoin(filename);
 
             // The cache already exists
             if (FileAccess.FileExists(save_path))
@@ -132,6 +136,37 @@ public class GodotRssJson
         }
 
         return "";
+    }
+
+    public static Error DeleteUnusedCache(GodotRssFeed feed)
+    {
+        using var dir = DirAccess.Open(IMG_CACHE_PATH);
+        if (dir is null)
+        {
+            var err = DirAccess.GetOpenError();
+            GD.PushError($"Failed to open cache directory {IMG_CACHE_PATH}: {err}");
+            return err;
+        }
+        var delete_list = dir.GetFiles().ToList();
+
+        foreach (var item in feed.items)
+        {
+            Uri uri = new(item.image);
+            var filename = uri.Segments.Last();
+            delete_list.Remove(filename);
+        }
+
+        if (delete_list.Count > 0)
+        {
+            foreach (var filename in delete_list)
+            {
+                var f = IMG_CACHE_PATH.PathJoin(filename);
+                GD.Print($"DELETE {f}");
+                DirAccess.RemoveAbsolute(f);
+            }
+        }
+
+        return Error.Ok;
     }
 }
 

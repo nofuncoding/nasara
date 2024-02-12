@@ -98,7 +98,7 @@ public partial class Version : Node
         GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable;
         SemVersion version = null;
 
-        DirAccess dirAccess = DirAccess.Open(path);
+        using var dirAccess = DirAccess.Open(path);
         if (dirAccess is null)
         {
             // GD.PushError($"{DirAccess.GetOpenError()}:{path}");

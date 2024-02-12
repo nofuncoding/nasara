@@ -46,7 +46,7 @@ public partial class Project : RefCounted
 
     static bool DirHasProjectFile(string dirPath)
     {
-        var dir = DirAccess.Open(dirPath);
+        using var dir = DirAccess.Open(dirPath);
         if (dir is null)
         {
             GD.PushError(DirAccess.GetOpenError());

@@ -25,7 +25,7 @@ public partial class Launcher : Node
     {
         UI.NotifySystem notifySystem = App.GetNotifySystem();
 
-        DirAccess dirAccess = DirAccess.Open(Version.Path);
+        using var dirAccess = DirAccess.Open(Version.Path);
         if (dirAccess is null) // Error
             return DirAccess.GetOpenError();
 
@@ -68,7 +68,7 @@ public partial class Launcher : Node
     {
         UI.NotifySystem notifySystem = App.GetNotifySystem();
 
-        DirAccess dirAccess = DirAccess.Open(Version.Path);
+        using var dirAccess = DirAccess.Open(Version.Path);
         if (dirAccess is null) // Error
             return DirAccess.GetOpenError();
 

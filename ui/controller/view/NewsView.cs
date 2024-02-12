@@ -52,6 +52,8 @@ public partial class NewsView : Control
 					holder.SetTexture(texture);
 				}
 			}
+
+			GodotRssJson.DeleteUnusedCache(feed.Value);
 		}
 
 	}
