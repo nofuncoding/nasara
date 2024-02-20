@@ -66,20 +66,26 @@ public partial class NotifyBallon : Control
 
 	public void SetNotifyType(NotificationType type)
 	{
+		// Defined in Material Symbols, will be replaced with
+		// the target symbol using OpenType features
+		const string INFO_ICON = "info";
+		const string WARN_ICON = "warning";
+		const string ERROR_ICON = "error";
+
 		switch (type)
 		{
 			case NotificationType.Info:
-				IconLabel.Text = "info"; // Set icon
+				IconLabel.Text = INFO_ICON;
 				IconLabel.LabelSettings = GD.Load<LabelSettings>("res://res/style/notify/ballon_white_icon.tres");
 				SetTimerBarColor(new Color(1, 1, 1));
 				break;
 			case NotificationType.Warn:
-				IconLabel.Text = "warning";
+				IconLabel.Text = WARN_ICON;
 				IconLabel.LabelSettings = GD.Load<LabelSettings>("res://res/style/notify/ballon_yellow_icon.tres");
 				SetTimerBarColor(new Color(0.98f, 0.8f, 0.082f));
 				break;
 			case NotificationType.Error:
-				IconLabel.Text = "error";
+				IconLabel.Text = ERROR_ICON;
 				IconLabel.LabelSettings = GD.Load<LabelSettings>("res://res/style/notify/ballon_red_icon.tres");
 				SetTimerBarColor(new Color(0.863f, 0.149f, 0.149f));
 				break;
