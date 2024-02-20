@@ -44,6 +44,13 @@ public partial class GodotVersion : RefCounted
         Mono = mono;
     }
 
+    /// <summary>
+    /// Build new editor version
+    /// </summary>
+    /// <param name="version">Editor version</param>
+    /// <param name="path">The path to the installation directory</param>
+    /// <param name="channel">Stable or Unstable</param>
+    /// <param name="mono">Is mono?</param>
     public GodotVersion(SemVersion version, string path, VersionChannel channel=VersionChannel.Stable, bool mono=false)
     {
         Version = version;

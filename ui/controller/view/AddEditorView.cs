@@ -1,6 +1,7 @@
 using Godot;
 using Semver;
 using System;
+using System.IO.Compression;
 using Humanizer;
 using Editor = Nasara.Core.Management.Editor;
 using static Nasara.Core.Management.Editor.GodotVersion;
@@ -276,8 +277,9 @@ public partial class AddEditorView : Control
 							GD.PushError("Failed to Get Download Link from godotengine/godot-builds again");
 						}
 						*/
-
-						if (new Editor.Downloader().GetDownloadUrl(version, monoCheckButton.ButtonPressed).Length > 0)
+						
+						// FIXME: Sometimes null
+						if (Editor.Downloader.GetDownloadUrl(version, monoCheckButton.ButtonPressed).Length > 0)
 						{
 							StartDownload(version);
 							return;
@@ -364,9 +366,9 @@ public partial class AddEditorView : Control
 
 	void UnpackGodot(Editor.DownloadableVersion version, string zipPath)
 	{
-		progressBar.Value = 0;
 		progressLabel.Text = Tr("Unzipping Files");
 
+		/*
 		// Unzipping Godot
 		ZipReader zip = new();
 		if (zip.Open(zipPath) != Error.Ok)
@@ -423,12 +425,45 @@ public partial class AddEditorView : Control
 		if (!monoCheckButton.ButtonPressed)
 			editorPath = path;
 
-		GD.Print($"Unzipped to {editorPath}");
+		GD.Print($"Unzipped to {editorPath}");*/
 
-		FinishInstalling(version, zipPath, editorPath);
+		string path = ProjectSettings.GlobalizePath("user://editors");
+
+		zipPath = ProjectSettings.GlobalizePath(zipPath);
+
+		// TODO: replace it with a better way.
+		var end_dir = "";
+		using var arc = ZipFile.OpenRead(zipPath);
+
+		foreach (var entry in arc.Entries)
+			if (entry.FullName.StartsWith("Godot") && !entry.FullName.Contains("console"))
+			{
+				end_dir = entry.FullName;
+				break;
+			}
+
+		GD.Print($"{zipPath} -> {path}");
+
+		// special processing to get a flat directory
+		if (!monoCheckButton.ButtonPressed)
+		{ 
+			path = path.PathJoin(end_dir);
+			ZipFile.ExtractToDirectory(zipPath, path);
+		} else {
+			ZipFile.ExtractToDirectory(zipPath, path);
+			path = path.PathJoin(end_dir);
+		}
+
+		// Cleaning up
+		DirAccess.RemoveAbsolute(zipPath);
+
+		progressLabel.Text = Tr("Completed");
+
+
+		FinishInstalling(version, path);
 	}
 
-	void FinishInstalling(Editor.DownloadableVersion version, string zipPath, string editorPath)
+	void FinishInstalling(Editor.DownloadableVersion version, string editorPath)
 	{
 		// godotManager.AddVersion(new GodotVersion(version.Version, editorPath, version.Channel, monoCheckButton.ButtonPressed));
 		// Because of bug above, we use this:
@@ -436,9 +471,7 @@ public partial class AddEditorView : Control
 		if (version.Version.IsPrerelease)
 			versionChannel = VersionChannel.Unstable;
 		versionManager.AddVersion(new Editor.GodotVersion(version.Version, editorPath, versionChannel, monoCheckButton.ButtonPressed));
-
-		// Cleaning up
-		DirAccess.RemoveAbsolute(zipPath);
+		
 		if (monoCheckButton.ButtonPressed)
 			GD.Print("Added Godot Mono ", version.Version.ToString(), "; Prerelease=", version.Version.IsPrerelease);
 		else

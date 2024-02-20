@@ -24,7 +24,7 @@ public partial class Downloader : Node
         AddChild(downloader);
     }
 
-    public string GetDownloadUrl(DownloadableVersion version, bool mono)
+    public static string GetDownloadUrl(DownloadableVersion version, bool mono)
     {
         return version.GetDownloadUrl(GetTargetPlatform(mono));
     }
@@ -53,7 +53,7 @@ public partial class Downloader : Node
             return -1;
     }
     
-    DownloadableVersion.TargetPlatform GetTargetPlatform(bool mono)
+    static DownloadableVersion.TargetPlatform GetTargetPlatform(bool mono)
     {
         DownloadableVersion.TargetPlatform platform = DownloadableVersion.TargetPlatform.Win32;
 

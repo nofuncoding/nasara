@@ -4,6 +4,8 @@ using Semver;
 
 namespace Nasara.Core.Management.Editor;
 
+// TODO: Refactor this to request url when needed
+
 [GlobalClass]
 public partial class DownloadableVersion : RefCounted
 {
