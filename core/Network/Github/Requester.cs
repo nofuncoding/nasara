@@ -17,7 +17,7 @@ public static class Requester
             BaseAddress = new Uri(GITHUB_API_BASE),
             Timeout = TimeSpan.FromSeconds(10),
         };
-        _client.DefaultRequestHeaders.Add("User-Agent", "Nasara");
+        _client.DefaultRequestHeaders.Add("User-Agent", $"Nasara/{ProjectSettings.GetSetting("application/config/version")}");
     }
 
     public static async Task<Godot.Collections.Array> RequestReleases(string owner, string repo)

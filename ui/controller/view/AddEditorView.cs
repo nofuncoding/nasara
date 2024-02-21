@@ -5,6 +5,7 @@ using System.IO.Compression;
 using Humanizer;
 using Editor = Nasara.Core.Management.Editor;
 using static Nasara.Core.Management.Editor.GodotVersion;
+using System.Text;
 
 namespace Nasara.UI.View;
 
@@ -75,7 +76,7 @@ public partial class AddEditorView : Control
 
 
 	[Signal]
-	public delegate void AddedEditorEventHandler();
+	public delegate void CompletedEventHandler();
 
 
 	// TODO: Add Cancel when Downloading
@@ -96,12 +97,12 @@ public partial class AddEditorView : Control
 			GetGodotList();
 		};
 		importExistingButton.Pressed += () => SwitchView(3);
-		cancelAddingButton.Pressed += () => EmitSignal(SignalName.AddedEditor); // Don't use Queue Free
+		cancelAddingButton.Pressed += () => EmitSignal(SignalName.Completed); // Don't use Queue Free
 
 		continueButton.Pressed += DownloadTargetVersion;
 		backButton.Pressed += () => SwitchView(0);
 
-		finishButton.Pressed += () => EmitSignal(SignalName.AddedEditor);
+		finishButton.Pressed += () => EmitSignal(SignalName.Completed);
 
 		explodeButton.Pressed += () => {
 			FileDialog dialog = new() {
@@ -123,7 +124,7 @@ public partial class AddEditorView : Control
 			pageImportExisting.Visible = false;
 			versionManager.AddVersion(Core.Management.Editor.Version.PathHasGodot(pathEdit.Text));
 
-			EmitSignal(SignalName.AddedEditor);
+			EmitSignal(SignalName.Completed);
 		};
 		importBackButton.Pressed += () => SwitchView(0);
 
@@ -357,10 +358,34 @@ public partial class AddEditorView : Control
 		timer.Start();
 	}
 
-	void VerifyFile(Editor.DownloadableVersion version, string savePath)
+	async void VerifyFile(Editor.DownloadableVersion version, string savePath)
 	{
-		// TODO: Verifying Files using Sha-512
-		// Use System.Security.Cryptography.SHA512
+		GD.Print("Verifying File: " + savePath);
+		progressLabel.Text = Tr("Verifying");
+		
+		savePath = ProjectSettings.GlobalizePath(savePath);
+
+		try 
+		{
+			var sha512 = await version.GetSha512Async(Editor.Downloader.GetTargetPlatform(monoCheckButton.ButtonPressed));
+
+			var stream = System.IO.File.OpenRead(savePath);
+
+			var shaM = System.Security.Cryptography.SHA512.Create();
+			var result = await shaM.ComputeHashAsync(stream);
+
+			if (sha512 != result.HexEncode())
+				throw new Exception("Failed to Verify File: " + savePath);
+		}
+		catch (Exception e)
+		{
+			finishButton.Visible = true;
+			progressLabel.Text = Tr("Verifying Failed");
+			App.GetNotifySystem().Notify(type: NotificationType.Error, title: Tr("Failed to Verify File"), description: e.Message);
+			return;
+		}
+
+
 		UnpackGodot(version, savePath);
 	}
 
@@ -458,7 +483,6 @@ public partial class AddEditorView : Control
 		DirAccess.RemoveAbsolute(zipPath);
 
 		progressLabel.Text = Tr("Completed");
-
 
 		FinishInstalling(version, path);
 	}

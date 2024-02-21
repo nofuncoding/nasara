@@ -24,7 +24,7 @@ public partial class EditorView : Control
 		PackedScene res = GD.Load<PackedScene>(addEditorViewPath);
 		AddEditorView addEditorView = res.Instantiate<AddEditorView>();
 		AddChild(addEditorView);
-		addEditorView.AddedEditor += () => {
+		addEditorView.Completed += () => {
 			addEditorView.QueueFree();
 			GetNode<VBoxContainer>("VBoxContainer").Visible = true;
 			editorList.RefreshEditors();

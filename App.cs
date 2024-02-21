@@ -14,7 +14,7 @@ public partial class App : PanelContainer
 //	Godot.Collections.Array<Godot.Collections.Dictionary<string, string>> views;
 
 	// HttpClient is intended to be instantiated once per application, rather than per-use.
-	public static readonly System.Net.Http.HttpClient sysHttpClient = new();
+	public static readonly System.Net.Http.HttpClient sysHttpClient = new() { Timeout = TimeSpan.FromSeconds(60) };
 
 	private static App instance;
 

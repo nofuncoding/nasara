@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using Semver;
+using System.Threading.Tasks;
 
 namespace Nasara.Core.Management.Editor;
 
@@ -24,6 +25,8 @@ public partial class DownloadableVersion : RefCounted
     
     string ExportTemplateDownload;
     string MonoExportTemplateDownload;
+
+    string Sha512FileDownload;
 
     Godot.Collections.Dictionary<TargetPlatform, string> fileSha512;
 
@@ -95,10 +98,65 @@ public partial class DownloadableVersion : RefCounted
         }
     }
 
-    public string GetSha512(TargetPlatform platform)
+    public async Task<string> GetSha512Async(TargetPlatform platform)
     {
+        if (fileSha512 is null)
+            await RequestSha512();
+
         return fileSha512[platform];
     }
+
+    async Task RequestSha512()
+    {
+        fileSha512 = [];
+        var res = await App.sysHttpClient.GetStringAsync(Sha512FileDownload);
+        var lines = res.Split('\n');
+
+        foreach (var line in lines)
+        {
+            // GD.Print($"line: {line}");
+            var split = line.Split("  ");
+            if (split.Length != 2)
+                continue;
+
+            var sha512 = split[0];
+
+            var filename = split[1];
+            var ext = filename[(filename.LastIndexOf('.') + 1)..];
+            var platform = TargetPlatform.Win64;
+
+            if (ext == "sha256" || ext == "xz" ||
+                ext == "aar" || ext == "aab" || ext == "apk") // ignoring source & android
+                continue;
+            else if (ext == "zip")
+            {
+                if (filename.Contains("macos.universal") || filename.Contains("osx") || // Ignoring MacOS
+                    filename.Contains("linux") || filename.Contains("x11") || 			// Ignoring Linux
+                    filename.Contains("web_editor"))									// Ignoring Web
+                    continue;
+                else if (filename.Contains("mono_win32"))
+                    platform = TargetPlatform.Win32Mono;
+                else if (filename.Contains("mono_win64"))								// Must be first
+                    platform = TargetPlatform.Win64Mono;
+                else if (filename.Contains("win32"))
+                    platform = TargetPlatform.Win32;
+                else if (filename.Contains("win64"))
+                    platform = TargetPlatform.Win64;
+            }
+            else if (ext == "tpz")
+            {
+                if (filename.Contains("mono_export_templates"))						// Must be first
+					platform = TargetPlatform.MonoExportTemplate;
+                else if (filename.Contains("export_templates"))
+                    platform = TargetPlatform.ExportTemplate;
+            }
+
+            GD.Print($"{platform}");
+            fileSha512[platform] = sha512;
+        }
+    }
+
+    public void SetSumUrl(string url) => Sha512FileDownload = url;
 
     public void SetDownloadUrl(TargetPlatform platform, string url)
     {

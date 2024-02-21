@@ -8,7 +8,7 @@ namespace Nasara.Core.Management.Editor;
 
 public partial class Requester : Node
 {
-	const string GODOT_OWNER = "godotengine";
+	public const string GODOT_OWNER = "godotengine";
 	const string GODOT_REPO_STABLE = "godot";
 	const string GODOT_REPO_UNSTABLE = "godot-builds";
 
@@ -18,7 +18,7 @@ public partial class Requester : Node
 	[Signal]
 	public delegate void NodeIdRequestedEventHandler(string nodeId, int channel);
 
-	public async void RequestEditorList(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
+	public static string GetRepo(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
 	{
 		var repo = "";
 		switch (channel)
@@ -29,25 +29,30 @@ public partial class Requester : Node
 				repo = GODOT_REPO_UNSTABLE; break;
 		}
 
+		return repo;
+	}
+
+	public async void RequestEditorList(GodotVersion.VersionChannel channel = GodotVersion.VersionChannel.Stable)
+	{
+		var repo = GetRepo(channel);
+
 		var releases = await Network.Github.Requester.RequestReleases(GODOT_OWNER, repo);
 
 		if (releases.Count == 0)
 			return;
 		
-		GodotRequestCompleted(channel, releases);
-	}
+		var downloadableVersions = ProcessRawData(releases, channel);
 
-	void GodotRequestCompleted(GodotVersion.VersionChannel channel, Godot.Collections.Array data)
-	{
-		Array<DownloadableVersion> downloadableVersions = ProcessRawData(data, channel);
 		if (downloadableVersions is null)
 		{
 			GD.PushError("(requester) Failed to process data");
 			return;
 		}
+
 		EmitSignal(SignalName.VersionsRequested, downloadableVersions, (int)channel);
 
-		Error error = SaveCache(data, channel);
+		Error error = SaveCache(releases, channel);
+
 		if (error != Error.Ok)
 			GD.PushError("(requester) Can not save cache: ", error);
 	}
@@ -158,7 +163,8 @@ public partial class Requester : Node
 						downloadableVersion.SetDownloadUrl(DownloadableVersion.TargetPlatform.Win32, url);
 					else if (assetName.Contains("win64"))
 						downloadableVersion.SetDownloadUrl(DownloadableVersion.TargetPlatform.Win64, url);
-				} else if (contentType == "application/octet-stream")
+				}
+				else if (contentType == "application/octet-stream")
 				{
 					if (assetName.Contains("tar.xz.sha256") ||									// Ignoring Godot Source
 						assetName.Contains("godot-lib"))										// Ignoring Godot Libs (for Android)
@@ -168,6 +174,8 @@ public partial class Requester : Node
 					else if (assetName.Contains("export_templates"))
 						downloadableVersion.SetExportTemplateDownloadUrl(DownloadableVersion.TargetPlatform.ExportTemplate, url);
 				}
+				else if (contentType.Contains("text/plain"))							// SHA512-SUM
+					downloadableVersion.SetSumUrl(url);
 				else if (contentType == "application/x-xz") 									// Ignoring Godot Source
 					continue;
 				else if (contentType == "application/vnd.android.package-archive") 				// Ignoring Android
