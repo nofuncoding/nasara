@@ -48,3 +48,7 @@ If you got any problems, please write an issue.
 Nasara is licensed under the MIT License.
 
 © 2023-2024 NoFun & Contributors
+
+---
+
+if you like it, please consider [supporting me](https://github.com/nofuncoding#support-me).
