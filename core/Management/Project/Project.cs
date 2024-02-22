@@ -16,6 +16,11 @@ public partial class Project : RefCounted
 
     ProjectFile projectFile;
 
+    /// <summary>
+    /// Read a project from disk.
+    /// </summary>
+    /// <param name="path">Project path, can be file or directory.</param>
+    /// <exception cref="System.IO.IOException">If the path is not a valid project file or directory.</exception>
     public Project(string path)
     {
         path = ProjectSettings.GlobalizePath(path);

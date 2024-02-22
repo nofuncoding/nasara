@@ -79,8 +79,7 @@ public partial class Launcher : Node
                 string executablePath = Version.Path.PathJoin(filename);
                 executablePath = ProjectSettings.GlobalizePath(executablePath);
 
-                string[] arguments = ["-e", "--path"]; // Launch in project manager
-                arguments[2] = projectDirectory;
+                string[] arguments = ["-e", "--path", projectDirectory]; // Launch in project manager
 
                 // Create a process
                 var pid = OS.CreateProcess(executablePath, arguments, new AppConfig().OpenEditorConsole);

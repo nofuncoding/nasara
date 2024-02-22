@@ -18,15 +18,15 @@ public partial class EditorList : VBoxContainer
 	[Export]
 	public BaseButton launchButton;
 
-	// [{ "index": .., "version": .., "path": .., "channel": .. }, ..]
+	// [{"version": .., "path": .., "channel": .. }, ..]
 	Godot.Collections.Array<Godot.Collections.Dictionary> editorItems = [];
-	Editor.Manager godotManager;
+	Editor.Manager _editorManager;
 
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		godotManager = App.GetGodotManager();
+		_editorManager = App.GetEditorManager();
 		
 		launchButton.Disabled = true;
 		launchButton.Pressed += LaunchEditor;
@@ -77,9 +77,9 @@ public partial class EditorList : VBoxContainer
 	{
 		switch (index)
 		{
-			case 0:
+			case 0: // Launch
 				LaunchEditor(on_item); break;
-			case 1:
+			case 1: // Delete
 				ConfirmationDialog dialog = new()
 				{
 					Title = Tr("Delete Editor"),
@@ -103,10 +103,11 @@ public partial class EditorList : VBoxContainer
 
 	public void RefreshEditors()
 	{
-		// TODO: Find out the Editors
+		// TODO: Scan for the Editors
 		Godot.Collections.Array<Editor.GodotVersion> godotVersions = Editor.Version.GetVersions();
 
 		editorItemList.Clear();
+		editorItems.Clear();
 
 		if (godotVersions.Count == 0)
 		{
@@ -153,8 +154,10 @@ public partial class EditorList : VBoxContainer
 	void LaunchEditor()
 	{
 		int[] items = editorItemList.GetSelectedItems();
-		if (items.Length>1)
-			return; // Do not accept multiselect
+
+		// only allows single selection
+		if (items.Length > 1)
+			return;
 		
 		int index = items[0];
 		
@@ -163,14 +166,14 @@ public partial class EditorList : VBoxContainer
 
 	void LaunchEditor(long index)
 	{
-		godotManager.Launch((Editor.GodotVersion)GetCurrentEditor((int)index)["version"]);
+		_editorManager.Launch((Editor.GodotVersion)GetCurrentEditor((int)index)["version"]);
 	}
 
 	void DeleteEditor(Editor.GodotVersion version)
 	{
 		string path = version.Path;
 		OS.MoveToTrash(ProjectSettings.GlobalizePath(path)); // TODO: Use DirAccess to delete
-		godotManager.Version.RemoveVersion(version);
+		_editorManager.Version.RemoveVersion(version);
 		RefreshEditors();
 	}
 }

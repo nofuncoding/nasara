@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://yutq5ohcq1ki"]
+[gd_scene load_steps=7 format=3 uid="uid://yutq5ohcq1ki"]
 
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://res/style/normal_control_theme.tres" id="1_p51e2"]
 [ext_resource type="Script" path="res://ui/controller/component/ProjectList.cs" id="2_mw665"]
 [ext_resource type="Theme" uid="uid://ddranlcsd8vw" path="res://res/style/icon_button_theme.tres" id="3_x61m5"]
-[ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://res/font/MaterialSymbolsSharp.ttf" id="4_6fe1r"]
 [ext_resource type="Theme" uid="uid://drq4e83qvv0u" path="res://res/style/component_list_theme.tres" id="5_ifeh4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0x2xp"]
@@ -22,12 +21,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="LabelSettings" id="LabelSettings_brxkl"]
-font = ExtResource("4_6fe1r")
-font_size = 12
-font_color = Color(1, 1, 1, 0.0392157)
-
-[node name="ProjectList" type="VBoxContainer"]
+[node name="ProjectList" type="VBoxContainer" node_paths=PackedStringArray("projectItemList", "tipNotFound", "addButton", "launchButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -37,6 +31,10 @@ size_flags_vertical = 3
 theme = ExtResource("1_p51e2")
 theme_override_constants/separation = 0
 script = ExtResource("2_mw665")
+projectItemList = NodePath("Projects/ItemList")
+tipNotFound = NodePath("Projects/NotFound")
+addButton = NodePath("Panel/ActionList/AddButton")
+launchButton = NodePath("Panel/ActionList/LaunchButton")
 
 [node name="Panel" type="Panel" parent="."]
 custom_minimum_size = Vector2(0, 30)
@@ -75,19 +73,6 @@ theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_xdfc5")
 text = "add_circle"
 flat = true
-
-[node name="Label" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -72.0
-grow_horizontal = 0
-grow_vertical = 2
-text = "godot"
-label_settings = SubResource("LabelSettings_brxkl")
-vertical_alignment = 1
 
 [node name="Projects" type="Control" parent="."]
 layout_mode = 2

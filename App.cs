@@ -2,8 +2,8 @@ using Godot;
 using System;
 using Nasara.UI;
 using Nasara.UI.Component;
-using Nasara.UI.Component.Titlebar;
 using Editor = Nasara.Core.Management.Editor;
+using Project = Nasara.Core.Management.Project;
 
 namespace Nasara;
 
@@ -40,7 +40,8 @@ public partial class App : PanelContainer
 	[Export]
 	ProgressBar loadingBar;
 
-	static Editor.Manager godotManager;
+	static Editor.Manager _editorManager;
+	static Project.Manager _projectManager;
 	static NotifySystem notifySystem;
 	Editor.VersionList versionList;
 
@@ -49,15 +50,6 @@ public partial class App : PanelContainer
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		godotManager = GetNode<Editor.Manager>("/root/GodotManager"); // Autoload
-		versionList = new();
-		AddChild(versionList);
-
-		versionList.GetList += (Godot.Collections.Dictionary<string, Godot.Collections.Array<Editor.DownloadableVersion>> list) => {
-			stableVersions = list["stable"];
-			unstableVersions = list["unstable"];
-		};
-
 		GD.Print("(app) Initializing");
 		Init();
 	}
@@ -73,6 +65,19 @@ public partial class App : PanelContainer
 		if (lang != "")
 			TranslationServer.SetLocale(lang);
 		
+		_editorManager = new();
+		_projectManager = new();
+		AddChild(_editorManager);
+		AddChild(_projectManager);
+
+		versionList = new();
+		AddChild(versionList);
+
+		versionList.GetList += (Godot.Collections.Dictionary<string, Godot.Collections.Array<Editor.DownloadableVersion>> list) => {
+			stableVersions = list["stable"];
+			unstableVersions = list["unstable"];
+		};
+		
 		InitStyles();
 
 		mainPage.Visible = false;
@@ -85,7 +90,7 @@ public partial class App : PanelContainer
 		CreateDirs(); // important, do not delete it
 
 		InitViews();
-		if (versionList.GetGodotList(godotManager) != Error.Ok)
+		if (versionList.GetGodotList(_editorManager) != Error.Ok)
 			GD.PushError("(app) Failed to load Godot List!");
 		
 		loadingBar.Value++;
@@ -159,18 +164,11 @@ public partial class App : PanelContainer
 		}
 	}
 
-	public static NotifySystem GetNotifySystem()
-	{
-		return notifySystem;
-	}
+	public static NotifySystem GetNotifySystem() => notifySystem;
 
-	public static Editor.Manager GetGodotManager()
-	{
-		return godotManager;
-	}
+	public static Editor.Manager GetEditorManager() => _editorManager;
+	
+	public static Project.Manager GetProjectManager() => _projectManager;
 
-	public static App Get()
-	{
-		return instance;
-	}
+	public static App Get() => instance;
 }

@@ -21,10 +21,6 @@ run/low_processor_mode=true
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
-[autoload]
-
-GodotManager="*res://core/Management/Editor/Manager.cs"
-
 [display]
 
 window/size/transparent=true

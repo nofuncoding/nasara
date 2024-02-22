@@ -1,18 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://ch6d0syqmlexs"]
+[gd_scene load_steps=5 format=3 uid="uid://ch6d0syqmlexs"]
 
 [ext_resource type="Script" path="res://ui/controller/view/ProjectView.cs" id="1_2jdye"]
 [ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://res/font/GlowSansSC-Normal-Medium.otf" id="1_787ng"]
-[ext_resource type="Theme" uid="uid://drq4e83qvv0u" path="res://res/style/component_list_theme.tres" id="2_urait"]
+[ext_resource type="PackedScene" uid="uid://yutq5ohcq1ki" path="res://ui/component/project_list.tscn" id="3_gfhjt"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_j2hxm"]
 font = ExtResource("1_787ng")
 font_size = 24
 
-[sub_resource type="LabelSettings" id="LabelSettings_fwp80"]
-font = ExtResource("1_787ng")
-font_size = 18
-
-[node name="ProjectView" type="Control" node_paths=PackedStringArray("lineEdit", "rtl")]
+[node name="ProjectView" type="Control" node_paths=PackedStringArray("projectList")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,8 +16,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2jdye")
-lineEdit = NodePath("VBoxContainer/LineEdit")
-rtl = NodePath("VBoxContainer/RichTextLabel")
+projectList = NodePath("VBoxContainer/ProjectList")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -38,27 +33,9 @@ text = "Project"
 label_settings = SubResource("LabelSettings_j2hxm")
 vertical_alignment = 1
 
-[node name="ItemList" type="ItemList" parent="VBoxContainer"]
-visible = false
+[node name="ProjectList" parent="VBoxContainer" node_paths=PackedStringArray("projectItemList", "tipNotFound", "addButton", "launchButton") instance=ExtResource("3_gfhjt")]
 layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("2_urait")
-item_count = 2
-item_0/text = "Project"
-item_1/text = "Project"
-
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
-layout_mode = 2
-placeholder_text = "Project Path"
-
-[node name="Label" type="Label" parent="VBoxContainer"]
-visible = false
-layout_mode = 2
-size_flags_vertical = 3
-text = "Work in Progress"
-label_settings = SubResource("LabelSettings_fwp80")
-vertical_alignment = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
+projectItemList = NodePath("Projects/ItemList")
+tipNotFound = NodePath("Projects/NotFound")
+addButton = NodePath("Panel/ActionList/AddButton")
+launchButton = NodePath("Panel/ActionList/LaunchButton")

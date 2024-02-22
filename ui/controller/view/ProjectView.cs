@@ -1,30 +1,33 @@
 using Godot;
 using System;
-using Project = Nasara.Core.Management.Project;
+using Nasara.UI.Component;
 
 namespace Nasara.UI.View;
 
 public partial class ProjectView : Control
 {
 	[Export]
-	LineEdit lineEdit;
+	ProjectList projectList;
+
 	[Export]
-	RichTextLabel rtl;
-
-	Project.Manager manager;
-
+	string addProjectViewPath;
+/*
 	public override void _Ready()
 	{
-		manager = new();
-		AddChild(manager);
-
-		lineEdit.TextChanged += (string text) => {
-			try {
-				Project.Project project = new(text);
-				rtl.Text = $"Name: {project.Name}\nVersion: {project.UsingGodotVersion}";
-			} catch (Exception) {
-				rtl.Text = "Failed";
-			}
-		};
+		projectList.addButton.Pressed += AddProject;
 	}
+
+	void AddProject()
+	{
+		PackedScene res = GD.Load<PackedScene>(addProjectViewPath);
+		AddProjectView addProjectView = res.Instantiate<AddProjectView>();
+		AddChild(addProjectView);
+		addProjectView.Completed += () => {
+			addProjectView.QueueFree();
+			GetNode<VBoxContainer>("VBoxContainer").Visible = true;
+			projectList.RefreshProjects();
+		};
+
+		GetNode<VBoxContainer>("VBoxContainer").Visible = false;
+	}*/
 }

@@ -4,6 +4,7 @@ using System;
 
 namespace Nasara.Core.Management.Project;
 
+// TODO: refactor to static
 public partial class Manager : Node
 {
     Array<Project> versions;
@@ -11,12 +12,14 @@ public partial class Manager : Node
     public Manager()
     {
         versions = ProjectList.Read();
+        versions.AddRange(GetLocalProjectsFromEditors());
     }
 
-    public static void Add(Project project)
-    {
-        ProjectList.Add(project);
-    }
+    public Array<Project> GetProjects() => versions;
+
+    public static void Add(Project project) => ProjectList.Add(project);
+
+    public static void Remove(Project project) => ProjectList.Remove(project);
 
     /// <summary>
     /// Get local projects from the editors saved projects.
@@ -39,7 +42,7 @@ public partial class Manager : Node
         }
 
         string[] paths = config.GetSections();
-        System.Collections.ArrayList p = [];
+        System.Collections.Generic.List<Project> p = [];
         foreach (var path in paths)
         {
             try
@@ -53,7 +56,7 @@ public partial class Manager : Node
             }
         }
 
-        return (Project[])p.ToArray();
+        return [.. p];
     }
 
     /// <summary>
@@ -130,7 +133,7 @@ static class ProjectList
         if (raw.Count <= 0)
             return [];
         else
-            return ParseFrom(raw);
+            return ParseFromRaw(raw);
     }
 
     public static void Add(Project project)
@@ -160,16 +163,17 @@ static class ProjectList
     public static void Remove(Project project)
     {
         var projects = Read();
+        var parsed = projects;
         foreach (var p in projects)
         {
             if (p.ProjectFilePath == project.ProjectFilePath)
             {
-                projects.Remove(p);
+                parsed.Remove(p);
                 break;
             }
         }
     
-        Write(projects);
+        Write(parsed);
     }
 
     /// <summary>
@@ -235,12 +239,17 @@ static class ProjectList
 
         using var file = FileAccess.Open(PROJECT_LIST, FileAccess.ModeFlags.Write);
         if (file is not null)
-            file.StoreString(Json.Stringify(ParseTo(projects)));
+            file.StoreString(Json.Stringify(ParseToRaw(projects)));
         else
             GD.PushError($"Failed to write to {PROJECT_LIST}: {FileAccess.GetOpenError()}");
     }
 
-    static Array<Dictionary<string, string>> ParseTo(Array<Project> data)
+    /// <summary>
+    /// Parse Project objects into raw data
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    static Array<Dictionary<string, string>> ParseToRaw(Array<Project> data)
     {
         Array<Dictionary<string, string>> parsed_list = [];
 
@@ -258,7 +267,12 @@ static class ProjectList
         return parsed_list;
     }
 
-    static Array<Project> ParseFrom(Array<Dictionary<string, string>> data)
+    /// <summary>
+    /// Parse raw data into Project objects
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    static Array<Project> ParseFromRaw(Array<Dictionary<string, string>> data)
     {
         Array<Project> parsed = [];
 
@@ -266,7 +280,8 @@ static class ProjectList
         {
             string path = p["path"];
 
-            try {
+            try
+            {
                 Project project = new(path);
 
                 if (project.Name != p["name"])
@@ -274,11 +289,17 @@ static class ProjectList
 
                 parsed.Add(project);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                GD.PushError($"Invalid Project Path: {path}");
+                GD.PushError($"{e.Message}: {path}");
             }
         }
+
+        // If there are error projects, ignore them
+        // and write the rest
+        // NOTE: may not fit any more in the future
+        if (parsed.Count < data.Count)
+            Write(parsed);
         
         return parsed;
     }

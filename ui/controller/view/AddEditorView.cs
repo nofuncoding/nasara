@@ -13,7 +13,7 @@ public partial class AddEditorView : Control
 {
 	App app;
 
-	Editor.Manager godotManager;
+	Editor.Manager _editorManager;
 	Editor.Version versionManager;
 
 	Godot.Collections.Array<Editor.DownloadableVersion> stableVersions = [];
@@ -85,8 +85,8 @@ public partial class AddEditorView : Control
 	public override void _Ready()
 	{
 		app = App.Get();
-		godotManager = App.GetGodotManager();
-		versionManager = godotManager.Version;
+		_editorManager = App.GetEditorManager();
+		versionManager = _editorManager.Version;
 		installedVersions = Editor.Version.GetVersions();
 		SwitchView(0);
 
