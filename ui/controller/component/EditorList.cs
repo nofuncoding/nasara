@@ -153,6 +153,8 @@ public partial class EditorList : VBoxContainer
 
 	void LaunchEditor()
 	{
+		// FIXME: returning a empty array (issue #27)
+		/*
 		int[] items = editorItemList.GetSelectedItems();
 
 		// only allows single selection
@@ -160,8 +162,17 @@ public partial class EditorList : VBoxContainer
 			return;
 		
 		int index = items[0];
+		*/
 		
-		LaunchEditor(index);
+		// Simple fix
+		for (int i = 0; i < editorItemList.ItemCount; i++)
+		{
+			if (editorItemList.IsSelected(i))
+			{
+				LaunchEditor(i);
+				return;
+			}
+		}
 	}
 
 	void LaunchEditor(long index)

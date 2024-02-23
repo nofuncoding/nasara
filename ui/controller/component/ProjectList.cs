@@ -64,6 +64,11 @@ public partial class ProjectList : VBoxContainer
         RefreshProjects();
     }
 
+    /*public override void _Process(double delta)
+    {
+		GD.Print($"items: [{projectItemList.IsAnythingSelected()}] {projectItemList.GetSelectedItems().Stringify()}");
+    }*/
+
     Godot.Collections.Dictionary GetCurrentProject(int index)
 	{
 		string selectedName = projectItemList.GetItemText(index);
@@ -140,24 +145,35 @@ public partial class ProjectList : VBoxContainer
 
     void LaunchProject() 
     {
-        int[] items = projectItemList.GetSelectedItems();
+		// FIXME: returning a empty array (issue #27)
+        /*
+		int[] items = projectItemList.GetSelectedItems();
 
 		// only allows single selection
 		if (items.Length > 1 || items.Length == 0)
 			return;
 		
-        GD.Print(items);
 
 		int index = items[0];
+		*/
+
+		// Simple fix
+		for (int i = 0; i < projectItemList.ItemCount; i++)
+		{
+			if (projectItemList.IsSelected(i))
+			{
+				LaunchProject(i);
+				return;
+			}
+		}
 		
-		LaunchProject(index);
     }
 
     void LaunchProject(long index)
     {
-        _projectManager.LaunchProject(
-            (Project.Project)GetCurrentProject((int)index)["instance"],
-            Core.Management.Editor.Version.GetVersions()[0]
-        );
+        /*_projectManager.LaunchProject(*/
+            GD.Print((Project.Project)GetCurrentProject((int)index)["instance"]);
+            /*Core.Management.Editor.Version.GetVersions()[0]
+        );*/
     }
 }
