@@ -12,7 +12,13 @@ public partial class Manager : Node
     public Manager()
     {
         versions = ProjectList.Read();
-        versions.AddRange(GetLocalProjectsFromEditors());
+        var editors_project = GetLocalProjectsFromEditors();
+        foreach (var i in editors_project)
+        {
+            // may have something wrong
+            if (versions.Contains(i))
+                continue;
+        }
     }
 
     public Array<Project> GetProjects() => versions;

@@ -151,7 +151,7 @@ public partial class DownloadableVersion : RefCounted
                     platform = TargetPlatform.ExportTemplate;
             }
 
-            GD.Print($"{platform}");
+            // GD.Print($"{platform}");
             fileSha512[platform] = sha512;
         }
     }

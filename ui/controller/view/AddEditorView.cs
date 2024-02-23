@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Nasara.UI.View;
 
-public partial class AddEditorView : Control
+public partial class AddEditorView : PageSwitch
 {
 	App app;
 
@@ -21,14 +21,6 @@ public partial class AddEditorView : Control
 	Godot.Collections.Array<Editor.GodotVersion> installedVersions = [];
 
 	[ExportGroup("Pages", "page")] // TODO: Refactor these to make code clean
-	[Export]
-	Control pageInstallType;
-	[Export]
-	Control pageInstallSetting;
-	[Export]
-	Control pageInstallDownloading;
-	[Export]
-	Control pageImportExisting;
 
 	[ExportSubgroup("Type Select Page")]
 	[Export]
@@ -74,7 +66,6 @@ public partial class AddEditorView : Control
 	[Export]
 	BaseButton importBackButton;
 
-
 	[Signal]
 	public delegate void CompletedEventHandler();
 
@@ -88,19 +79,19 @@ public partial class AddEditorView : Control
 		_editorManager = App.GetEditorManager();
 		versionManager = _editorManager.Version;
 		installedVersions = Editor.Version.GetVersions();
-		SwitchView(0);
+		SwitchPage(0);
 
 		// Setup Signals
 		// Buttons
 		installButton.Pressed += () => {
-			SwitchView(1);
+			SwitchPage(1);
 			GetGodotList();
 		};
-		importExistingButton.Pressed += () => SwitchView(3);
+		importExistingButton.Pressed += () => SwitchPage(3);
 		cancelAddingButton.Pressed += () => EmitSignal(SignalName.Completed); // Don't use Queue Free
 
 		continueButton.Pressed += DownloadTargetVersion;
-		backButton.Pressed += () => SwitchView(0);
+		backButton.Pressed += () => SwitchPage(0);
 
 		finishButton.Pressed += () => EmitSignal(SignalName.Completed);
 
@@ -121,12 +112,12 @@ public partial class AddEditorView : Control
 			dialog.PopupCentered();
 		};
 		importButton.Pressed += () => {
-			pageImportExisting.Visible = false;
-			versionManager.AddVersion(Core.Management.Editor.Version.PathHasGodot(pathEdit.Text));
+			// pageImportExisting.Visible = false;
+			versionManager.AddVersion(Editor.Version.PathHasGodot(pathEdit.Text));
 
 			EmitSignal(SignalName.Completed);
 		};
-		importBackButton.Pressed += () => SwitchView(0);
+		importBackButton.Pressed += () => SwitchPage(0);
 
 		// Options
 		channelOption.ItemSelected += (long index) => {
@@ -214,37 +205,6 @@ public partial class AddEditorView : Control
 		}
 	}
 
-	void SwitchView(int index)
-	{
-		switch (index)
-		{
-			case 0:
-				pageInstallType.Visible = true;
-				pageInstallSetting.Visible = false;
-				pageInstallDownloading.Visible = false;
-				pageImportExisting.Visible = false;
-				break;
-			case 1:
-				pageInstallType.Visible = false;
-				pageInstallSetting.Visible = true;
-				pageInstallDownloading.Visible = false;
-				pageImportExisting.Visible = false;
-				break;
-			case 2:
-				pageInstallType.Visible = false;
-				pageInstallSetting.Visible = false;
-				pageInstallDownloading.Visible = true;
-				pageImportExisting.Visible = false;
-				break;
-			case 3:
-				pageInstallType.Visible = false;
-				pageInstallSetting.Visible = false;
-				pageInstallDownloading.Visible = false;
-				pageImportExisting.Visible = true;
-				break;
-		}
-	}
-
 	void DownloadTargetVersion()
 	{
 			if (channelOption.Selected == (int)VersionChannel.Stable)
@@ -304,7 +264,7 @@ public partial class AddEditorView : Control
 
 	void StartDownload(Editor.DownloadableVersion version)
 	{
-		SwitchView(2);
+		SwitchPage(2);
 		
 		Editor.Downloader downloader = new();
 		AddChild(downloader);
@@ -360,14 +320,15 @@ public partial class AddEditorView : Control
 
 	async void VerifyFile(Editor.DownloadableVersion version, string savePath)
 	{
-		GD.Print("Verifying File: " + savePath);
+		var platform = Editor.Downloader.GetTargetPlatform(monoCheckButton.ButtonPressed);
+		GD.Print($"Verifying {savePath} for {platform}");
 		progressLabel.Text = Tr("Verifying");
 		
 		savePath = ProjectSettings.GlobalizePath(savePath);
 
 		try 
 		{
-			var sha512 = await version.GetSha512Async(Editor.Downloader.GetTargetPlatform(monoCheckButton.ButtonPressed));
+			var sha512 = await version.GetSha512Async(platform);
 
 			var stream = System.IO.File.OpenRead(savePath);
 
@@ -375,7 +336,12 @@ public partial class AddEditorView : Control
 			var result = await shaM.ComputeHashAsync(stream);
 
 			if (sha512 != result.HexEncode())
+			{
+				GD.PushError($"Verify Failed ({result.HexEncode()[..6]} .. {sha512[..6]})");
 				throw new Exception("Failed to Verify File: " + savePath);
+			}
+			
+			GD.Print($"Verify Completed ({result.HexEncode()[..6]} .. {sha512[..6]})");
 		}
 		catch (Exception e)
 		{
@@ -384,7 +350,6 @@ public partial class AddEditorView : Control
 			App.GetNotifySystem().Notify(type: NotificationType.Error, title: Tr("Failed to Verify File"), description: e.Message);
 			return;
 		}
-
 
 		UnpackGodot(version, savePath);
 	}
