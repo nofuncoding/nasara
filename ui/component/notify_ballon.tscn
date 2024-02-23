@@ -33,18 +33,16 @@ DescriptionLabel = NodePath("Panel/MarginContainer/HBoxContainer/MarginContainer
 TimerBar = NodePath("Panel/ProgressBar")
 HideButton = NodePath("Panel/MarginContainer/HBoxContainer/HideButton")
 
-[node name="Panel" type="PanelContainer" parent="."]
-clip_contents = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+offset_right = 1152.0
+offset_bottom = 70.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_nvdni")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 2
+offset_right = 1152.0
+offset_bottom = 70.0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_bottom = 2
 
@@ -74,6 +72,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 text = "Title"
 vertical_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Description" type="Label" parent="Panel/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
@@ -94,6 +93,9 @@ flat = true
 [node name="ProgressBar" type="ProgressBar" parent="Panel"]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
+offset_top = 66.0
+offset_right = 1152.0
+offset_bottom = 70.0
 size_flags_vertical = 8
 theme = ExtResource("3_jr36o")
 value = 100.0

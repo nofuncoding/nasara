@@ -295,8 +295,8 @@ static class VersionWriter
         if (file is not null)
         {
             Array<GodotVersion> godotVersions = ReadFile(file);
-            if (godotVersions.Count == 0) // TODO: Remove or expand this
-                GD.PushWarning("No Godot Versions Found!");
+            /*if (godotVersions.Count == 0) // TODO: Remove or expand this
+                GD.PushWarning("No Godot Versions Found!");*/
             
             return godotVersions;
         }

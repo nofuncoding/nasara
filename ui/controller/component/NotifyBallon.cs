@@ -32,10 +32,19 @@ public partial class NotifyBallon : Control
 
 	Tween tween;
 
+	Vector2 _originalPosition;
+	Vector2 _hidePosition;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Modulate = new Color(1, 1, 1, 0); // For animation
+		// FIXME: Currently, fade in/out is not working if `clip children` is true
+		// Maybe an error from Godot.
+		
+		// SelfModulate = new Color(1, 1, 1, 0);
+		_originalPosition = Position;
+		_hidePosition = new Vector2(_originalPosition.X + Size.X + 50, _originalPosition.Y);
+		Position = _hidePosition;
 
 		HideButton.Pressed += HideNotify;
 
@@ -43,11 +52,12 @@ public partial class NotifyBallon : Control
 		tween = GetTree().CreateTween();
 		tween.Finished += () => QueueFree();
 
-		tween.TweenProperty(this, "modulate", new Color(1, 1, 1, 1), FadeInOutTime);
+		// tween.TweenProperty(this, "modulate", new Color(1, 1, 1, 1), FadeInOutTime);
+		// tween.TweenProperty(this, "position", _originalPosition, FadeInOutTime); NOT WORKING !!
 		if (HideTime > 0)
 		{
 			tween.TweenProperty(TimerBar, "value", 0, HideTime);
-			tween.TweenProperty(this, "modulate", new Color(1, 1, 1, 0), FadeInOutTime);
+			tween.TweenProperty(this, "position", _hidePosition, FadeInOutTime);
 		}
 		tween.Play();
 	}

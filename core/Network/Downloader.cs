@@ -75,6 +75,7 @@ public partial class Downloader : HttpRequest
         if (result != (long)Result.Success)
         {
             GD.PushError("(network) Failed to Download the File, Result Code: ", result);
+            // TODO: pass the error code to the caller
             return;
         }
         
