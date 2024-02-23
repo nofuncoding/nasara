@@ -145,19 +145,21 @@ public partial class ProjectList : VBoxContainer
 
     void LaunchProject() 
     {
-		// FIXME: returning a empty array (issue #27)
-        /*
+		// returning a empty array (issue #27)
+		// if Godot version is 4.3-dev3
+
 		int[] items = projectItemList.GetSelectedItems();
 
 		// only allows single selection
 		if (items.Length > 1 || items.Length == 0)
 			return;
 		
-
 		int index = items[0];
-		*/
 
-		// Simple fix
+		LaunchProject(index);
+
+		// Simple fix for above
+		/*
 		for (int i = 0; i < projectItemList.ItemCount; i++)
 		{
 			if (projectItemList.IsSelected(i))
@@ -166,14 +168,15 @@ public partial class ProjectList : VBoxContainer
 				return;
 			}
 		}
+		*/
 		
     }
 
     void LaunchProject(long index)
     {
-        /*_projectManager.LaunchProject(*/
+        _projectManager.LaunchProject(
             GD.Print((Project.Project)GetCurrentProject((int)index)["instance"]);
-            /*Core.Management.Editor.Version.GetVersions()[0]
-        );*/
+            Core.Management.Editor.Version.GetVersions()[0] // TODO
+        );
     }
 }

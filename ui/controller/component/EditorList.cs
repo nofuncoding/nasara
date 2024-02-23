@@ -153,8 +153,10 @@ public partial class EditorList : VBoxContainer
 
 	void LaunchEditor()
 	{
-		// FIXME: returning a empty array (issue #27)
-		/*
+		// returning a empty array (issue #27)
+		// if Godot version is 4.3-dev3
+
+		
 		int[] items = editorItemList.GetSelectedItems();
 
 		// only allows single selection
@@ -162,9 +164,11 @@ public partial class EditorList : VBoxContainer
 			return;
 		
 		int index = items[0];
-		*/
 		
-		// Simple fix
+		LaunchEditor(index);
+		
+		// Simple fix for above
+		/*
 		for (int i = 0; i < editorItemList.ItemCount; i++)
 		{
 			if (editorItemList.IsSelected(i))
@@ -173,6 +177,7 @@ public partial class EditorList : VBoxContainer
 				return;
 			}
 		}
+		*/
 	}
 
 	void LaunchEditor(long index)
