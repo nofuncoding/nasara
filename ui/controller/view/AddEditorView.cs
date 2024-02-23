@@ -5,30 +5,29 @@ using System.IO.Compression;
 using Humanizer;
 using Editor = Nasara.Core.Management.Editor;
 using static Nasara.Core.Management.Editor.GodotVersion;
-using System.Text;
 
 namespace Nasara.UI.View;
 
 public partial class AddEditorView : PageSwitch
 {
-	App app;
+	App _app;
 
 	Editor.Manager _editorManager;
-	Editor.Version versionManager;
+	Editor.Version _versionManager;
 
 	Godot.Collections.Array<Editor.DownloadableVersion> stableVersions = [];
 	Godot.Collections.Array<Editor.DownloadableVersion> unstableVersions = [];
 	Godot.Collections.Array<Editor.GodotVersion> installedVersions = [];
 
-	[ExportGroup("Pages", "page")] // TODO: Refactor these to make code clean
+	[ExportGroup("Pages")] // TODO: Refactor these to make code clean
 
 	[ExportSubgroup("Type Select Page")]
 	[Export]
-	BaseButton installButton;
+	BaseButton typeInstallButton;
 	[Export]
-	BaseButton importExistingButton;
+	BaseButton typeImportButton;
 	[Export]
-	BaseButton cancelAddingButton;
+	BaseButton typeExitButton;
 
 	[ExportSubgroup("Install Setting Page")]
 	[Export]
@@ -58,7 +57,7 @@ public partial class AddEditorView : PageSwitch
 	[Export]
 	LineEdit pathEdit;
 	[Export]
-	BaseButton explodeButton;
+	BaseButton openButton;
 	[Export]
 	RichTextLabel resultTextLabel;
 	[Export]
@@ -72,36 +71,35 @@ public partial class AddEditorView : PageSwitch
 
 	// TODO: Add Cancel when Downloading
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		app = App.Get();
+		_app = App.GetInstance();
 		_editorManager = App.GetEditorManager();
-		versionManager = _editorManager.Version;
+		_versionManager = _editorManager.Version;
 		installedVersions = Editor.Version.GetVersions();
-		SwitchPage(0);
+		// SwitchPage(0);
 
 		// Setup Signals
 		// Buttons
-		installButton.Pressed += () => {
+		typeInstallButton.Pressed += () => {
 			SwitchPage(1);
 			GetGodotList();
 		};
-		importExistingButton.Pressed += () => SwitchPage(3);
-		cancelAddingButton.Pressed += () => EmitSignal(SignalName.Completed); // Don't use Queue Free
+		typeImportButton.Pressed += () => SwitchPage(3);
+		typeExitButton.Pressed += () => EmitSignal(SignalName.Completed); // Don't use Queue Free
 
 		continueButton.Pressed += DownloadTargetVersion;
 		backButton.Pressed += () => SwitchPage(0);
 
 		finishButton.Pressed += () => EmitSignal(SignalName.Completed);
 
-		explodeButton.Pressed += () => {
+		openButton.Pressed += () => {
 			FileDialog dialog = new() {
 				Access = FileDialog.AccessEnum.Filesystem,
 				FileMode = FileDialog.FileModeEnum.OpenDir,
 				// Title = "Open a Godot Directory",
 				// Theme = Theme,
-				UseNativeDialog = true, // TODO: Use custom dialog is possible
+				UseNativeDialog = true, // TODO: Use custom dialog if possible
 			};
 			dialog.DirSelected += (string dir) => {
 				pathEdit.Text = dir;
@@ -113,7 +111,7 @@ public partial class AddEditorView : PageSwitch
 		};
 		importButton.Pressed += () => {
 			// pageImportExisting.Visible = false;
-			versionManager.AddVersion(Editor.Version.PathHasGodot(pathEdit.Text));
+			_versionManager.AddVersion(Editor.Version.PathHasGodot(pathEdit.Text));
 
 			EmitSignal(SignalName.Completed);
 		};
@@ -139,6 +137,11 @@ public partial class AddEditorView : PageSwitch
 		versionOption.ItemSelected += InstallVersionSelected;
 		
 		pathEdit.TextChanged += CheckPath;
+		pathEdit.TextSubmitted += (string text) => {
+			_versionManager.AddVersion(Editor.Version.PathHasGodot(pathEdit.Text));
+
+			EmitSignal(SignalName.Completed);
+		};
 
 		// Setup styles
 		monoCheckButton.ButtonPressed = false;
@@ -151,8 +154,8 @@ public partial class AddEditorView : PageSwitch
 
 	void GetGodotList()
 	{
-		stableVersions = app.stableVersions;
-		unstableVersions = app.unstableVersions;
+		stableVersions = _app.stableVersions;
+		unstableVersions = _app.unstableVersions;
 
 		versionOption.Clear();
 		foreach (Editor.DownloadableVersion version in stableVersions) 
@@ -459,7 +462,7 @@ public partial class AddEditorView : PageSwitch
 		VersionChannel versionChannel = VersionChannel.Stable;
 		if (version.Version.IsPrerelease)
 			versionChannel = VersionChannel.Unstable;
-		versionManager.AddVersion(new Editor.GodotVersion(version.Version, editorPath, versionChannel, monoCheckButton.ButtonPressed));
+		_versionManager.AddVersion(new Editor.GodotVersion(version.Version, editorPath, versionChannel, monoCheckButton.ButtonPressed));
 		
 		if (monoCheckButton.ButtonPressed)
 			GD.Print("Added Godot Mono ", version.Version.ToString(), "; Prerelease=", version.Version.IsPrerelease);

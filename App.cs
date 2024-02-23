@@ -170,5 +170,5 @@ public partial class App : PanelContainer
 	
 	public static Project.Manager GetProjectManager() => _projectManager;
 
-	public static App Get() => instance;
+	public static App GetInstance() => instance;
 }

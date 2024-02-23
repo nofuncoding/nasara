@@ -1,31 +1,67 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Linq;
 
 namespace Nasara.Core.Management.Project;
 
 // TODO: refactor to static
 public partial class Manager : Node
 {
-    Array<Project> versions;
+    Array<Project> projects;
 
     public Manager()
     {
-        versions = ProjectList.Read();
+        Refresh();
+    }
+
+    public Array<Project> GetProjects() => projects;
+
+    public bool ProjectExists(string path)
+    {
+        foreach (var i in projects)
+        {
+            if (i.ProjectFilePath == path || i.ProjectDirPath == path)
+                return true;
+        }
+        return false;
+    }
+
+    public bool ProjectExists(Project project)
+    {
+        foreach (var i in projects)
+        {
+            if (i.ProjectFilePath == project.ProjectFilePath)
+                return true;
+        }
+        return false;
+    }
+
+    public void Refresh()
+    {
+        projects = ProjectList.Read();
         var editors_project = GetLocalProjectsFromEditors();
         foreach (var i in editors_project)
         {
             // may have something wrong
-            if (versions.Contains(i))
+            if (projects.Contains(i))
                 continue;
+            else
+                projects.Add(i);
         }
     }
 
-    public Array<Project> GetProjects() => versions;
+    public void Add(Project project)
+    {
+        ProjectList.Add(project);
+        Refresh();
+    }
 
-    public static void Add(Project project) => ProjectList.Add(project);
-
-    public static void Remove(Project project) => ProjectList.Remove(project);
+    public void Remove(Project project)
+    {
+        ProjectList.Remove(project);
+        Refresh();
+    }
 
     /// <summary>
     /// Get local projects from the editors saved projects.
@@ -61,6 +97,8 @@ public partial class Manager : Node
                 GD.PushError($"Failed to load project \"{path}\": {e.Message}");
             }
         }
+
+        // TODO: save to project list
 
         return [.. p];
     }

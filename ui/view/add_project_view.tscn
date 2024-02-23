@@ -1,0 +1,147 @@
+[gd_scene load_steps=6 format=3 uid="uid://ltacdr0r1ml"]
+
+[ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://res/style/normal_control_theme.tres" id="1_f8t48"]
+[ext_resource type="Script" path="res://ui/controller/view/AddProjectView.cs" id="2_3t1ye"]
+[ext_resource type="LabelSettings" uid="uid://b7kgxmbojg6m7" path="res://res/style/action_label_settings.tres" id="3_srjhw"]
+[ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://res/font/MaterialSymbolsSharp.ttf" id="5_f23cb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_88h2p"]
+
+[node name="AddProjectView" type="Control" node_paths=PackedStringArray("typeImportButton", "typeExitButton", "importPathEdit", "importOpenButton", "importResultLabel", "importButton", "importBackButton", "pages")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_f8t48")
+script = ExtResource("2_3t1ye")
+typeImportButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/ImportButton")
+typeExitButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/CancelButton")
+importPathEdit = NodePath("ImportExisting/CenterContainer/VBoxContainer/HBoxContainer/LineEdit")
+importOpenButton = NodePath("ImportExisting/CenterContainer/VBoxContainer/HBoxContainer/Button")
+importResultLabel = NodePath("ImportExisting/CenterContainer/VBoxContainer/RichTextLabel")
+importButton = NodePath("ImportExisting/ImportButton")
+importBackButton = NodePath("ImportExisting/BackButton")
+pages = [NodePath("TypeSelect"), NodePath("ImportExisting")]
+
+[node name="TypeSelect" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="TypeSelect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TypeSelect/CenterContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TypeSelect/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "What would you do?"
+label_settings = ExtResource("3_srjhw")
+
+[node name="ImportButton" type="Button" parent="TypeSelect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_f8t48")
+text = "Import Existing"
+
+[node name="GitButton" type="Button" parent="TypeSelect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_f8t48")
+disabled = true
+text = "Clone From Git"
+
+[node name="CreateButton" type="Button" parent="TypeSelect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Create From Template"
+
+[node name="CancelButton" type="Button" parent="TypeSelect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Do Nothing"
+
+[node name="ImportExisting" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_f8t48")
+
+[node name="CenterContainer" type="CenterContainer" parent="ImportExisting"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ImportExisting/CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ImportExisting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Where is your Project?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ImportExisting/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ImportExisting/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+context_menu_enabled = false
+
+[node name="Button" type="Button" parent="ImportExisting/CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+auto_translate = false
+theme_override_colors/font_hover_color = Color(0.0235294, 0.713726, 0.831373, 1)
+theme_override_fonts/font = ExtResource("5_f23cb")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_88h2p")
+text = "folder_open"
+flat = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ImportExisting/CenterContainer/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="ImportButton" type="Button" parent="ImportExisting"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("1_f8t48")
+text = "Import"
+
+[node name="BackButton" type="Button" parent="ImportExisting"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_right = 8.0
+grow_vertical = 0
+text = "Back"

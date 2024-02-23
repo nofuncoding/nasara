@@ -11,7 +11,7 @@ public partial class ProjectView : Control
 
 	[Export]
 	string addProjectViewPath;
-/*
+
 	public override void _Ready()
 	{
 		projectList.addButton.Pressed += AddProject;
@@ -29,5 +29,5 @@ public partial class ProjectView : Control
 		};
 
 		GetNode<VBoxContainer>("VBoxContainer").Visible = false;
-	}*/
+	}
 }

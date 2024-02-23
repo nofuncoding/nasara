@@ -101,6 +101,7 @@ public partial class ProjectList : VBoxContainer
 
             var i = projectItemList.AddItem((string)item["name"]);
             projectItemList.SetItemMetadata(i, item["path"]);
+			projectItemList.SetItemTooltip(i, (string)item["path"]);
 
             _projectItems.Add(item);
         }
