@@ -24,7 +24,7 @@ A: I don't know. It just born out of my head when I am working on it.
 
 Q: What's different from other projects like ..?
 
-A: Nasara is designed to be like *Unity Hub*. I recommend you to try [Godots](https://github.com/MakovWait/godots) if you don't like Nasara's style.
+A: Nasara is inspired by *Unity Hub* and *Epic Games launcher* (the place to download Unreal Engine). If you don't like nasara, try [Godots](https://github.com/MakovWait/godots). It's powerful, and more like Godot's style.
 
 ## Development
 
