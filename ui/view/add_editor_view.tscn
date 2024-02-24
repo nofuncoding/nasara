@@ -18,7 +18,7 @@ font_size = 14
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_88h2p"]
 
-[node name="AddEditorView" type="Control" node_paths=PackedStringArray("monoCheckButton", "channelOption", "versionOption", "continueButton", "backButton", "alreadyInstalled", "progressLabel", "progressBar", "finishButton", "downloadDisplay", "pathEdit", "resultTextLabel", "importButton", "importBackButton", "pages")]
+[node name="AddEditorView" type="Control" node_paths=PackedStringArray("typeInstallButton", "typeImportButton", "typeExitButton", "monoCheckButton", "channelOption", "versionOption", "continueButton", "backButton", "alreadyInstalled", "progressLabel", "progressBar", "finishButton", "downloadDisplay", "pathEdit", "openButton", "resultTextLabel", "importButton", "importBackButton", "pages")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,6 +27,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_nhi8r")
 script = ExtResource("1_pub8h")
+typeInstallButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/InstallButton")
+typeImportButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/ImportButton")
+typeExitButton = NodePath("TypeSelect/CenterContainer/VBoxContainer/CancelButton")
 monoCheckButton = NodePath("InstallSetting/CenterContainer/VBoxContainer/MonoCheckButton")
 channelOption = NodePath("InstallSetting/CenterContainer/VBoxContainer/ChannelOption")
 versionOption = NodePath("InstallSetting/CenterContainer/VBoxContainer/VersionOption")
@@ -38,6 +41,7 @@ progressBar = NodePath("InstallDownloading/CenterContainer/VBoxContainer/Progres
 finishButton = NodePath("InstallDownloading/FinishButton")
 downloadDisplay = NodePath("InstallDownloading/CenterContainer/VBoxContainer/DownloadDisplay")
 pathEdit = NodePath("ImportExisting/CenterContainer/VBoxContainer/HBoxContainer/LineEdit")
+openButton = NodePath("ImportExisting/ImportButton")
 resultTextLabel = NodePath("ImportExisting/CenterContainer/VBoxContainer/RichTextLabel")
 importButton = NodePath("ImportExisting/ImportButton")
 importBackButton = NodePath("ImportExisting/BackButton")
