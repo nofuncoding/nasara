@@ -125,7 +125,7 @@ public partial class App : PanelContainer
 	void InitViews()
 	{
 		navBar.Navigated += (int nav) => viewSwitch.SwitchView(nav);
-		navBar.ViewRegistered += (int index, PackedScene packedScene) => viewSwitch.packedView.Add(index, packedScene);
+		navBar.ViewRegistered += viewSwitch.packedView.Add;
 
 //		Godot.Collections.Dictionary<string, PackedScene> loadedView = new();
 

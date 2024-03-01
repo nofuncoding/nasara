@@ -175,7 +175,7 @@ public partial class ProjectList : VBoxContainer
     void LaunchProject(long index)
     {
         _projectManager.LaunchProject(
-            GD.Print((Project.Project)GetCurrentProject((int)index)["instance"]);
+            (Project.Project)GetCurrentProject((int)index)["instance"],
             Core.Management.Editor.Version.GetVersions()[0] // TODO
         );
     }
