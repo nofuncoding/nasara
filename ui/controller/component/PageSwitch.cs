@@ -5,7 +5,7 @@ using System;
 public partial class PageSwitch : Control
 {
     [Export]
-    Control[] pages;
+    protected Control[] pages;
 
     [Export]
     public int CurrentPage

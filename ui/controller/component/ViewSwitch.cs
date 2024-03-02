@@ -1,53 +1,17 @@
 using Godot;
 using System;
+using System.Linq;
 
 namespace Nasara.UI.Component;
 
-public partial class ViewSwitch : Control
+public partial class ViewSwitch : PageSwitch
 {
-	// Need to Add Scene Manually
-	public Godot.Collections.Dictionary<int, PackedScene> packedView = [];
-
-	[Signal]
-	public delegate void ViewSwitchedEventHandler(int viewIndex);
-
-	Godot.Collections.Dictionary<int, Control> availableViews = [];
-
-
-	public void Init()
+	public int AddView(PackedScene packedScene)
 	{
-		foreach (var (index, packed) in packedView) {
-			Control node = (Control)packed.Instantiate();
-			AddChild(node);
-			//availableViews.Add(view.Key, node.GetPath());
-			availableViews.Add(index, node);
-		}
-		
-		foreach (var (index, node) in availableViews) {
-			// Control node = GetNode<Control>(view.Value);
-			if (index == 0) // 0 is default view index
-				node.Visible = true;
-			else
-				node.Visible = false;
-		}
-	}
+		var node = packedScene.Instantiate<Control>();
+		AddChild(node);
+		pages = [.. pages, node];
 
-	public void SwitchView(int viewIndex)
-	{
-		if (!availableViews.ContainsKey(viewIndex))
-		{
-			GD.PushError("View Index `", viewIndex ,"` Not Exist");
-			return;
-		}
-
-		foreach (var (index, node) in availableViews) {
-			//Control node = GetNode<Control>(view.Value);
-			if (index != viewIndex)
-				node.Visible = false;
-			else
-				node.Visible = true;
-		}
-
-		EmitSignal(SignalName.ViewSwitched, viewIndex);
+		return pages.Length - 1;
 	}
 }

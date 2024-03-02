@@ -40,8 +40,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NavBar" parent="VSplitContainer/Main/HBoxContainer" node_paths=PackedStringArray("versionLabel", "menuButton") instance=ExtResource("1_cq3bb")]
+[node name="NavBar" parent="VSplitContainer/Main/HBoxContainer" node_paths=PackedStringArray("viewSwitch", "versionLabel", "menuButton") instance=ExtResource("1_cq3bb")]
 layout_mode = 2
+viewSwitch = NodePath("../MarginContainer/ViewSwitch")
 versionLabel = NodePath("VBoxContainer/HBoxContainer/VersionHint")
 menuButton = NodePath("VBoxContainer/HBoxContainer/MenuButton")
 
@@ -52,10 +53,11 @@ theme_override_constants/margin_left = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 30
 
-[node name="ViewSwitch" type="Control" parent="VSplitContainer/Main/HBoxContainer/MarginContainer"]
+[node name="ViewSwitch" type="Control" parent="VSplitContainer/Main/HBoxContainer/MarginContainer" node_paths=PackedStringArray("pages")]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("3_dmw11")
+pages = []
 
 [node name="Loading" type="Control" parent="."]
 visible = false

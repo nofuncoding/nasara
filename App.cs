@@ -124,9 +124,6 @@ public partial class App : PanelContainer
 
 	void InitViews()
 	{
-		navBar.Navigated += (int nav) => viewSwitch.SwitchView(nav);
-		navBar.ViewRegistered += viewSwitch.packedView.Add;
-
 //		Godot.Collections.Dictionary<string, PackedScene> loadedView = new();
 
 /*		BUG: Can't use dictionary to init views.
@@ -142,12 +139,11 @@ public partial class App : PanelContainer
 			navBar.RegisterView(packed, name); Stopped running here
 */
 
-		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/editor_view.tscn"), Tr("Editor"), 0);
+		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/editor_view.tscn"), Tr("Editor"));
 		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/project_view.tscn"), Tr("Project"));
 		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/news_view.tscn"), Tr("News"));
 		navBar.RegisterView(GD.Load<PackedScene>("res://ui/view/setting_view.tscn"), Tr("Setting"));
 
-		viewSwitch.Init();
 		loadingBar.Value++;
 	}
 
