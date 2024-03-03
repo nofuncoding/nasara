@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Nasara.UI.Component;
 
-public partial class NavBar : PanelContainer
+public partial class NavBar : Control
 {
 	ButtonGroup buttonGroup;
 
@@ -19,26 +19,28 @@ public partial class NavBar : PanelContainer
 	[Export]
 	MenuButton menuButton;
 
+	[Export]
+	NavButtonContainer buttonsContainer;
+
 	public override void _Ready()
 	{
-		buttonGroup = GD.Load<ButtonGroup>("res://ui/component/nav_button_group.tres");
-		buttonGroup.Pressed += ChangeNav;
+		buttonsContainer.ButtonGroup.Pressed += ChangeNav;
 		
 		PopupMenu menu = menuButton.GetPopup();
-		menu.Theme = GD.Load<Theme>("res://res/style/normal_control_theme.tres");
+		menu.Theme = GD.Load<Theme>("res://res/style/fluent_theme.tres");
 		menu.RemoveThemeFontOverride("font"); // Do not use theme override of the menu button
 		menu.AddItem(Tr("About")+"...", 0);
 		menu.IdPressed += MenuIdPressed;
 		menu.Transparent = true;
 		menu.TransparentBg = true;
 
-		if (OS.IsDebugBuild()) // Display version
-		{
-			versionLabel.Visible = true;
-			versionLabel.Text = "v" + (string)ProjectSettings.GetSetting("application/config/version");
-		} else {
-			versionLabel.Visible = false;
-		}
+		if (versionLabel is not null)
+			if (OS.IsDebugBuild()) // Display version
+			{
+				versionLabel.Visible = true;
+				versionLabel.Text = "v" + (string)ProjectSettings.GetSetting("application/config/version");
+			} else
+				versionLabel.Visible = false;
 
 	}
 
@@ -58,17 +60,9 @@ public partial class NavBar : PanelContainer
 	public int RegisterView(PackedScene packedScene, string displayName)
 	{
 		int index = viewSwitch.AddView(packedScene);
-		
-		Button viewButton = new()
-		{
-			Text = displayName,
-			ToggleMode = true,
-			ButtonGroup = buttonGroup
-		};
-		GetNode("VBoxContainer/ButtonList").AddChild(viewButton);
-
-		if (index == 0) // Default View
-			viewButton.ButtonPressed = true;
+		var viewButton = buttonsContainer.AddButton(displayName);
+		/*if (index == 0) // Default View
+			viewButton.ButtonPressed = true;*/
 		
 		buttonDictionary.Add(index, viewButton);
 

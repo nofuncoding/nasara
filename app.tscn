@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://bhmo5fqi55jgx"]
 
 [ext_resource type="StyleBox" uid="uid://d27gjy5q4owlp" path="res://res/style/app_panel.tres" id="1_3n241"]
-[ext_resource type="PackedScene" uid="uid://b43ldqeyl51lx" path="res://ui/component/nav_bar.tscn" id="1_cq3bb"]
 [ext_resource type="Script" path="res://App.cs" id="1_cvbrt"]
 [ext_resource type="Script" path="res://ui/controller/component/ViewSwitch.cs" id="3_dmw11"]
+[ext_resource type="PackedScene" uid="uid://c6a08lc27x3ml" path="res://ui/component/new_nav_bar.tscn" id="3_ikn0v"]
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://res/style/normal_control_theme.tres" id="4_pxc2e"]
 [ext_resource type="Script" path="res://ui/controller/NotifySystem.cs" id="5_kqfxe"]
 
@@ -40,11 +40,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NavBar" parent="VSplitContainer/Main/HBoxContainer" node_paths=PackedStringArray("viewSwitch", "versionLabel", "menuButton") instance=ExtResource("1_cq3bb")]
+[node name="NavBar" parent="VSplitContainer/Main/HBoxContainer" node_paths=PackedStringArray("viewSwitch", "menuButton", "buttonsContainer") instance=ExtResource("3_ikn0v")]
 layout_mode = 2
 viewSwitch = NodePath("../MarginContainer/ViewSwitch")
-versionLabel = NodePath("VBoxContainer/HBoxContainer/VersionHint")
-menuButton = NodePath("VBoxContainer/HBoxContainer/MenuButton")
+menuButton = NodePath("VBoxContainer/MenuButton")
+buttonsContainer = NodePath("VBoxContainer/MarginContainer/NavButtonContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="VSplitContainer/Main/HBoxContainer"]
 layout_mode = 2

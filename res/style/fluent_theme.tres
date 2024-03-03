@@ -1,0 +1,119 @@
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://b3djlgnabawak"]
+
+[ext_resource type="SystemFont" uid="uid://bwap7s88dc67e" path="res://res/font/FluentBaseFont.tres" id="1_6cc2n"]
+[ext_resource type="Texture2D" uid="uid://c4ev4rggwg5qr" path="res://res/icon/ic_fluent_checkbox_checked_24_filled.png" id="1_60jaj"]
+[ext_resource type="Texture2D" uid="uid://chc4ksyydakra" path="res://res/icon/ic_fluent_chevron_right_24_filled.png" id="2_tvcc2"]
+[ext_resource type="Texture2D" uid="uid://wr3detbm21n7" path="res://res/icon/ic_fluent_checkbox_unchecked_24_filled.png" id="3_six70"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b3is1"]
+content_margin_left = 12.0
+content_margin_top = 5.0
+content_margin_right = 12.0
+content_margin_bottom = 5.0
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.258824, 0.258824, 0.258824, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s6tk0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pturs"]
+content_margin_left = 12.0
+content_margin_top = 5.0
+content_margin_right = 12.0
+content_margin_bottom = 5.0
+bg_color = Color(0.239216, 0.239216, 0.239216, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.458824, 0.458824, 0.458824, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0yikc"]
+content_margin_left = 12.0
+content_margin_top = 5.0
+content_margin_right = 12.0
+content_margin_bottom = 5.0
+bg_color = Color(0.12549, 0.121569, 0.117647, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.4, 0.4, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_774fb"]
+content_margin_left = 12.0
+content_margin_top = 5.0
+content_margin_right = 12.0
+content_margin_bottom = 5.0
+bg_color = Color(0.121569, 0.121569, 0.121569, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.419608, 0.419608, 0.419608, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wltn6"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.239216, 0.239216, 0.239216, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ombpm"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 5
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_krc5r"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+color = Color(0.321569, 0.321569, 0.321569, 1)
+
+[resource]
+default_font = ExtResource("1_6cc2n")
+Button/styles/disabled = SubResource("StyleBoxFlat_b3is1")
+Button/styles/focus = SubResource("StyleBoxEmpty_s6tk0")
+Button/styles/hover = SubResource("StyleBoxFlat_pturs")
+Button/styles/normal = SubResource("StyleBoxFlat_0yikc")
+Button/styles/pressed = SubResource("StyleBoxFlat_774fb")
+PopupMenu/icons/checked = ExtResource("1_60jaj")
+PopupMenu/icons/submenu = ExtResource("2_tvcc2")
+PopupMenu/icons/unchecked = ExtResource("3_six70")
+PopupMenu/styles/hover = SubResource("StyleBoxFlat_wltn6")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_ombpm")
+PopupMenu/styles/separator = SubResource("StyleBoxLine_krc5r")
