@@ -4,11 +4,10 @@
 [ext_resource type="Script" path="res://App.cs" id="1_cvbrt"]
 [ext_resource type="Script" path="res://ui/controller/component/ViewSwitch.cs" id="3_dmw11"]
 [ext_resource type="PackedScene" uid="uid://c6a08lc27x3ml" path="res://ui/component/new_nav_bar.tscn" id="3_ikn0v"]
-[ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://res/style/normal_control_theme.tres" id="4_pxc2e"]
+[ext_resource type="Theme" uid="uid://b3djlgnabawak" path="res://res/style/fluent_theme.tres" id="5_54so3"]
 [ext_resource type="Script" path="res://ui/controller/NotifySystem.cs" id="5_kqfxe"]
 
 [node name="App" type="PanelContainer" node_paths=PackedStringArray("mainPage", "loadingPage", "navBar", "viewSwitch", "loadingBar")]
-clip_children = 2
 clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,21 +17,16 @@ grow_vertical = 2
 theme_override_styles/panel = ExtResource("1_3n241")
 script = ExtResource("1_cvbrt")
 notifySystemPath = NodePath("NotifySystem")
-mainPage = NodePath("VSplitContainer/Main")
+mainPage = NodePath("Main")
 loadingPage = NodePath("Loading")
-navBar = NodePath("VSplitContainer/Main/HBoxContainer/NavBar")
-viewSwitch = NodePath("VSplitContainer/Main/HBoxContainer/MarginContainer/ViewSwitch")
+navBar = NodePath("Main/HBoxContainer/NavBar")
+viewSwitch = NodePath("Main/HBoxContainer/MarginContainer/ViewSwitch")
 loadingBar = NodePath("Loading/CenterContainer/VBoxContainer/ProgressBar")
 
-[node name="VSplitContainer" type="VSplitContainer" parent="."]
-layout_mode = 2
-collapsed = true
-dragger_visibility = 2
-
-[node name="Main" type="Control" parent="VSplitContainer"]
+[node name="Main" type="Control" parent="."]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer/Main"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Main"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -40,20 +34,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NavBar" parent="VSplitContainer/Main/HBoxContainer" node_paths=PackedStringArray("viewSwitch", "menuButton", "buttonsContainer") instance=ExtResource("3_ikn0v")]
+[node name="NavBar" parent="Main/HBoxContainer" node_paths=PackedStringArray("viewSwitch", "menuButton", "buttonsContainer") instance=ExtResource("3_ikn0v")]
 layout_mode = 2
+size_flags_horizontal = 0
 viewSwitch = NodePath("../MarginContainer/ViewSwitch")
 menuButton = NodePath("VBoxContainer/MenuButton")
 buttonsContainer = NodePath("VBoxContainer/MarginContainer/NavButtonContainer")
 
-[node name="MarginContainer" type="MarginContainer" parent="VSplitContainer/Main/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Main/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 30
 
-[node name="ViewSwitch" type="Control" parent="VSplitContainer/Main/HBoxContainer/MarginContainer" node_paths=PackedStringArray("pages")]
+[node name="ViewSwitch" type="Control" parent="Main/HBoxContainer/MarginContainer" node_paths=PackedStringArray("pages")]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("3_dmw11")
@@ -81,7 +76,7 @@ text = "Loading"
 [node name="ProgressBar" type="ProgressBar" parent="Loading/CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(250, 10)
 layout_mode = 2
-theme = ExtResource("4_pxc2e")
+theme = ExtResource("5_54so3")
 show_percentage = false
 
 [node name="NotifySystem" type="Control" parent="." node_paths=PackedStringArray("notifyContainer")]

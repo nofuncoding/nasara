@@ -1,0 +1,109 @@
+[gd_scene load_steps=10 format=3 uid="uid://bp6tf3ew5p24v"]
+
+[ext_resource type="Script" path="res://ui/controller/component/EditorHolder.cs" id="1_grar1"]
+[ext_resource type="Texture2D" uid="uid://dneuau3xf1ka4" path="res://res/img/icon_monochrome_dark.svg" id="1_vlgkf"]
+[ext_resource type="SystemFont" uid="uid://bo3omumr6dchf" path="res://res/font/FluentBoldFont.tres" id="2_1sgbv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xde6d"]
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.14902, 0.14902, 0.14902, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3wu86"]
+content_margin_left = 15.0
+content_margin_top = 20.0
+content_margin_right = 15.0
+content_margin_bottom = 20.0
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vwf2s"]
+font = ExtResource("2_1sgbv")
+font_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dsvm8"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_14j38"]
+font_size = 14
+font_color = Color(0.839216, 0.839216, 0.839216, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ns2id"]
+font_color = Color(0.678431, 0.678431, 0.678431, 1)
+
+[node name="EditorHolder" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 120)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xde6d")
+script = ExtResource("1_grar1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("1_vlgkf")
+expand_mode = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_3wu86")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VersionLabel" type="Label" parent="HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Godot 4.3"
+label_settings = SubResource("LabelSettings_vwf2s")
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dsvm8")
+
+[node name="ChannelLabel" type="Label" parent="HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+text = "Stable"
+label_settings = SubResource("LabelSettings_14j38")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="PathLabel" type="Label" parent="HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "/://the/path/to/editor"
+label_settings = SubResource("LabelSettings_ns2id")
+
+[node name="TagContainer" type="HBoxContainer" parent="HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3

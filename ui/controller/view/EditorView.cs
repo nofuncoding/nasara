@@ -16,7 +16,7 @@ public partial class EditorView : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		editorList.addButton.Pressed += AddEditor;
+		// editorList.addButton.Pressed += AddEditor;
 	}
 
 	void AddEditor()
@@ -27,7 +27,7 @@ public partial class EditorView : Control
 		addEditorView.Completed += () => {
 			addEditorView.QueueFree();
 			GetNode<VBoxContainer>("VBoxContainer").Visible = true;
-			editorList.RefreshEditors();
+			editorList.RefreshEditorList();
 		};
 
 		GetNode<VBoxContainer>("VBoxContainer").Visible = false;

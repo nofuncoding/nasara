@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bsl38ksfykhqj"]
+[gd_scene load_steps=9 format=3 uid="uid://bsl38ksfykhqj"]
 
 [ext_resource type="Script" path="res://ui/controller/component/popup/AppInfoPopup.cs" id="1_w2uqg"]
-[ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://res/font/GlowSansSC-Normal-Medium.otf" id="1_yl0x8"]
 [ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://res/font/MaterialSymbolsSharp.ttf" id="2_eiiw5"]
 [ext_resource type="FontFile" uid="uid://c5i8wobkwf4am" path="res://res/font/GlowSansSC-Normal-Regular.otf" id="2_nymnf"]
+[ext_resource type="SystemFont" uid="uid://bwap7s88dc67e" path="res://res/font/FluentBaseFont.tres" id="3_wumwq"]
+[ext_resource type="SystemFont" uid="uid://bo3omumr6dchf" path="res://res/font/FluentBoldFont.tres" id="4_wawb0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ga6n0"]
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.941176)
@@ -98,13 +99,12 @@ theme_override_constants/separation = 20
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_fonts/normal_font = ExtResource("2_nymnf")
-theme_override_fonts/bold_font = ExtResource("1_yl0x8")
+theme_override_fonts/normal_font = ExtResource("3_wumwq")
+theme_override_fonts/bold_font = ExtResource("4_wawb0")
 bbcode_enabled = true
 text = "[b]Narasa[/b] is licensed under the [url=https://github.com/nofuncoding/nasara/blob/main/LICENSE]MIT License[/url], and it is [url=https://github.com/nofuncoding/nasara]open-source[/url] and free.
 
 [b]Third-Party Licenses[/b]
-[url=https://github.com/welai/glow-sans/blob/master/OFL.txt]Glow Sans[/url] - [i]OFL-1.1[/i]
 [url=https://github.com/google/material-design-icons/blob/master/LICENSE]Material Symbols[/url] - [i]Apache License 2.0[/i]
 [url=godotengine.org/license]Godot[/url] - [i]MIT License[/i]
 [indent][url=https://freetype.org/license.html]FreeType[/url] - [i]FreeType License[/i]

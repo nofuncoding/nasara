@@ -20,8 +20,7 @@ public partial class Downloader : HttpRequest
         DownloadFile = save_path;
 
         AppConfig config = new();
-        if (config.EnableTLS)
-            SetTlsOptions(TlsOptions.Client());
+        SetTlsOptions(TlsOptions.Client());
         
         RequestCompleted += CompleteDownloading;
     }

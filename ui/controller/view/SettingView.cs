@@ -18,15 +18,7 @@ public partial class SettingView : Control
 
 	[ExportGroup("Network")]
 	[Export]
-	CheckButton enableTLS;
-	[Export]
 	CheckButton githubProxy;
-
-	[ExportGroup("Theme")]
-	[Export]
-	CheckButton transparent;
-	[Export]
-	CheckButton customTitlebar;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -44,24 +36,14 @@ public partial class SettingView : Control
 
 		InitLanguageOptions();
 
-		enableTLS.ButtonPressed = _config.EnableTLS;
 		githubProxy.ButtonPressed = _config.UsingGithubProxy;
 
-		transparent.ButtonPressed = _config.TransparentBackground;
-		customTitlebar.ButtonPressed = _config.UseCustomTitlebar;
-		
 		/* Events */
 
 		langOption.ItemSelected += (long index) => _config.Language = TranslationServer.GetLoadedLocales()[index];
-		
-		enableTLS.Toggled += (bool s) => _config.EnableTLS = s;
+
 		githubProxy.Toggled += (bool s) => _config.UsingGithubProxy = s;
-	
-		transparent.Toggled += (bool s) => {
-			_config.TransparentBackground = s;
-			GetTree().Root.TransparentBg = s;
-		};
-		customTitlebar.Toggled += (bool s) => _config.UseCustomTitlebar = s;
+
 	}
 
 	void InitLanguageOptions()
