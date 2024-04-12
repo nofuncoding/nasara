@@ -1,9 +1,9 @@
 [gd_resource type="Theme" load_steps=13 format=3 uid="uid://b3djlgnabawak"]
 
-[ext_resource type="SystemFont" uid="uid://bwap7s88dc67e" path="res://res/font/FluentBaseFont.tres" id="1_6cc2n"]
 [ext_resource type="Texture2D" uid="uid://c4ev4rggwg5qr" path="res://res/icon/ic_fluent_checkbox_checked_24_filled.png" id="1_60jaj"]
 [ext_resource type="Texture2D" uid="uid://chc4ksyydakra" path="res://res/icon/ic_fluent_chevron_right_24_filled.png" id="2_tvcc2"]
 [ext_resource type="Texture2D" uid="uid://wr3detbm21n7" path="res://res/icon/ic_fluent_checkbox_unchecked_24_filled.png" id="3_six70"]
+[ext_resource type="FontVariation" uid="uid://cn1yoc5x83wgs" path="res://res/font/Inter.tres" id="4_iisag"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b3is1"]
 content_margin_left = 12.0
@@ -105,7 +105,7 @@ content_margin_bottom = 0.0
 color = Color(0.321569, 0.321569, 0.321569, 1)
 
 [resource]
-default_font = ExtResource("1_6cc2n")
+default_font = ExtResource("4_iisag")
 Button/styles/disabled = SubResource("StyleBoxFlat_b3is1")
 Button/styles/focus = SubResource("StyleBoxEmpty_s6tk0")
 Button/styles/hover = SubResource("StyleBoxFlat_pturs")

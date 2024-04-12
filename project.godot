@@ -43,7 +43,7 @@ folder_colors={
 [gui]
 
 theme/custom="res://res/style/fluent_theme.tres"
-theme/custom_font="res://res/font/FluentBaseFont.tres"
+theme/custom_font="res://res/font/Inter.tres"
 
 [internationalization]
 

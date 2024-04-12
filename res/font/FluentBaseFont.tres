@@ -1,4 +1,4 @@
 [gd_resource type="SystemFont" format=3 uid="uid://bwap7s88dc67e"]
 
 [resource]
-font_names = PackedStringArray("Segoe UI", "Segoe UI Web (West European)", "-apple-system", "BlinkMacSystemFont", "Roboto", "Helvetica Neue", "Sans-Serif")
+font_names = PackedStringArray("Segoe UI", "BlinkMacSystemFont", "Roboto", "Helvetica Neue", "Sans-Serif")

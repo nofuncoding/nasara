@@ -1,0 +1,11 @@
+[gd_resource type="FontVariation" load_steps=3 format=3 uid="uid://cn1yoc5x83wgs"]
+
+[ext_resource type="FontFile" uid="uid://cpeor8xd3yyca" path="res://res/font/InterVariable.ttf" id="1_6hfvt"]
+[ext_resource type="FontVariation" uid="uid://bnclxftaevg08" path="res://res/font/SourceHanSans.tres" id="2_6m3qt"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_6m3qt")])
+base_font = ExtResource("1_6hfvt")
+variation_opentype = {
+1869640570: 15
+}

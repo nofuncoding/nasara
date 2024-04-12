@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://src/UI/View/AppInfo.cs" id="1_lgkfl"]
 [ext_resource type="FontFile" uid="uid://c1fr3m0hlutuk" path="res://res/font/MaterialSymbolsSharp.ttf" id="2_eiiw5"]
 [ext_resource type="FontFile" uid="uid://c5i8wobkwf4am" path="res://res/font/GlowSansSC-Normal-Regular.otf" id="2_nymnf"]
-[ext_resource type="SystemFont" uid="uid://bwap7s88dc67e" path="res://res/font/FluentBaseFont.tres" id="3_wumwq"]
-[ext_resource type="SystemFont" uid="uid://deniiitcng52f" path="res://res/font/FluentItalicFont.tres" id="4_edah4"]
-[ext_resource type="SystemFont" uid="uid://bo3omumr6dchf" path="res://res/font/FluentBoldFont.tres" id="4_wawb0"]
+[ext_resource type="FontVariation" uid="uid://cn1yoc5x83wgs" path="res://res/font/Inter.tres" id="3_gmoso"]
+[ext_resource type="FontVariation" uid="uid://tm3rhe2s1sxx" path="res://res/font/InterItalic.tres" id="4_3e51c"]
+[ext_resource type="FontVariation" uid="uid://2xiytp5a5olq" path="res://res/font/InterBold.tres" id="5_30ilx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ga6n0"]
 bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.941176)
@@ -100,9 +100,9 @@ theme_override_constants/separation = 20
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_fonts/normal_font = ExtResource("3_wumwq")
-theme_override_fonts/italics_font = ExtResource("4_edah4")
-theme_override_fonts/bold_font = ExtResource("4_wawb0")
+theme_override_fonts/normal_font = ExtResource("3_gmoso")
+theme_override_fonts/italics_font = ExtResource("4_3e51c")
+theme_override_fonts/bold_font = ExtResource("5_30ilx")
 bbcode_enabled = true
 text = "[b]Narasa[/b] is licensed under the [url=https://github.com/nofuncoding/nasara/blob/main/LICENSE]MIT License[/url], and it is [url=https://github.com/nofuncoding/nasara]open-source[/url] and free.
 
