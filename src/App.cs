@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using Nasara.Core;
 
 namespace Nasara;
 
@@ -15,6 +16,7 @@ public class App
 	private App()
 	{
 		CreateDirs();
+		NetworkClient.Initialize();
 	}
 
 	public static void Initialize()
@@ -23,6 +25,7 @@ public class App
 		
 		GD.PrintRich($"[b]Nasara v{GetVersion()}[/b]. Licensed under the MIT License.\n" +
 		             "Check out our GitHub: https://github.com/nofuncoding/nasara\n");
+		
 		Log("Initializing");
 		_instance = new App();
 	}
