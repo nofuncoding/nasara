@@ -21,10 +21,6 @@ run/low_processor_mode=true
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
-[autoload]
-
-App="*res://src/App.cs"
-
 [display]
 
 window/energy_saving/keep_screen_on=false

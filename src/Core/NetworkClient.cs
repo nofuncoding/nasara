@@ -11,6 +11,7 @@ public class NetworkClient
 
     private NetworkClient()
     {
+        // initialize backends
         _gitHubClient = new GitHubClient(new ProductHeaderValue("nasara"));
         _httpClient = new HttpClient();
     }
