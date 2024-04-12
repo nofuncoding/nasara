@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bcu6t56ammh32"]
 
-[ext_resource type="Script" path="res://ui/controller/component/EditorList.cs" id="1_2kqce"]
+[ext_resource type="Script" path="res://src/UI/Component/EditorList.cs" id="1_2kqce"]
 [ext_resource type="Theme" uid="uid://b3djlgnabawak" path="res://res/style/fluent_theme.tres" id="1_kbdxu"]
 [ext_resource type="SystemFont" uid="uid://bo3omumr6dchf" path="res://res/font/FluentBoldFont.tres" id="3_3smmw"]
 
@@ -8,25 +8,27 @@
 font = ExtResource("3_3smmw")
 font_size = 20
 
-[node name="EditorList" type="Control" node_paths=PackedStringArray("emptyDisplay", "scroller", "editorListContainer")]
-clip_children = 2
+[node name="EditorList" type="Control" node_paths=PackedStringArray("_emptyTip", "_scroller", "_editorContainer", "_addingButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 3
 theme = ExtResource("1_kbdxu")
 script = ExtResource("1_2kqce")
-emptyDisplay = NodePath("VBoxContainer/EmptyDisplay")
-scroller = NodePath("VBoxContainer/ScrollContainer")
-editorListContainer = NodePath("VBoxContainer/ScrollContainer/VBoxContainer")
+_emptyTip = NodePath("VBoxContainer/EmptyDisplay")
+_scroller = NodePath("VBoxContainer/ScrollContainer")
+_editorContainer = NodePath("VBoxContainer/ScrollContainer/VBoxContainer")
+_addingButton = NodePath("VBoxContainer/HBoxContainer/AddButton")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
-offset_right = 1152.0
-offset_bottom = 648.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -55,14 +57,14 @@ alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer/EmptyDisplay"]
 layout_mode = 2
-text = "No Editors"
+text = "No Editor"
 label_settings = SubResource("LabelSettings_47jlo")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Label2" type="Label" parent="VBoxContainer/EmptyDisplay"]
 layout_mode = 2
-text = "Please install one or add from local."
+text = "Please install one or add one from local."
 horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]

@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6a08lc27x3ml"]
+[gd_scene load_steps=7 format=3 uid="uid://c6a08lc27x3ml"]
 
 [ext_resource type="Theme" uid="uid://b3djlgnabawak" path="res://res/style/fluent_theme.tres" id="1_vmdnf"]
-[ext_resource type="Script" path="res://ui/controller/component/NavBar.cs" id="2_bes7u"]
-[ext_resource type="Script" path="res://ui/controller/component/NavButtonContainer.cs" id="3_j6w3f"]
+[ext_resource type="Script" path="res://src/UI/Component/NavigationBar.cs" id="2_bes7u"]
+[ext_resource type="Script" path="res://src/UI/Component/VerticalButtonContainer.cs" id="3_j6w3f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_16uk8"]
 content_margin_left = 4.0
@@ -16,7 +16,11 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="NavBar" type="Panel" node_paths=PackedStringArray("menuButton", "buttonsContainer")]
+[sub_resource type="LabelSettings" id="LabelSettings_lpgte"]
+font_size = 12
+font_color = Color(1, 1, 1, 0.392157)
+
+[node name="NavBar" type="Panel" node_paths=PackedStringArray("_versionLabel", "_menuButton", "_buttonContainer")]
 custom_minimum_size = Vector2(128, 0)
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -24,8 +28,9 @@ grow_vertical = 2
 theme = ExtResource("1_vmdnf")
 theme_override_styles/panel = SubResource("StyleBoxFlat_16uk8")
 script = ExtResource("2_bes7u")
-menuButton = NodePath("VBoxContainer/MenuButton")
-buttonsContainer = NodePath("VBoxContainer/MarginContainer/NavButtonContainer")
+_versionLabel = NodePath("Label")
+_menuButton = NodePath("VBoxContainer/MenuButton")
+_buttonContainer = NodePath("VBoxContainer/MarginContainer/NavButtonContainer")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -33,20 +38,17 @@ offset_left = 4.0
 offset_right = 124.0
 offset_bottom = 648.0
 
-[node name="Label" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-text = "Nasara"
-
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 4
 
-[node name="NavButtonContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer" node_paths=PackedStringArray("highlightPanel")]
+[node name="NavButtonContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer" node_paths=PackedStringArray("_highlightPanel")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_j6w3f")
-highlightPanel = NodePath("../../../HighlightPanel")
+_highlightPanel = NodePath("../../../HighlightPanel")
+_highlightColor = Color(0.184314, 0.415686, 1, 1)
 
 [node name="MenuButton" type="MenuButton" parent="VBoxContainer"]
 layout_mode = 2
@@ -57,3 +59,16 @@ visible = false
 custom_minimum_size = Vector2(2, 20)
 layout_mode = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_64xss")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -17.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "ver"
+label_settings = SubResource("LabelSettings_lpgte")

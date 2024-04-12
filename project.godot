@@ -21,6 +21,10 @@ run/low_processor_mode=true
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
+[autoload]
+
+App="*res://src/App.cs"
+
 [display]
 
 window/energy_saving/keep_screen_on=false
@@ -35,7 +39,6 @@ project/assembly_name="Nasara"
 [file_customization]
 
 folder_colors={
-"res://core/": "orange",
 "res://res/": "teal",
 "res://ui/component/": "green",
 "res://ui/view/": "green"
@@ -43,6 +46,7 @@ folder_colors={
 
 [gui]
 
+theme/custom="res://res/style/fluent_theme.tres"
 theme/custom_font="res://res/font/FluentBaseFont.tres"
 
 [internationalization]
