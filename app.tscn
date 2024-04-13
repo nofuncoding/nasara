@@ -3,7 +3,7 @@
 [ext_resource type="StyleBox" uid="uid://d27gjy5q4owlp" path="res://res/style/app_panel.tres" id="1_3n241"]
 [ext_resource type="Script" path="res://src/UI/AppLayout.cs" id="2_gc7vu"]
 [ext_resource type="Script" path="res://src/UI/Component/ViewSwitch.cs" id="3_dmw11"]
-[ext_resource type="PackedScene" uid="uid://c6a08lc27x3ml" path="res://ui/component/new_nav_bar.tscn" id="3_ikn0v"]
+[ext_resource type="PackedScene" uid="uid://c6a08lc27x3ml" path="res://ui/component/nav_bar.tscn" id="3_ikn0v"]
 [ext_resource type="Theme" uid="uid://b3djlgnabawak" path="res://res/style/fluent_theme.tres" id="5_54so3"]
 
 [node name="App" type="PanelContainer" node_paths=PackedStringArray("_mainPage", "_loadingPage", "_navigationBar", "_viewSwitch", "_loadingBar")]

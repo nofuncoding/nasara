@@ -17,8 +17,8 @@ public partial class NavigationBar : Control
     public override void _Ready()
     {
         _buttonContainer.ButtonGroup.Pressed += ChangeNav;
-
-        PopupMenu menu = _menuButton.GetPopup();
+        
+        var menu = _menuButton.GetPopup();
         menu.AddItem(Tr("About")+"...", 0);
         menu.IdPressed += MenuIdPressed;
         menu.Transparent = true;

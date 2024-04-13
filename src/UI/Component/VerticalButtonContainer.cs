@@ -10,6 +10,8 @@ public partial class VerticalButtonContainer : VBoxContainer
 {
     [Export] private Panel _highlightPanel;
     [Export] private Color _highlightColor;
+    [Export] private float _highlightWidth = 3;
+    [Export] private float _edgeSize = 3;
 
     public ButtonGroup ButtonGroup { get; private set; }
 
@@ -19,8 +21,8 @@ public partial class VerticalButtonContainer : VBoxContainer
     public override void _Ready()
     {
         _highlightPanel.SelfModulate = _highlightColor;
-        _highlightPanel.Size = new Vector2(2, 0);
-        _highlightPanel.Position = _highlightPanel.Position with {X = 2};
+        _highlightPanel.Size = new Vector2(_highlightWidth, 0); // X is the width of highlight
+        _highlightPanel.Position = _highlightPanel.Position with {X = _edgeSize}; // position to edge
         _highlightPanel.Hide();
 
         ButtonGroup = new ButtonGroup();
