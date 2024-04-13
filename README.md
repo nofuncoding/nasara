@@ -2,6 +2,10 @@
 
 Download, Install, and Launch Godot Editors/Projects from one place
 
+> [!NOTE]
+> Nasara is being fully rewrite, you can check it in https://github.com/nofuncoding/nasara/pull/28.
+> It has a lot of changes and will be 1.0 release of Nasara.
+
 > [!CAUTION]
 > Nasara is still in the early stages of development. Important features are missing.
 > On your own head be it!
