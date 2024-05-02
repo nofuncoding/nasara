@@ -9,20 +9,19 @@ public partial class NavigationBar : Control
 {
     [Export] private ViewSwitch _viewSwitch;
     [Export] private Label _versionLabel;
-    [Export] private MenuButton _menuButton;
+    [Export] private Button _settingButton;
     [Export] private VerticalButtonContainer _buttonContainer;
 
     private Dictionary<int, BaseButton> _buttonDictionary = [];
 
     public override void _Ready()
     {
-        _buttonContainer.ButtonGroup.Pressed += ChangeNav;
-        
-        var menu = _menuButton.GetPopup();
-        menu.AddItem(Tr("About")+"...", 0);
-        menu.IdPressed += MenuIdPressed;
-        menu.Transparent = true;
-        menu.TransparentBg = true;
+        _buttonContainer.ButtonGroup.Pressed += Navigate;
+        _settingButton.Pressed += () =>
+        {
+            var scene = GD.Load<PackedScene>("res://ui/view/setting_view.tscn").Instantiate<Control>();
+            AppLayout.ShowPopup(scene);
+        };
 
         if (_versionLabel is null) return;
         
@@ -42,23 +41,11 @@ public partial class NavigationBar : Control
         
         _buttonDictionary.Add(index, viewButton);
 
-        App.Log($"Loaded {packedScene.ResourcePath} as index {index}", "NavigationBar");
+        Logger.Log($"Loaded {packedScene.ResourcePath} as index {index}", "NavigationBar");
         return index;
     }
 
-    private void MenuIdPressed(long id)
-    {
-        switch (id)
-        {
-            case 0: // about
-                var appInfo = GD.Load<PackedScene>("res://ui/component/popup/app_info_popup.tscn").Instantiate<Window>();
-                AddChild(appInfo);
-                appInfo.PopupCentered();
-                break;
-        }
-    }
-
-    private void ChangeNav(BaseButton button)
+    private void Navigate(BaseButton button)
     {
         // Find out the given button
         foreach (var view in _buttonDictionary.Where(view => view.Value == button))

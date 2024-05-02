@@ -4,9 +4,19 @@
 [ext_resource type="Script" path="res://src/UI/AppLayout.cs" id="2_gc7vu"]
 [ext_resource type="Script" path="res://src/UI/Component/ViewSwitch.cs" id="3_dmw11"]
 [ext_resource type="PackedScene" uid="uid://c6a08lc27x3ml" path="res://ui/component/nav_bar.tscn" id="3_ikn0v"]
-[ext_resource type="Theme" uid="uid://b3djlgnabawak" path="res://res/style/fluent_theme.tres" id="5_54so3"]
 
-[node name="App" type="PanelContainer" node_paths=PackedStringArray("_mainPage", "_loadingPage", "_navigationBar", "_viewSwitch", "_loadingBar")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gcu05"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="App" type="PanelContainer" node_paths=PackedStringArray("_popupLayer", "_popupHolder", "_mainPage", "_navigationBar", "_viewSwitch")]
 clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,11 +25,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("1_3n241")
 script = ExtResource("2_gc7vu")
+_popupLayer = NodePath("Popup")
+_popupHolder = NodePath("Popup/CenterContainer/PanelContainer")
 _mainPage = NodePath("Main")
-_loadingPage = NodePath("Loading")
 _navigationBar = NodePath("Main/HBoxContainer/NavBar")
 _viewSwitch = NodePath("Main/HBoxContainer/MarginContainer/ViewSwitch")
-_loadingBar = NodePath("Loading/CenterContainer/VBoxContainer/ProgressBar")
 
 [node name="Main" type="Control" parent="."]
 layout_mode = 2
@@ -32,12 +42,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NavBar" parent="Main/HBoxContainer" node_paths=PackedStringArray("_viewSwitch", "_versionLabel", "_menuButton", "_buttonContainer") instance=ExtResource("3_ikn0v")]
+[node name="NavBar" parent="Main/HBoxContainer" node_paths=PackedStringArray("_viewSwitch", "_versionLabel", "_buttonContainer") instance=ExtResource("3_ikn0v")]
 layout_mode = 2
 size_flags_horizontal = 0
 _viewSwitch = NodePath("../MarginContainer/ViewSwitch")
 _versionLabel = NodePath("Label")
-_menuButton = NodePath("VBoxContainer/MenuButton")
 _buttonContainer = NodePath("VBoxContainer/MarginContainer/NavButtonContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="Main/HBoxContainer"]
@@ -53,11 +62,19 @@ size_flags_horizontal = 3
 script = ExtResource("3_dmw11")
 Pages = []
 
-[node name="Loading" type="Control" parent="."]
-visible = false
+[node name="Popup" type="Control" parent="."]
 layout_mode = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="Loading"]
+[node name="ColorRect" type="ColorRect" parent="Popup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.470588)
+
+[node name="CenterContainer" type="CenterContainer" parent="Popup"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,24 +82,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Loading/CenterContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="Popup/CenterContainer"]
+custom_minimum_size = Vector2(400, 300)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gcu05")
 
-[node name="Label" type="Label" parent="Loading/CenterContainer/VBoxContainer"]
-layout_mode = 2
-text = "Loading"
-
-[node name="ProgressBar" type="ProgressBar" parent="Loading/CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(250, 10)
-layout_mode = 2
-theme = ExtResource("5_54so3")
-show_percentage = false
-
-[node name="NotifySystem" type="Control" parent="."]
+[node name="InnerNotify" type="Control" parent="."]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="NotifySystem"]
+[node name="MarginContainer" type="MarginContainer" parent="InnerNotify"]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -95,12 +104,12 @@ mouse_filter = 2
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="ScrollContainer" type="ScrollContainer" parent="NotifySystem/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="InnerNotify/MarginContainer"]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="NotifySystem/MarginContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="InnerNotify/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

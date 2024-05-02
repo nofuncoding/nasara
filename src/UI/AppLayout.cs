@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using Nasara.Core;
+using Nasara.Core.Management;
 using Nasara.UI.Component;
 
 namespace Nasara.UI;
@@ -11,6 +13,9 @@ namespace Nasara.UI;
 /// </summary>
 public partial class AppLayout : PanelContainer
 {
+
+    [Export] private Control _popupLayer;
+    [Export] private Control _popupHolder;
     [ExportGroup("Pages")]
     [Export] private Control _mainPage;
     [Export] private Control _loadingPage;
@@ -22,13 +27,29 @@ public partial class AppLayout : PanelContainer
     
     public override void _Ready()
     {
-        App.Initialize();
+        App.Initialize(this);
         
         // Load pages
-        App.Log("Loading UI", "AppLayout");
+        Logger.Log("Loading UI", "AppLayout");
         _navigationBar.RegisterView(GD.Load<PackedScene>("res://ui/view/editor_view.tscn"), Tr("Editor"));
         _navigationBar.RegisterView(GD.Load<PackedScene>("res://ui/view/project_view.tscn"), Tr("Project"));
         _navigationBar.RegisterView(GD.Load<PackedScene>("res://ui/view/news_view.tscn"), Tr("News"));
-        _navigationBar.RegisterView(GD.Load<PackedScene>("res://ui/view/setting_view.tscn"), Tr("Setting"));
+
+        _popupLayer.Hide();
+        
+        UpdateChecker.CheckUpdate();
+        new GodotManager().GetManifest();
+    }
+
+    // TODO add some animations here
+    public static void ShowPopup(Control popup)
+    {
+        var instance = App.GetLayout();
+
+        if (popup.IsInsideTree() || instance._popupHolder.GetChildren().Count > 0) return;
+        
+        instance._popupLayer.Show();
+        instance._popupHolder.AddChild(popup);
+        popup.TreeExited += instance._popupLayer.Hide;
     }
 }

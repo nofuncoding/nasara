@@ -1,28 +1,31 @@
-using System.Net.Http;
+using System;
+using Godot;
 using Octokit;
+using HttpClient = System.Net.Http.HttpClient;
 
 namespace Nasara.Core;
 
-public class NetworkClient
-{
-    private static NetworkClient _instance;
-    private static GitHubClient _gitHubClient;
-    private static HttpClient _httpClient;
+// TODO The anything about networking should be processed here,
+//      including error processing.
 
-    private NetworkClient()
-    {
-        // initialize backends
-        _gitHubClient = new GitHubClient(new ProductHeaderValue("nasara"));
-        _httpClient = new HttpClient();
-    }
+public static class NetworkClient
+{
+    private static bool _initialized = false;
+    
+    public static GitHubClient GitHub { get; private set; }
+    public static HttpClient Http { get; private set; }
     
     public static void Initialize()
     {
-        if (_instance is not null) return;
+        if (_initialized) return;
         
-        App.Log("Initializing", "NetworkClient");
-        _instance = new NetworkClient();
+        Logger.Log("Initializing", "NetworkClient");
+        // initialize backends
+        GitHub = new GitHubClient(new ProductHeaderValue("nasara"));
+        Http = new HttpClient();
+
+        _initialized = true;
     }
 
-    public static NetworkClient Get() => _instance;
+    public static bool IsInitiaized() => _initialized;
 }

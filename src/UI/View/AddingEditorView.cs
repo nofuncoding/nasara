@@ -5,5 +5,11 @@ namespace Nasara.UI.View;
 
 public partial class AddingEditorView : Control
 {
-    public event EventHandler Completed;
+    [Signal]
+    public delegate void CompletedEventHandler();
+
+    public override void _Ready()
+    {
+        
+    }
 }

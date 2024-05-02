@@ -16,7 +16,11 @@ public partial class VerticalButtonContainer : VBoxContainer
     public ButtonGroup ButtonGroup { get; private set; }
 
     private int _totalButtons = 0;
+    
+    // Temporary
     private bool _defaultInit = false;
+    private bool _updateNeeded = false;
+    private Vector2 _currentPosition = Vector2.Zero;
 
     public override void _Ready()
     {
@@ -31,17 +35,35 @@ public partial class VerticalButtonContainer : VBoxContainer
     
     public override void _Process(double delta)
     {
-        // FIXME: when the container is hiding and adding buttons,
-        //  the highlight will get a weird position. (because the position is negative)
-        //  try adding button after the container is visible in the tree (completed loading).
-
+        // Okay, WTF is these?
+        
+        if (!_updateNeeded && !_defaultInit) return;
+       
+        // FIXME when the container is hiding and adding buttons,
+        //       the highlight will get a weird position. (because the position is negative)
+        //       try adding button until the container is visible in the tree (loading completed).
+        
         // It's a temporary solution
         // bad, but still work right now
+        if (_defaultInit && IsVisibleInTree())
+        {
+            DoAnimation((BaseButton)GetChildren()[0]);
+            _defaultInit = false;
+        }
+
+        // FIXME error position when resizing
+        //       looks like the highlight panel is rendered earlier
+        //       than buttons. so it must be updated AFTER button's
+        //       position changed.
         
-        if (!_defaultInit || !IsVisibleInTree()) return;
-        
-        DoAnimation((BaseButton)GetChildren()[0]);
-        _defaultInit = false;
+        // TEMPORARY solution!
+        // Can I delete this class? it has too many bugs
+        if (_updateNeeded && _currentPosition !=
+            _highlightPanel.Position with { Y = ButtonGroup.GetPressedButton().GlobalPosition.Y })
+        {
+            DoAnimation(ButtonGroup.GetPressedButton());
+            _updateNeeded = false;
+        }
     }
 
     /// <summary>
@@ -60,7 +82,7 @@ public partial class VerticalButtonContainer : VBoxContainer
         };
         AddChild(viewButton);
         
-        // If is first button
+        // If it is first button
         if (_totalButtons <= 0)
         {
             // TODO: support no default page
@@ -86,5 +108,17 @@ public partial class VerticalButtonContainer : VBoxContainer
         var newPosition = _highlightPanel.Position with {Y = button.GlobalPosition.Y};
         tween.TweenProperty(_highlightPanel, "position", newPosition, 0.08f).SetEase(Tween.EaseType.In);
         tween.Play();
+    }
+
+    public override void _Notification(int what)
+    {
+        // FIXME error position when resizing (see above)
+        switch (what)
+        {
+            case (int)NotificationResized:
+                _currentPosition = _highlightPanel.Position;
+                _updateNeeded = true;
+                break;
+        }
     }
 }

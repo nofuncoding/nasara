@@ -2,6 +2,9 @@ using Godot;
 
 namespace Nasara.UI.Component;
 
+/// <summary>
+/// A simplified version of Godot's TabContainer
+/// </summary>
 [GlobalClass]
 public partial class PageSwitch : Control
 {
@@ -18,7 +21,7 @@ public partial class PageSwitch : Control
 
     public override void _Ready()
     {
-        // If it has page, then show the specified page index
+        // If it has page, then show the default page index
         if (Pages.Length > 0)
             Pages[_currentPageIndex].Show();
     }

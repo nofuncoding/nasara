@@ -17,9 +17,9 @@ public partial class EditorView : Control
     {
         var packed = GD.Load<PackedScene>(_addingEditorViewFilePath);
         var addingEditorView = packed.Instantiate<AddingEditorView>();
-        AddChild(addingEditorView);
+        AppLayout.ShowPopup(addingEditorView);
 
-        addingEditorView.Completed += (_, _) =>
+        addingEditorView.Completed += () =>
         {
             addingEditorView.QueueFree();
             GetNode<VBoxContainer>("VBoxContainer").Visible = true;

@@ -21,7 +21,18 @@ public class NotificationSystem
         if (_injects.Length > 0)
             _injects[0].Notify(notification);
         else
-            App.Log("Failed to notify, no inject is given", "NotificationSystem");
+            Logger.LogError("Failed to notify, no inject is given", "NotificationSystem");
+    }
+
+    public void AddInject(INotificationInject inject)
+    {
+        foreach (var i in _injects)
+        {
+            if (i.GetType() == inject.GetType())
+            {
+                Logger.LogWarn($"A NotificationInject for {inject.GetType()} is specified, replacing");
+            }
+        }
     }
 }
 
@@ -37,7 +48,7 @@ public enum NotificationInjectType
     Software, // this program provided
 }
 
-public interface INotificationInject // weird name.
+public interface INotificationInject // TODO weird name.
 {
     void Notify(Notification notification);
     NotificationInjectType GetType();
