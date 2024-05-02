@@ -19,7 +19,7 @@ public static class NetworkClient
     {
         if (_initialized) return;
         
-        Logger.Log("Initializing", "NetworkClient");
+        Logger.Log("Initializing");
         // initialize backends
         GitHub = new GitHubClient(new ProductHeaderValue("nasara"));
         Http = new HttpClient();

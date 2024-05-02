@@ -41,7 +41,7 @@ public partial class NavigationBar : Control
         
         _buttonDictionary.Add(index, viewButton);
 
-        Logger.Log($"Loaded {packedScene.ResourcePath} as index {index}", "NavigationBar");
+        Logger.Log($"Loaded {packedScene.ResourcePath} as index {index}");
         return index;
     }
 

@@ -13,7 +13,7 @@ public class UpdateChecker
             return;
         }
         
-        Logger.Log("Checking updates", "UpdateChecker");
+        Logger.Log("Checking updates");
 
         var currentVersionString = App.GetVersion();
         var currentVersion = currentVersionString.Trim('v').Split('.').Select(int.Parse).ToArray();
@@ -47,7 +47,7 @@ public class UpdateChecker
                     // No updates
                     else
                     {
-                        Logger.Log("Up-to-date", "UpdateChecker");
+                        Logger.Log("Up-to-date");
                     }
                 }
             }

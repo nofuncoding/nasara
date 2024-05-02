@@ -30,7 +30,7 @@ public partial class AppLayout : PanelContainer
         App.Initialize(this);
         
         // Load pages
-        Logger.Log("Loading UI", "AppLayout");
+        Logger.Log("Loading UI");
         _navigationBar.RegisterView(GD.Load<PackedScene>("res://ui/view/editor_view.tscn"), Tr("Editor"));
         _navigationBar.RegisterView(GD.Load<PackedScene>("res://ui/view/project_view.tscn"), Tr("Project"));
         _navigationBar.RegisterView(GD.Load<PackedScene>("res://ui/view/news_view.tscn"), Tr("News"));

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 using Nasara.Core;
 using Nasara.UI;
 
@@ -64,13 +65,21 @@ public class App
 
 public static class Logger
 {
-	/// <summary>
-	/// A simple log function
-	/// </summary>
-	/// <param name="message">Text to log</param>
-	/// <param name="identifier">Identifier of log message</param>
-	public static void Log(string message, string identifier="App")
+	public static void Log(string message)
 	{
+		// TODO bad code
+		// Get class type from StackTrace
+		var stackTrace = new StackTrace();
+		var method = stackTrace.GetFrame(1)?.GetMethod();
+		
+		var logClass = method?.DeclaringType;
+		if ((logClass?.IsClass ?? false) && !method.IsStatic)
+			logClass = logClass.DeclaringType;
+		
+		var identifier = logClass?.Name;
+		identifier ??= method?.ReflectedType?.Name; // FIXME
+		identifier ??= "Unknown";
+		
 		GD.PrintRich(GenerateLogMessage(identifier, message, LogLevel.Info));
 	}
 
