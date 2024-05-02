@@ -7,26 +7,28 @@ namespace Nasara;
 
 public class App
 {
-	// HttpClient is intended to be instantiated once per application, rather than per-use.
-	public static readonly System.Net.Http.HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(60) };
-
 	public const string CachePath = "user://cache";
+
+	public static NotificationSystem NotificationSystem => _notificationSystemInstance;
+	
 
 	private static App _instance;
 	private static AppLayout _layoutInstance;
+	private static NotificationSystem _notificationSystemInstance;
 
 	private App()
 	{
 		CreateDirs();
 		NetworkClient.Initialize();
+		_notificationSystemInstance = new NotificationSystem();
 	}
 
 	public static void Initialize(AppLayout layout)
 	{
 		if (_instance is not null) return;
 		
-		GD.PrintRich($"[b]Nasara v{GetVersion()}[/b]. Licensed under the MIT License.\n" +
-		             "Check out our GitHub: https://github.com/nofuncoding/nasara\n");
+		GD.PrintRich($"[b]Nasara v{GetVersion()}[/b] by NoFun\n" +
+		             "https://github.com/nofuncoding/nasara\n");
 		
 		Logger.Log("Initializing");
 		Logger.LogWarn("Testing");
@@ -50,7 +52,7 @@ public class App
 
 		foreach (var d in dirs)
 		{
-			// If not exists, then create it.
+			// If not exists then create it.
 			if (!DirAccess.DirExistsAbsolute(d))
 			{
 				DirAccess.MakeDirRecursiveAbsolute(d);
