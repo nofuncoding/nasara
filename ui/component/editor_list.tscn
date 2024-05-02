@@ -1,47 +1,28 @@
-[gd_scene load_steps=7 format=3 uid="uid://bcu6t56ammh32"]
+[gd_scene load_steps=5 format=3 uid="uid://bcu6t56ammh32"]
 
-[ext_resource type="Script" path="res://ui/controller/component/EditorList.cs" id="1_2kqce"]
-[ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://res/style/normal_control_theme.tres" id="1_gjy0v"]
-[ext_resource type="Theme" uid="uid://ddranlcsd8vw" path="res://res/style/icon_button_theme.tres" id="1_vmi3v"]
-[ext_resource type="Theme" uid="uid://drq4e83qvv0u" path="res://res/style/component_list_theme.tres" id="2_m5nxn"]
+[ext_resource type="Script" path="res://src/UI/Component/EditorList.cs" id="1_2kqce"]
+[ext_resource type="Theme" uid="uid://b3djlgnabawak" path="res://res/style/fluent_theme.tres" id="1_kbdxu"]
+[ext_resource type="SystemFont" uid="uid://bo3omumr6dchf" path="res://res/font/FluentBoldFont.tres" id="3_3smmw"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0x2xp"]
-bg_color = Color(0.0901961, 0.0901961, 0.0901961, 0.941176)
-border_width_bottom = 1
-corner_radius_top_left = 5
-corner_radius_top_right = 5
+[sub_resource type="LabelSettings" id="LabelSettings_47jlo"]
+font = ExtResource("3_3smmw")
+font_size = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xdfc5"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-
-[node name="EditorList" type="VBoxContainer" node_paths=PackedStringArray("editorItemList", "tipNotFound", "addButton", "launchButton")]
+[node name="EditorList" type="Control" node_paths=PackedStringArray("_emptyTip", "_scroller", "_editorContainer", "_addingButton")]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 3
-theme = ExtResource("1_gjy0v")
-theme_override_constants/separation = 0
+theme = ExtResource("1_kbdxu")
 script = ExtResource("1_2kqce")
-editorItemList = NodePath("Editors/ItemList")
-tipNotFound = NodePath("Editors/NotFound")
-addButton = NodePath("Panel/ActionList/AddButton")
-launchButton = NodePath("Panel/ActionList/LaunchButton")
+_emptyTip = NodePath("VBoxContainer/EmptyDisplay")
+_scroller = NodePath("VBoxContainer/ScrollContainer")
+_editorContainer = NodePath("VBoxContainer/ScrollContainer/VBoxContainer")
+_addingButton = NodePath("VBoxContainer/HBoxContainer/AddButton")
 
-[node name="Panel" type="Panel" parent="."]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0x2xp")
-
-[node name="ActionList" type="HBoxContainer" parent="Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,53 +30,49 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DeleteButton" type="Button" parent="Panel/ActionList"]
-visible = false
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("1_vmi3v")
-theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_xdfc5")
-text = "Delete"
-flat = true
 
-[node name="LaunchButton" type="Button" parent="Panel/ActionList"]
+[node name="TabBar" type="TabBar" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme = ExtResource("1_vmi3v")
-theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_xdfc5")
-text = "play_circle"
-flat = true
+size_flags_horizontal = 3
+current_tab = 0
+tab_count = 3
+tab_0/title = "All"
+tab_1/title = "Stable"
+tab_2/title = "Unstable"
 
-[node name="AddButton" type="Button" parent="Panel/ActionList"]
+[node name="OpenButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme = ExtResource("1_vmi3v")
-theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_xdfc5")
-text = "add_circle"
-flat = true
+text = "Add Existed"
 
-[node name="Editors" type="Control" parent="."]
+[node name="AddButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Install Editor"
+
+[node name="EmptyDisplay" type="VBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 1
 
-[node name="ItemList" type="ItemList" parent="Editors"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 3
-theme = ExtResource("2_m5nxn")
-allow_search = false
-
-[node name="NotFound" type="Label" parent="Editors"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "No Editor Found"
+[node name="Label" type="Label" parent="VBoxContainer/EmptyDisplay"]
+layout_mode = 2
+text = "No Editor"
+label_settings = SubResource("LabelSettings_47jlo")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/EmptyDisplay"]
+layout_mode = 2
+text = "Please install one or add one from local."
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

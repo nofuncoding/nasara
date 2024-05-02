@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://dilfog1mgc5k8"]
+
+[ext_resource type="Script" path="res://ui/controller/component/TagLabel.cs" id="1_likuw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4evgg"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+bg_color = Color(0.180392, 0.180392, 0.180392, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="TagLabel" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_4evgg")
+script = ExtResource("1_likuw")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "this is a tag"

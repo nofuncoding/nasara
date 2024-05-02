@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://du1rxuk6kjwrj"]
+
+[ext_resource type="FontFile" uid="uid://b3pcw5usncpy1" path="res://res/font/SourceHanSans-VF.ttf.ttc" id="1_ugbm8"]
+
+[resource]
+base_font = ExtResource("1_ugbm8")
+variation_opentype = {
+2003265652: 700
+}

@@ -11,9 +11,8 @@ config_version=5
 [application]
 
 config/name="Nasara"
-config/version="0.2.0"
-config/tags=PackedStringArray("app")
-run/main_scene="res://app.tscn"
+config/version="1.0.0"
+run/main_scene="res://app_layout.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="NasaraGodot"
 config/features=PackedStringArray("4.3", "C#", "GL Compatibility")
@@ -23,10 +22,9 @@ config/icon="res://icon.svg"
 
 [display]
 
-window/size/transparent=true
 window/energy_saving/keep_screen_on=false
 window/subwindows/embed_subwindows=false
-window/stretch/aspect="ignore"
+window/stretch/aspect="expand"
 window/per_pixel_transparency/allowed=true
 
 [dotnet]
@@ -36,7 +34,6 @@ project/assembly_name="Nasara"
 [file_customization]
 
 folder_colors={
-"res://core/": "orange",
 "res://res/": "teal",
 "res://ui/component/": "green",
 "res://ui/view/": "green"
@@ -44,7 +41,8 @@ folder_colors={
 
 [gui]
 
-theme/custom_font="res://res/font/GlowSansSC-Normal-Regular.otf"
+theme/custom="res://res/style/fluent_theme.tres"
+theme/custom_font="res://res/font/Inter.tres"
 
 [internationalization]
 
@@ -54,4 +52,3 @@ locale/translations=PackedStringArray("res://lang/zh.mo", "res://lang/en.mo")
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-viewport/transparent_background=true

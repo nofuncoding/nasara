@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cio5c07rcv3kk"]
 
 [ext_resource type="Script" path="res://ui/controller/component/NewsHolder.cs" id="1_6j35d"]
-[ext_resource type="FontFile" uid="uid://db0g1dhwqysoy" path="res://res/font/GlowSansSC-Normal-Medium.otf" id="2_fqj23"]
+[ext_resource type="SystemFont" uid="uid://bo3omumr6dchf" path="res://res/font/FluentBoldFont.tres" id="2_eej00"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tyvvy"]
 content_margin_left = 10.0
@@ -56,14 +56,16 @@ theme_override_constants/separation = 0
 [node name="Title" type="LinkButton" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_fonts/font = ExtResource("2_fqj23")
+theme_override_fonts/font = ExtResource("2_eej00")
 theme_override_font_sizes/font_size = 22
 text = "This is title!"
 underline = 1
 
 [node name="Description" type="Label" parent="HBoxContainer/VBoxContainer"]
+auto_translate_mode = 2
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+size_flags_vertical = 3
 auto_translate = false
 text = "hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello "
 vertical_alignment = 1

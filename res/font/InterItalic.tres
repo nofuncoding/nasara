@@ -1,0 +1,11 @@
+[gd_resource type="FontVariation" load_steps=3 format=3 uid="uid://tm3rhe2s1sxx"]
+
+[ext_resource type="FontFile" uid="uid://bfp041wwbsuy7" path="res://res/font/InterVariable-Italic.ttf" id="1_puers"]
+[ext_resource type="FontVariation" uid="uid://bnclxftaevg08" path="res://res/font/SourceHanSans.tres" id="2_n6tl7"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_n6tl7")])
+base_font = ExtResource("1_puers")
+variation_opentype = {
+1869640570: 15
+}
