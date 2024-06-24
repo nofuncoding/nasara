@@ -1,8 +1,9 @@
 using Godot;
 using System;
 using Nasara.Core;
-using Nasara.Core.Management;
+using Nasara.Core.Management.Editor;
 using Nasara.UI.Component;
+using Nasara.UI.Component.Notification;
 
 namespace Nasara.UI;
 
@@ -18,14 +19,11 @@ public partial class AppLayout : PanelContainer
     [Export] private Control _popupHolder;
     [ExportGroup("Pages")]
     [Export] private Control _mainPage;
-    [Export] private Control _loadingPage;
     [ExportSubgroup("Main Page")] 
     [Export] private NavigationBar _navigationBar;
     [Export] private ViewSwitch _viewSwitch;
-    [ExportSubgroup("Loading Page")]
-    [Export] private ProgressBar _loadingBar;
     
-    public override void _Ready()
+    public override async void _Ready()
     {
         App.Initialize(this);
         
@@ -35,10 +33,14 @@ public partial class AppLayout : PanelContainer
         _navigationBar.RegisterView(GD.Load<PackedScene>("res://ui/view/project_view.tscn"), Tr("Project"));
         _navigationBar.RegisterView(GD.Load<PackedScene>("res://ui/view/news_view.tscn"), Tr("News"));
 
+        // Setup styles
         _popupLayer.Hide();
         
-        UpdateChecker.CheckUpdate();
-        new GodotManager().GetManifest();
+        // Setup notification
+        App.NotificationSystem.AddInject(GetNode<InnerNotify>("InnerNotify"));
+        App.NotificationSystem.SetInjectType(NotificationInjectType.Software);
+        
+        await UpdateChecker.CheckUpdate();
     }
 
     // TODO add some animations here
@@ -51,5 +53,7 @@ public partial class AppLayout : PanelContainer
         instance._popupLayer.Show();
         instance._popupHolder.AddChild(popup);
         popup.TreeExited += instance._popupLayer.Hide;
+        /*// half of the window
+        instance._popupHolder.Size = instance.GetTree().Root.Size / 2;*/
     }
 }

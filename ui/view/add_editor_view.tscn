@@ -4,7 +4,7 @@
 [ext_resource type="Theme" uid="uid://8qt5bb5oi3ck" path="res://res/style/normal_control_theme.tres" id="2_nhi8r"]
 [ext_resource type="PackedScene" uid="uid://ue7u6noadn33" path="res://ui/component/requesting_container.tscn" id="3_j5oo1"]
 
-[node name="AddEditorView" type="Control"]
+[node name="AddEditorView" type="Control" node_paths=PackedStringArray("_requestingContainer", "_editorList")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,6 +13,16 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_nhi8r")
 script = ExtResource("1_pub8h")
+_requestingContainer = NodePath("RequestingContainer")
+_editorList = NodePath("RequestingContainer/ItemList")
 
 [node name="RequestingContainer" parent="." instance=ExtResource("3_j5oo1")]
 layout_mode = 1
+
+[node name="ItemList" type="ItemList" parent="RequestingContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

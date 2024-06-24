@@ -1,15 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://bhmo5fqi55jgx"]
+[gd_scene load_steps=7 format=3 uid="uid://bhmo5fqi55jgx"]
 
 [ext_resource type="StyleBox" uid="uid://d27gjy5q4owlp" path="res://res/style/app_panel.tres" id="1_3n241"]
 [ext_resource type="Script" path="res://src/UI/AppLayout.cs" id="2_gc7vu"]
 [ext_resource type="Script" path="res://src/UI/Component/ViewSwitch.cs" id="3_dmw11"]
 [ext_resource type="PackedScene" uid="uid://c6a08lc27x3ml" path="res://ui/component/nav_bar.tscn" id="3_ikn0v"]
+[ext_resource type="Script" path="res://src/UI/Component/Notification/InnerNotify.cs" id="5_r80bo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gcu05"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
 bg_color = Color(0.0784314, 0.0784314, 0.0784314, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
@@ -26,7 +27,7 @@ grow_vertical = 2
 theme_override_styles/panel = ExtResource("1_3n241")
 script = ExtResource("2_gc7vu")
 _popupLayer = NodePath("Popup")
-_popupHolder = NodePath("Popup/CenterContainer/PanelContainer")
+_popupHolder = NodePath("Popup/CenterContainer/PanelContainer/PopupHolder")
 _mainPage = NodePath("Main")
 _navigationBar = NodePath("Main/HBoxContainer/NavBar")
 _viewSwitch = NodePath("Main/HBoxContainer/MarginContainer/ViewSwitch")
@@ -42,13 +43,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NavBar" parent="Main/HBoxContainer" node_paths=PackedStringArray("_viewSwitch", "_versionLabel", "_settingButton", "_buttonContainer") instance=ExtResource("3_ikn0v")]
+[node name="NavBar" parent="Main/HBoxContainer" node_paths=PackedStringArray("_viewSwitch") instance=ExtResource("3_ikn0v")]
 layout_mode = 2
 size_flags_horizontal = 0
 _viewSwitch = NodePath("../MarginContainer/ViewSwitch")
-_versionLabel = NodePath("Label")
-_settingButton = NodePath("VBoxContainer/SettingButton")
-_buttonContainer = NodePath("VBoxContainer/MarginContainer/NavButtonContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="Main/HBoxContainer"]
 layout_mode = 2
@@ -64,6 +62,7 @@ script = ExtResource("3_dmw11")
 Pages = []
 
 [node name="Popup" type="Control" parent="."]
+visible = false
 layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="Popup"]
@@ -71,6 +70,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 404.0
+offset_bottom = 304.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.470588)
@@ -88,9 +91,19 @@ custom_minimum_size = Vector2(400, 300)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gcu05")
 
+[node name="PopupHolder" type="Control" parent="Popup/CenterContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Popup/CenterContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "close"
+
 [node name="InnerNotify" type="Control" parent="."]
 layout_mode = 2
 mouse_filter = 2
+script = ExtResource("5_r80bo")
 
 [node name="MarginContainer" type="MarginContainer" parent="InnerNotify"]
 layout_mode = 1

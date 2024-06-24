@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Diagnostics;
 using Nasara.Core;
 using Nasara.UI;
 
@@ -17,11 +15,12 @@ public class App
 	private static AppLayout _layoutInstance;
 	private static NotificationSystem _notificationSystemInstance;
 
+	private static Core.Management.Editor.GodotManager _godotManager;
+
 	private App()
 	{
 		CreateDirs();
 		NetworkClient.Initialize();
-		_notificationSystemInstance = new NotificationSystem();
 	}
 
 	public static void Initialize(AppLayout layout)
@@ -32,13 +31,16 @@ public class App
 		             "https://github.com/nofuncoding/nasara\n");
 		
 		Logger.Log("Initializing");
-		Logger.LogWarn("Testing");
+        
 		_instance = new App();
 		_layoutInstance = layout;
+		_notificationSystemInstance = new NotificationSystem();
+		_godotManager = new Core.Management.Editor.GodotManager();
 	}
 
 	public static App Get() => _instance;
 	public static AppLayout GetLayout() => _layoutInstance;
+	public static Core.Management.Editor.GodotManager GetGodotManager() => _godotManager;
 	
 	/// <summary>
 	/// Get the current version of app
@@ -59,79 +61,5 @@ public class App
 				DirAccess.MakeDirRecursiveAbsolute(d);
 			}
 		}
-	}
-}
-
-
-public static class Logger
-{
-	public static void Log(string message)
-	{
-		// TODO bad code
-		// Get class type from StackTrace
-		var stackTrace = new StackTrace();
-		var method = stackTrace.GetFrame(1)?.GetMethod();
-		
-		var logClass = method?.DeclaringType;
-		if ((logClass?.IsClass ?? false) && !method.IsStatic)
-			logClass = logClass.DeclaringType;
-		
-		var identifier = logClass?.Name;
-		identifier ??= method?.ReflectedType?.Name; // FIXME
-		identifier ??= "Unknown";
-		
-		GD.PrintRich(GenerateLogMessage(identifier, message, LogLevel.Info));
-	}
-
-	public static void LogWarn(string message, string identifier="App")
-	{
-		if (OS.IsDebugBuild())
-			GD.PushWarning(GenerateLogMessage(identifier, message, LogLevel.Warn, false));
-		else
-			GD.PrintRich(GenerateLogMessage(identifier, message, LogLevel.Warn));
-	}
-
-	public static void LogError(string message, string identifier = "App")
-	{
-		if (OS.IsDebugBuild())
-			GD.PushError(GenerateLogMessage(identifier, message, LogLevel.Error, false));
-		else
-			GD.PrintRich(GenerateLogMessage(identifier, message, LogLevel.Error));
-	}
-
-	private static string GenerateLogMessage(string identifier, string message, LogLevel level, bool enableRich=true)
-	{
-		// var time = new DateTime().AddMilliseconds(Time.GetTicksMsec());
-		var time = DateTime.Now;
-		var timeString = $"{time:HH:mm:ss.fff}";
-		if (enableRich)
-			return level switch
-			{
-				LogLevel.Info => $"[{timeString}] ({identifier}) [b]INFO[/b] {message}",
-				LogLevel.Warn => $"[color=yellow][{timeString}] ({identifier}) [b]WARN[/b] {message}[/color]",
-				LogLevel.Error => $"[color=red][{timeString}] ({identifier}) [b]ERROR[/b] {message}[/color]",
-				LogLevel.Fatal => $"[color=red][{timeString}] ({identifier}) [b]FATAL[/b] {message}[/color]",
-				LogLevel.Debug => $"[color=grey][{timeString}] ({identifier}) [b]DEBUG[/b] {message}[/color]",
-				_ => $"[{timeString}] ({identifier}) [b]???? [/b] {message}",
-			};
-		else
-			return level switch
-			{
-				LogLevel.Info => $"[{timeString}] ({identifier}) INFO  {message}",
-				LogLevel.Warn => $"[{timeString}] ({identifier}) WARN  {message}",
-				LogLevel.Error => $"[{timeString}] ({identifier}) ERROR {message}",
-				LogLevel.Fatal => $"[{timeString}] ({identifier}) FATAL {message}",
-				LogLevel.Debug => $"[{timeString}] ({identifier}) DEBUG {message}",
-				_ => $"[{timeString}] ({identifier}) ????  {message}",
-			};
-	}
-	
-	public enum LogLevel
-	{
-		Info,
-		Warn,
-		Error,
-		Fatal,
-		Debug,
 	}
 }

@@ -28,7 +28,13 @@ public partial class PageSwitch : Control
 
     public override void _Draw()
     {
-        if (_currentPageIndex < 0 || Pages.Length < _currentPageIndex + 1) return;
+        if (_currentPageIndex < 0)
+            foreach (var page in Pages)
+            {
+                page.Hide();
+            }
+        
+        if (Pages.Length < _currentPageIndex + 1) return;
         
         for (var i = 0; i < Pages.Length; i++)
             if (i == _currentPageIndex)

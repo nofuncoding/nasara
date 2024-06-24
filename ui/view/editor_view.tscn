@@ -34,10 +34,6 @@ text = "Editor"
 label_settings = SubResource("LabelSettings_6m3yg")
 vertical_alignment = 1
 
-[node name="EditorList" parent="VBoxContainer" node_paths=PackedStringArray("_emptyTip", "_scroller", "_editorContainer", "_addingButton") instance=ExtResource("3_lgwwd")]
+[node name="EditorList" parent="VBoxContainer" instance=ExtResource("3_lgwwd")]
 layout_mode = 2
 size_flags_vertical = 3
-_emptyTip = NodePath("VBoxContainer/EmptyDisplay")
-_scroller = NodePath("VBoxContainer/ScrollContainer")
-_editorContainer = NodePath("VBoxContainer/ScrollContainer/VBoxContainer")
-_addingButton = NodePath("VBoxContainer/HBoxContainer/AddButton")
