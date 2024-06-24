@@ -4,5 +4,8 @@
 # Build
 build/*.zip
 
-# Translates
+# Translations
 lang/*_generated.pot
+
+# Editor
+.idea/
